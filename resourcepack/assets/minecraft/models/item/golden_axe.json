@@ -1,0 +1,56 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "item/golden_axe"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1108
+      },
+      "model": "animatecore:item/axe_crit_8"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1107
+      },
+      "model": "animatecore:item/axe_use_7"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1106
+      },
+      "model": "animatecore:item/axe_use_6"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1105
+      },
+      "model": "animatecore:item/axe_use_5"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1104
+      },
+      "model": "animatecore:item/axe_swing_4"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1103
+      },
+      "model": "animatecore:item/axe_swing_3"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1102
+      },
+      "model": "animatecore:item/axe_swing_2"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1101
+      },
+      "model": "animatecore:item/axe_swing_1"
+    }
+  ]
+}

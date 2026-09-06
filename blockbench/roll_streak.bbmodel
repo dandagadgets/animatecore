@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "roll_streak",
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "streak",
+      "from": [
+        7,
+        0,
+        7.9
+      ],
+      "to": [
+        9,
+        16,
+        8.1
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        7,
+        0,
+        7.9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "10405b3f-f77b-45bd-ad87-72a19c819871"
+    }
+  ],
+  "outliner": [
+    {
+      "name": "roll_streak",
+      "origin": [
+        8,
+        8,
+        0
+      ],
+      "uuid": "caa27074-a99d-4837-9dd1-34a8b45bc940",
+      "children": [
+        "10405b3f-f77b-45bd-ad87-72a19c819871"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "path": "",
+      "name": "roll_streak.png",
+      "folder": "item",
+      "namespace": "",
+      "id": "0",
+      "particle": true,
+      "uuid": "12439a8f-e0cb-4bfa-8a41-f5fc2393cae3",
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAWklEQVR4nGNcdeLhAgY8IMxCPgGfPKWAhYGBgcHbXA6r5NaTj2hpN8IBl5/T3B6cgGngrB51wCBxAAsDAwPDo0e0T+2jYBSMglEwCkbBKBgFo2AUjIJRgAsAAIpuC3Z0bn+nAAAAAElFTkSuQmCC"
+    }
+  ]
+}

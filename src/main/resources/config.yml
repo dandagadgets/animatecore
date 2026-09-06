@@ -1,0 +1,63 @@
+# AnimateCore configuration
+
+animations:
+  enabled: true
+  # How fast held-item swing frames cycle, in ticks per frame (1 tick = 50ms).
+  swing-frame-ticks: 1
+  # Play custom animatecore:* sounds (require the resource pack). Set false to keep only vanilla sounds.
+  custom-sounds: true
+  particles: true
+
+chopping:
+  enabled: true
+  # Extra swing-frame burst + wood-chip particles + timber sound when an axe fells a log.
+  timber-fx: true
+  # Briefly "shakes" the log block being chopped (removes it, drops in a wobbling BlockDisplay, restores it).
+  tree-shake: true
+
+mining:
+  enabled: true
+  ore-sparkle: true
+
+combat:
+  enabled: true
+  # Per-weapon combat flourishes (slash trails, mace shockwave, spear lunge, etc).
+  weapon-fx: true
+
+eating:
+  enabled: true
+  bite-fx: true
+
+swimming:
+  enabled: true
+  bubble-trail: true
+
+roll:
+  enabled: true
+  # AnimateCore's practical implementation of "W + Shift + Ctrl": Minecraft's network protocol only ever
+  # tells the server about toggled key STATES (sneaking on/off, sprinting on/off), never raw per-tick key
+  # presses - so there is no packet that literally reports "W, Shift and Ctrl held at once". The closest
+  # and most natural-feeling equivalent achievable without a client-side mod is catching the exact instant
+  # a sprinting player (W+Ctrl already held) presses Shift - which is what this listens for.
+  trigger: SPRINT_THEN_SNEAK   # SPRINT_THEN_SNEAK | DOUBLE_TAP_SNEAK
+  cooldown-ms: 700
+  dash-strength: 1.6
+  invulnerability-ticks: 6
+  hunger-cost: 1.0
+  allow-in-air: false
+  allow-in-water: true
+
+cinematics:
+  enabled: true
+  # If ProtocolLib is installed, cinematics use a hard camera lock (ClientboundSetCameraPacket) instead of
+  # the portable spectator+teleport fallback, which prevents the viewer from free-looking during playback.
+  prefer-protocollib-camera: true
+  skip-on-sneak: true
+
+resource-pack:
+  # Optional: set a URL (and sha1) to have the server prompt players to download the bundled resource pack
+  # on join. Leave blank to manage the resource pack manually (e.g. server.properties / a pack host).
+  url: ''
+  sha1: ''
+  prompt-message: '&6AnimateCore &7uses a resource pack for its custom tool and weapon animations.'
+  force: false

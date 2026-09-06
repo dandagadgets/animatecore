@@ -1,0 +1,261 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "pickaxe",
+  "model_identifier": "animatecore:pickaxe",
+  "visible_box": [
+    1,
+    1,
+    0
+  ],
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "handle",
+      "from": [
+        7.5,
+        0,
+        7.5
+      ],
+      "to": [
+        8.5,
+        12,
+        8.5
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        7.5,
+        0,
+        7.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "4d782750-38e9-488c-bc0c-7ed9e1028c15"
+    },
+    {
+      "name": "head",
+      "from": [
+        3,
+        12,
+        7
+      ],
+      "to": [
+        13,
+        14,
+        9
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        3,
+        12,
+        7
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "1844185f-8686-4335-b184-a14a51ff02e5"
+    }
+  ],
+  "outliner": [
+    {
+      "name": "pickaxe",
+      "origin": [
+        8,
+        0,
+        8
+      ],
+      "uuid": "dfbd3221-6069-4fb9-9646-8d1b91df4857",
+      "children": [
+        "4d782750-38e9-488c-bc0c-7ed9e1028c15",
+        "1844185f-8686-4335-b184-a14a51ff02e5"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "path": "",
+      "name": "pickaxe.png",
+      "folder": "item",
+      "namespace": "",
+      "id": "0",
+      "particle": true,
+      "uuid": "e475cc61-96dc-4a22-ab01-363c4872d060",
+      "relative_path": "../resourcepack/assets/animatecore/textures/item/pickaxe.png",
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAbklEQVR4nGOMNpf5z4AHLD35hBGfPKWAhYGBgcHb2xur5NatW2lpN8IBly9fprlFuADTgNk86oDB4gAWBgYGhkePHg2YAxiXrdyAtxyICg8YLQdoCgY8EY46YMAdMODlwCgYBaNgFIyCUTAKRgEAOpAYaXvsSXoAAAAASUVORK5CYII="
+    }
+  ],
+  "animations": [
+    {
+      "uuid": "26230412-2265-4b1c-9311-0976a7b14d73",
+      "name": "swing",
+      "loop": "once",
+      "override": false,
+      "length": 0.6,
+      "snapping": 24,
+      "animators": {
+        "dfbd3221-6069-4fb9-9646-8d1b91df4857": {
+          "name": "pickaxe",
+          "type": "bone",
+          "keyframes": [
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "-45",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "time": 0,
+              "uuid": "e5fa1acc-9abd-444e-9d7b-c453f4e99579",
+              "interpolation": "linear"
+            },
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "45",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "time": 0.4,
+              "uuid": "b8134f6b-57e3-4e2a-82ce-dce0aacf8e7b",
+              "interpolation": "linear"
+            },
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "0",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "time": 0.6,
+              "uuid": "6e187765-b198-4e50-9437-d6eb6de63c48",
+              "interpolation": "linear"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

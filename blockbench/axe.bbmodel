@@ -1,0 +1,261 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "axe",
+  "model_identifier": "animatecore:axe",
+  "visible_box": [
+    1,
+    1,
+    0
+  ],
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "handle",
+      "from": [
+        7.5,
+        0,
+        7.5
+      ],
+      "to": [
+        8.5,
+        13,
+        8.5
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        7.5,
+        0,
+        7.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "4a546068-095b-45d8-b8e8-b67985f4152c"
+    },
+    {
+      "name": "head",
+      "from": [
+        4,
+        11,
+        7
+      ],
+      "to": [
+        8.5,
+        15.5,
+        9.5
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        4,
+        11,
+        7
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "90b7622d-032f-449e-b03d-366e1363dc20"
+    }
+  ],
+  "outliner": [
+    {
+      "name": "axe",
+      "origin": [
+        8,
+        0,
+        8
+      ],
+      "uuid": "1cc0c166-8877-4bef-af75-ec959f123f7b",
+      "children": [
+        "4a546068-095b-45d8-b8e8-b67985f4152c",
+        "90b7622d-032f-449e-b03d-366e1363dc20"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "path": "",
+      "name": "axe.png",
+      "folder": "item",
+      "namespace": "",
+      "id": "0",
+      "particle": true,
+      "uuid": "b969ef47-aaad-48ee-ad87-4b6cbd9e3651",
+      "relative_path": "../resourcepack/assets/animatecore/textures/item/axe.png",
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAbklEQVR4nGOMNpf5z4AHLD35hBGfPKWAhYGBgcHb2xur5NatW2lpN8IBly9fprlFuADTgNk86oDB4gAWBgYGhkePHg2YAxiXrdyAtxyICg8YLQdoCgY8EY46YMAdMODlwCgYBaNgFIyCUTAKRgEAOpAYaXvsSXoAAAAASUVORK5CYII="
+    }
+  ],
+  "animations": [
+    {
+      "uuid": "bd67c1f3-9928-4a2e-b884-a635495e16f9",
+      "name": "swing",
+      "loop": "once",
+      "override": false,
+      "length": 0.6,
+      "snapping": 24,
+      "animators": {
+        "1cc0c166-8877-4bef-af75-ec959f123f7b": {
+          "name": "axe",
+          "type": "bone",
+          "keyframes": [
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "-45",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "time": 0,
+              "uuid": "95d6f1ee-5a5a-49b4-a9de-a77bdd8ab7d1",
+              "interpolation": "linear"
+            },
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "45",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "time": 0.4,
+              "uuid": "d6e01d08-168a-492c-add6-ac7ff7098b08",
+              "interpolation": "linear"
+            },
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "0",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "time": 0.6,
+              "uuid": "146716f5-ae72-4ffa-8706-aa010a3171f7",
+              "interpolation": "linear"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

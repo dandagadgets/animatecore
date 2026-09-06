@@ -1,0 +1,56 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "item/golden_pickaxe"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1208
+      },
+      "model": "animatecore:item/pickaxe_crit_8"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1207
+      },
+      "model": "animatecore:item/pickaxe_use_7"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1206
+      },
+      "model": "animatecore:item/pickaxe_use_6"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1205
+      },
+      "model": "animatecore:item/pickaxe_use_5"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1204
+      },
+      "model": "animatecore:item/pickaxe_swing_4"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1203
+      },
+      "model": "animatecore:item/pickaxe_swing_3"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1202
+      },
+      "model": "animatecore:item/pickaxe_swing_2"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1201
+      },
+      "model": "animatecore:item/pickaxe_swing_1"
+    }
+  ]
+}

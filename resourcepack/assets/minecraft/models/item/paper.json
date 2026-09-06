@@ -1,0 +1,26 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "item/paper"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 9200
+      },
+      "model": "animatecore:item/cinematic_torch"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 9100
+      },
+      "model": "animatecore:item/cinematic_knight"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 9000
+      },
+      "model": "animatecore:item/roll_streak"
+    }
+  ]
+}

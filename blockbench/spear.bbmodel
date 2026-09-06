@@ -1,0 +1,340 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "spear",
+  "model_identifier": "animatecore:spear",
+  "visible_box": [
+    1,
+    1,
+    0
+  ],
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "shaft",
+      "from": [
+        7.5,
+        0,
+        7.5
+      ],
+      "to": [
+        8.5,
+        14,
+        8.5
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        7.5,
+        0,
+        7.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "3676e403-5ee1-4989-89fc-08b28518f8fc"
+    },
+    {
+      "name": "socket",
+      "from": [
+        6.5,
+        13.5,
+        6.5
+      ],
+      "to": [
+        9.5,
+        15,
+        9.5
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        6.5,
+        13.5,
+        6.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "ec9895cd-ab32-44b4-83b4-ec16efaf4b6d"
+    },
+    {
+      "name": "tip",
+      "from": [
+        7.25,
+        15,
+        7.25
+      ],
+      "to": [
+        8.75,
+        18,
+        8.75
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        7.25,
+        15,
+        7.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "a48ea39e-1e82-484a-93ac-ba47cb8e47b1"
+    }
+  ],
+  "outliner": [
+    {
+      "name": "spear",
+      "origin": [
+        8,
+        0,
+        8
+      ],
+      "uuid": "e44c7cc4-8429-4154-83c0-31f8e8bb98c4",
+      "children": [
+        "3676e403-5ee1-4989-89fc-08b28518f8fc",
+        "ec9895cd-ab32-44b4-83b4-ec16efaf4b6d",
+        "a48ea39e-1e82-484a-93ac-ba47cb8e47b1"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "path": "",
+      "name": "spear.png",
+      "folder": "item",
+      "namespace": "",
+      "id": "0",
+      "particle": true,
+      "uuid": "b9667bc8-b202-4246-85ad-360f9c6a05fe",
+      "relative_path": "../resourcepack/assets/animatecore/textures/item/spear.png",
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAfUlEQVR4nGOMNpf5z4AHLD35hBGfPKWAhYGBgcHb2xur5NatW2lpN8IBly9fprlFuADTgNk86oDB4gAWBgYGhkePHg2cA75K2xFQsoy2DmBgGC0HBhaMOmDAHTDw5UBYeBheBRvWjZYDtAUDnghHHTDgDhjwcmAUjIJRMAoALV8hnnsrwkIAAAAASUVORK5CYII="
+    }
+  ],
+  "animations": [
+    {
+      "uuid": "65d488e5-0583-452d-a3c3-4b092b7d5b3d",
+      "name": "swing",
+      "loop": "once",
+      "override": false,
+      "length": 0.6,
+      "snapping": 24,
+      "animators": {
+        "e44c7cc4-8429-4154-83c0-31f8e8bb98c4": {
+          "name": "spear",
+          "type": "bone",
+          "keyframes": [
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "-45",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "time": 0,
+              "uuid": "85cdc941-9bc5-4bfd-a746-49d09855561b",
+              "interpolation": "linear"
+            },
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "45",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "time": 0.4,
+              "uuid": "df699617-b61e-4bdb-bd7a-5de221670658",
+              "interpolation": "linear"
+            },
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "0",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "time": 0.6,
+              "uuid": "0dbb7dd0-b8d5-4b78-928d-506f9c81b16c",
+              "interpolation": "linear"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

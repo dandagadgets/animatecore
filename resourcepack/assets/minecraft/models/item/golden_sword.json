@@ -1,0 +1,56 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "item/golden_sword"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1008
+      },
+      "model": "animatecore:item/sword_crit_8"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1007
+      },
+      "model": "animatecore:item/sword_use_7"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1006
+      },
+      "model": "animatecore:item/sword_use_6"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1005
+      },
+      "model": "animatecore:item/sword_use_5"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1004
+      },
+      "model": "animatecore:item/sword_swing_4"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1003
+      },
+      "model": "animatecore:item/sword_swing_3"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1002
+      },
+      "model": "animatecore:item/sword_swing_2"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1001
+      },
+      "model": "animatecore:item/sword_swing_1"
+    }
+  ]
+}

@@ -1,0 +1,276 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "cinematic_knight",
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "legs",
+      "from": [
+        6,
+        0,
+        6
+      ],
+      "to": [
+        10,
+        6,
+        10
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        6,
+        0,
+        6
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "4978df69-01c3-4e97-9526-90cbac433d40"
+    },
+    {
+      "name": "body",
+      "from": [
+        6,
+        6,
+        6
+      ],
+      "to": [
+        10,
+        14,
+        10
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        6,
+        6,
+        6
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "8ee4cbf5-cf09-445f-ab35-824f5668f908"
+    },
+    {
+      "name": "head",
+      "from": [
+        6.5,
+        14,
+        6.5
+      ],
+      "to": [
+        9.5,
+        17,
+        9.5
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        6.5,
+        14,
+        6.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "cfc0c1dd-cb1b-414d-b295-546991560b19"
+    }
+  ],
+  "outliner": [
+    {
+      "name": "cinematic_knight",
+      "origin": [
+        8,
+        0,
+        8
+      ],
+      "uuid": "6cbadd57-5428-42ea-8bbb-61ef9ef11e58",
+      "children": [
+        "4978df69-01c3-4e97-9526-90cbac433d40",
+        "8ee4cbf5-cf09-445f-ab35-824f5668f908",
+        "cfc0c1dd-cb1b-414d-b295-546991560b19"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "path": "",
+      "name": "cinematic_knight.png",
+      "folder": "item",
+      "namespace": "",
+      "id": "0",
+      "particle": true,
+      "uuid": "22816a35-6e9a-4ff6-94ff-c2353411f341",
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAhUlEQVR4nO2UsQmAMBQFXyRTuIwDpBGLCA6YMthkAFcwAwjZQ7QRbEwaid/iXfsD70hxqh+mAwVm71Tp/hYNAMaYx2MIoeb2LRBjrD6UoxFbpsBfBDQApJTkBOxoiw9m7+oKAOyALBQQF5DvQLuvYuPA9QNdpgPLVx3Y2AEKCCLeAUIIOQGanCGfSAfVTQAAAABJRU5ErkJggg=="
+    }
+  ]
+}

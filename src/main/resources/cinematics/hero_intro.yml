@@ -1,0 +1,97 @@
+# Example AnimateCore cinematic - an orbiting camera intro around a "knight" actor.
+# All camera/actor coordinates are relative to whatever origin location /animatecore cinematic play
+# passes in (defaults to the command sender's location facing).
+#
+# Try it: /animatecore cinematic play hero_intro
+name: hero_intro
+duration-ticks: 140
+
+camera:
+  - tick: 0
+    x: 0.0
+    y: 2.6
+    z: -6.0
+    yaw: 0
+    pitch: 8
+  - tick: 35
+    x: 4.2
+    y: 2.4
+    z: -2.0
+    yaw: 115
+    pitch: 6
+  - tick: 70
+    x: 2.0
+    y: 2.9
+    z: 2.6
+    yaw: 200
+    pitch: 2
+  - tick: 105
+    x: -2.2
+    y: 2.2
+    z: 1.8
+    yaw: 300
+    pitch: 4
+  - tick: 140
+    x: 0.0
+    y: 1.7
+    z: 3.2
+    yaw: 360
+    pitch: -6
+
+actors:
+  - id: knight
+    prop-model: 9100          # PropModelData.CINEMATIC_ACTOR_KNIGHT - see blockbench/cinematic_knight.bbmodel
+    offset: { x: 0.0, y: 0.0, z: 0.0 }
+    poses:
+      - tick: 0
+        translation: { x: 0.0, y: 0.0, z: 0.0 }
+        rotation: { pitch: 0, yaw: 0, roll: 0 }
+        scale: { x: 1.0, y: 1.0, z: 1.0 }
+      - tick: 40
+        translation: { x: 0.0, y: 0.05, z: 0.0 }
+        rotation: { pitch: 0, yaw: 140, roll: 0 }
+        scale: { x: 1.0, y: 1.0, z: 1.0 }
+      - tick: 90
+        translation: { x: 0.0, y: 0.0, z: 0.0 }
+        rotation: { pitch: 0, yaw: 260, roll: 0 }
+        scale: { x: 1.05, y: 1.05, z: 1.05 }
+      - tick: 140
+        translation: { x: 0.0, y: 0.1, z: 0.0 }
+        rotation: { pitch: 0, yaw: 380, roll: 0 }
+        scale: { x: 1.0, y: 1.0, z: 1.0 }
+  - id: torch_left
+    prop-model: 9200          # PropModelData.CINEMATIC_TORCH_FLAME
+    offset: { x: -2.5, y: 0.6, z: -1.0 }
+    poses:
+      - tick: 0
+        rotation: { pitch: 0, yaw: 0, roll: 0 }
+        scale: { x: 0.6, y: 0.6, z: 0.6 }
+      - tick: 140
+        rotation: { pitch: 0, yaw: 0, roll: 0 }
+        scale: { x: 0.7, y: 0.85, z: 0.7 }
+  - id: torch_right
+    prop-model: 9200
+    offset: { x: 2.5, y: 0.6, z: -1.0 }
+    poses:
+      - tick: 0
+        rotation: { pitch: 0, yaw: 0, roll: 0 }
+        scale: { x: 0.7, y: 0.85, z: 0.7 }
+      - tick: 140
+        rotation: { pitch: 0, yaw: 0, roll: 0 }
+        scale: { x: 0.6, y: 0.6, z: 0.6 }
+
+cues:
+  - tick: 0
+    title: "<gold><bold>AnimateCore"
+    subtitle: "<gray>a player animation plugin"
+  - tick: 2
+    sound: animatecore.cinematic.swell
+  - tick: 40
+    title: "<white>Walk. Swim. Fight."
+    subtitle: "<gray>Mine, chop, and roll."
+  - tick: 90
+    title: "<white>Sword. Axe. Spear. Mace."
+    subtitle: "<gray>Every tool swings different."
+  - tick: 125
+    title: ""
+    subtitle: ""

@@ -1,0 +1,56 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "item/mace"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1608
+      },
+      "model": "animatecore:item/mace_crit_8"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1607
+      },
+      "model": "animatecore:item/mace_use_7"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1606
+      },
+      "model": "animatecore:item/mace_use_6"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1605
+      },
+      "model": "animatecore:item/mace_use_5"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1604
+      },
+      "model": "animatecore:item/mace_swing_4"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1603
+      },
+      "model": "animatecore:item/mace_swing_3"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1602
+      },
+      "model": "animatecore:item/mace_swing_2"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1601
+      },
+      "model": "animatecore:item/mace_swing_1"
+    }
+  ]
+}

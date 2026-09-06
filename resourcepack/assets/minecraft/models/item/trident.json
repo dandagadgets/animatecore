@@ -1,0 +1,56 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "item/trident"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1508
+      },
+      "model": "animatecore:item/spear_crit_8"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1507
+      },
+      "model": "animatecore:item/spear_use_7"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1506
+      },
+      "model": "animatecore:item/spear_use_6"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1505
+      },
+      "model": "animatecore:item/spear_use_5"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1504
+      },
+      "model": "animatecore:item/spear_swing_4"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1503
+      },
+      "model": "animatecore:item/spear_swing_3"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1502
+      },
+      "model": "animatecore:item/spear_swing_2"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1501
+      },
+      "model": "animatecore:item/spear_swing_1"
+    }
+  ]
+}

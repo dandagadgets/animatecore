@@ -1,0 +1,56 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "item/diamond_hoe"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1408
+      },
+      "model": "animatecore:item/hoe_crit_8"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1407
+      },
+      "model": "animatecore:item/hoe_use_7"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1406
+      },
+      "model": "animatecore:item/hoe_use_6"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1405
+      },
+      "model": "animatecore:item/hoe_use_5"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1404
+      },
+      "model": "animatecore:item/hoe_swing_4"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1403
+      },
+      "model": "animatecore:item/hoe_swing_3"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1402
+      },
+      "model": "animatecore:item/hoe_swing_2"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1401
+      },
+      "model": "animatecore:item/hoe_swing_1"
+    }
+  ]
+}

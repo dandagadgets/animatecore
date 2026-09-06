@@ -1,0 +1,340 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "sword",
+  "model_identifier": "animatecore:sword",
+  "visible_box": [
+    1,
+    1,
+    0
+  ],
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "handle",
+      "from": [
+        7,
+        0,
+        7.5
+      ],
+      "to": [
+        9,
+        4,
+        8.5
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        7,
+        0,
+        7.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "4fb67191-5261-4949-9c21-43b48f2af16c"
+    },
+    {
+      "name": "guard",
+      "from": [
+        6,
+        4,
+        7
+      ],
+      "to": [
+        10,
+        5,
+        9
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        6,
+        4,
+        7
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "854383fe-56e0-46fb-badd-126252eefc57"
+    },
+    {
+      "name": "blade",
+      "from": [
+        7.25,
+        5,
+        7.75
+      ],
+      "to": [
+        8.75,
+        16,
+        8.25
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        7.25,
+        5,
+        7.75
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            16,
+            8,
+            24
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "90ddb040-b21e-49ae-b29a-a2ccd3419f82"
+    }
+  ],
+  "outliner": [
+    {
+      "name": "sword",
+      "origin": [
+        8,
+        0,
+        8
+      ],
+      "uuid": "3bc0343a-79fe-4202-bbe9-d11f10382132",
+      "children": [
+        "4fb67191-5261-4949-9c21-43b48f2af16c",
+        "854383fe-56e0-46fb-badd-126252eefc57",
+        "90ddb040-b21e-49ae-b29a-a2ccd3419f82"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "path": "",
+      "name": "sword.png",
+      "folder": "item",
+      "namespace": "",
+      "id": "0",
+      "particle": true,
+      "uuid": "e5956913-326d-47d8-9685-cd3eae45602c",
+      "relative_path": "../resourcepack/assets/animatecore/textures/item/sword.png",
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAiElEQVR4nGOMNpf5z4AHLD35hBGfPKWAhYGBgcHb2xur5NatW2lpN8IBly9fprlFuADTgNk86oDB4gAWBgYGhkePHg2cA1IzOPAqWHqSxg5gYGBgsMdRDhykVzlwf7QcGHXAAIKBLweecfUQUBJAWwcwMIy2BwYWjDpgwB0w4OXAKBgFo2AUAACgsiC+sd28OgAAAABJRU5ErkJggg=="
+    }
+  ],
+  "animations": [
+    {
+      "uuid": "8e0d5d1a-94e6-4014-8d90-4ef9658ce0ad",
+      "name": "swing",
+      "loop": "once",
+      "override": false,
+      "length": 0.6,
+      "snapping": 24,
+      "animators": {
+        "3bc0343a-79fe-4202-bbe9-d11f10382132": {
+          "name": "sword",
+          "type": "bone",
+          "keyframes": [
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "-45",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "time": 0,
+              "uuid": "98abfb61-6838-410d-88fd-27c9db8ce312",
+              "interpolation": "linear"
+            },
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "45",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "time": 0.4,
+              "uuid": "3d6f69c9-1767-4212-83c9-0fdbd9475327",
+              "interpolation": "linear"
+            },
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "0",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "time": 0.6,
+              "uuid": "4072c506-34a8-4ac7-a837-d4ca6e532dfd",
+              "interpolation": "linear"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

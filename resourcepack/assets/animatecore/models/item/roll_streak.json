@@ -1,0 +1,86 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "animatecore:item/roll_streak"
+  },
+  "elements": [
+    {
+      "name": "streak",
+      "from": [
+        7,
+        0,
+        7.9
+      ],
+      "to": [
+        9,
+        16,
+        8.1
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        7,
+        0,
+        7.9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "10405b3f-f77b-45bd-ad87-72a19c819871"
+    }
+  ]
+}

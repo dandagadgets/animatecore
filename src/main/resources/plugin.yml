@@ -1,0 +1,22 @@
+name: AnimateCore
+version: '${project.version}'
+main: com.animatecore.AnimateCorePlugin
+api-version: '1.21'
+author: AnimateCore
+description: 'Blockbench-driven tool/weapon animations, chopping, mining, eating, swimming FX, a dodge-roll and a cinematics engine.'
+softdepend: [ProtocolLib]
+folia-supported: false
+
+commands:
+  animatecore:
+    description: Main AnimateCore command.
+    usage: /<command> [reload|toggle|roll|cinematic|debug]
+    aliases: [ac, anim]
+
+permissions:
+  animatecore.use:
+    description: Allows using AnimateCore features (roll, animations).
+    default: true
+  animatecore.admin:
+    description: Allows reloading config and controlling cinematics.
+    default: op

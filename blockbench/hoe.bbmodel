@@ -1,0 +1,261 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "hoe",
+  "model_identifier": "animatecore:hoe",
+  "visible_box": [
+    1,
+    1,
+    0
+  ],
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "handle",
+      "from": [
+        7.5,
+        0,
+        7.5
+      ],
+      "to": [
+        8.5,
+        13,
+        8.5
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        7.5,
+        0,
+        7.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8,
+            8
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "1294a57e-71a0-45c8-b581-f98948267897"
+    },
+    {
+      "name": "blade",
+      "from": [
+        4,
+        13,
+        7.25
+      ],
+      "to": [
+        12,
+        14.5,
+        8.75
+      ],
+      "autouv": 0,
+      "color": 0,
+      "origin": [
+        4,
+        13,
+        7.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": 0
+        }
+      },
+      "type": "cube",
+      "uuid": "477ee719-081c-4a22-8e5e-fe7d14c41b59"
+    }
+  ],
+  "outliner": [
+    {
+      "name": "hoe",
+      "origin": [
+        8,
+        0,
+        8
+      ],
+      "uuid": "76eaa20b-c2e8-4c10-94ae-a8b5a27d0f39",
+      "children": [
+        "1294a57e-71a0-45c8-b581-f98948267897",
+        "477ee719-081c-4a22-8e5e-fe7d14c41b59"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "path": "",
+      "name": "hoe.png",
+      "folder": "item",
+      "namespace": "",
+      "id": "0",
+      "particle": true,
+      "uuid": "31133705-74b3-4d17-88f1-7f9ba42627d3",
+      "relative_path": "../resourcepack/assets/animatecore/textures/item/hoe.png",
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAbklEQVR4nGOMNpf5z4AHLD35hBGfPKWAhYGBgcHb2xur5NatW2lpN8IBly9fprlFuADTgNk86oDB4gAWBgYGhkePHg2YAxiXrdyAtxyICg8YLQdoCgY8EY46YMAdMODlwCgYBaNgFIyCUTAKRgEAOpAYaXvsSXoAAAAASUVORK5CYII="
+    }
+  ],
+  "animations": [
+    {
+      "uuid": "5cca596d-dfae-4f07-ab8a-ffb94e2f9d8a",
+      "name": "swing",
+      "loop": "once",
+      "override": false,
+      "length": 0.6,
+      "snapping": 24,
+      "animators": {
+        "76eaa20b-c2e8-4c10-94ae-a8b5a27d0f39": {
+          "name": "hoe",
+          "type": "bone",
+          "keyframes": [
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "-45",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "time": 0,
+              "uuid": "9261bb75-a251-4b8b-8341-b797873024e2",
+              "interpolation": "linear"
+            },
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "45",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "time": 0.4,
+              "uuid": "8ba1ee5f-497e-459c-8a91-9faa5d9cf4d6",
+              "interpolation": "linear"
+            },
+            {
+              "channel": "rotation",
+              "data_points": [
+                {
+                  "x": "0",
+                  "y": "0",
+                  "z": "0"
+                }
+              ],
+              "time": 0.6,
+              "uuid": "b366b3b3-c2c8-4cde-84de-410a2b89aa74",
+              "interpolation": "linear"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

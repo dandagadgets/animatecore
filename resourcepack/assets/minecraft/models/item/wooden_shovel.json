@@ -1,0 +1,56 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "item/wooden_shovel"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1308
+      },
+      "model": "animatecore:item/shovel_crit_8"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1307
+      },
+      "model": "animatecore:item/shovel_use_7"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1306
+      },
+      "model": "animatecore:item/shovel_use_6"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1305
+      },
+      "model": "animatecore:item/shovel_use_5"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1304
+      },
+      "model": "animatecore:item/shovel_swing_4"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1303
+      },
+      "model": "animatecore:item/shovel_swing_3"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1302
+      },
+      "model": "animatecore:item/shovel_swing_2"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 1301
+      },
+      "model": "animatecore:item/shovel_swing_1"
+    }
+  ]
+}
