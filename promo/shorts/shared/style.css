@@ -1,0 +1,9 @@
+@font-face { font-family: "Pixelify Sans"; font-weight: 400; src: url(assets/pixelify-sans-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: "Pixelify Sans"; font-weight: 700; src: url(assets/pixelify-sans-latin-700-normal.woff2) format("woff2"); }
+@font-face { font-family: "Silkscreen"; font-weight: 400; src: url(assets/silkscreen-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: "Silkscreen"; font-weight: 700; src: url(assets/silkscreen-latin-700-normal.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 800; src: url(assets/inter-latin-800-normal.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 900; src: url(assets/inter-latin-900-normal.woff2) format("woff2"); }
+html, body { margin: 0; height: 100%; background: #020402; }
+body { display: grid; place-items: center; overflow: hidden; }
+canvas { height: min(100vh, calc(100vw * 16 / 9)); aspect-ratio: 9 / 16; display: block; }
