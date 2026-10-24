@@ -194,6 +194,211 @@ def coin(f=hz(88)):
     return np.concatenate([a, b])
 
 
+
+# ---------- satisfying SFX (Discord promo set) ----------
+PENTA = (0, 2, 4, 7, 9, 12, 14, 16, 19, 21, 24)
+
+
+def bell(f, d=1.4, bright=1.0):
+    t = tv(d)
+    partials = ((1.0, 1.0, 2.2), (2.01, 0.5, 3.5), (3.02, 0.28 * bright, 5.0), (4.13, 0.15 * bright, 7.0), (5.4, 0.08 * bright, 9.0))
+    sig = sum(a * np.sin(2 * np.pi * f * r * t) * np.exp(-t * k) for r, a, k in partials)
+    return sig * np.minimum(1, t / 0.002) * 0.5
+
+
+def sparkle(f0, n=6, step=0.055):
+    """Rising pentatonic bell run."""
+    out = np.zeros(int((step * n + 1.3) * SR))
+    for i in range(n):
+        b = bell(f0 * 2 ** (PENTA[i % len(PENTA)] / 12), 1.2, 1.4)
+        i0 = int(i * step * SR)
+        out[i0:i0 + len(b)] += b * (0.9 - i * 0.05)
+    return out
+
+
+def dig(k=0):
+    """One crunchy mining hit."""
+    t = tv(0.11)
+    crunch = band_noise(0.11, 350 + 40 * (k % 4), 4200) * np.exp(-t * 42)
+    thud = np.sin(2 * np.pi * (130 + 12 * (k % 3)) * t) * np.exp(-t * 38)
+    return (crunch * 0.55 + thud * 0.7) * 0.9
+
+
+def block_break():
+    t = tv(0.4)
+    grit = band_noise(0.4, 250, 6000) * np.exp(-t * 12) * (0.6 + 0.4 * (rng.random(len(t)) > 0.5))
+    thud = sweep(60 + 170 * np.exp(-t * 9), t) * np.exp(-t * 11)
+    return grit * 0.55 + thud * 0.8
+
+
+def place(k=0):
+    """Satisfying block-place 'thock'."""
+    t = tv(0.17)
+    body = sweep(230 + 35 * (k % 5) + 150 * np.exp(-t * 60), t) * np.exp(-t * 28)
+    click = band_noise(0.17, 1800, 8000) * np.exp(-t * 170) * 0.45
+    return body * 0.85 + click
+
+
+def ding(f=hz(88)):
+    """Two-tone notification ping."""
+    a, b = bell(f, 0.9, 0.8), bell(f * 1.335, 1.0, 0.8)
+    out = np.zeros(len(b) + int(0.09 * SR))
+    out[:len(a)] += a
+    out[int(0.09 * SR):] += b
+    return out * 0.8
+
+
+def beep(f, d=0.2):
+    t = tv(d)
+    return square(f, t, (1, 3, 5)) * np.minimum(1, t / 0.002) * np.minimum(1, (d - t) / 0.02) * 0.4
+
+
+def rumble(d):
+    t = tv(d)
+    return band_noise(d, 25, 280) * np.minimum(1, t / 0.4) * (0.8 + 0.2 * np.sin(2 * np.pi * 7 * t))
+
+
+def firework():
+    t = tv(1.8)
+    boom = band_noise(1.8, 60, 2500) * np.exp(-t * 6) * 0.8
+    crackle = np.zeros_like(t)
+    for _ in range(70):
+        i = int(rng.uniform(0.15, 1.5) * SR)
+        n = int(0.012 * SR)
+        crackle[i:i + n] += band_noise(0.012, 3000, 12000)[:n] * np.exp(-np.arange(n) / 80) * rng.uniform(0.2, 0.6)
+    return boom + crackle * np.exp(-t * 1.2)
+
+
+def reel_tick():
+    t = tv(0.035)
+    return band_noise(0.035, 2500, 9000) * np.exp(-t * 220) * 0.7 + np.sin(2 * np.pi * 2300 * t) * np.exp(-t * 160) * 0.45
+
+
+def latch():
+    t = tv(0.3)
+    metal = sum(np.sin(2 * np.pi * f * t) * np.exp(-t * k) for f, k in ((1850, 30), (2930, 40), (4700, 55)))
+    return metal * 0.3 + band_noise(0.3, 1000, 6000) * np.exp(-t * 90) * 0.5
+
+
+def level_up(f0=hz(72)):
+    out = np.zeros(int(1.3 * SR))
+    for i, st in enumerate((0, 4, 7, 12, 16, 19, 24)):
+        n = pluck(f0 * 2 ** (st / 12), 0.35, 10)
+        i0 = int(i * 0.06 * SR)
+        out[i0:i0 + len(n)] += n
+    return out
+
+
+def vinyl(d):
+    t = tv(d)
+    hiss = band_noise(d, 3000, 12000) * 0.02
+    crackle = np.zeros_like(t)
+    for _ in range(int(d * 18)):
+        i = rng.integers(0, len(t) - 200)
+        crackle[i:i + 200] += band_noise(200 / SR, 2000, 10000)[:200] * np.exp(-np.arange(200) / 25) * rng.uniform(0.05, 0.25)
+    return hiss + crackle
+
+
+def typing():
+    t = tv(0.03)
+    return band_noise(0.03, 1500, 7000) * np.exp(-t * 260) * 0.35
+
+
+def success():
+    out = np.zeros(int(1.6 * SR))
+    for i, st in enumerate((0, 4, 7, 12)):
+        b = bell(hz(84 + st), 1.3, 1.2)
+        i0 = int(i * 0.07 * SR)
+        out[i0:i0 + len(b)] += b
+    return out * 0.8
+
+
+def cta_click(mix, t):
+    """Button press on the Discord end card: click, thump, success chime, sparkle."""
+    mix.add(ui_click(), t, 0.9)
+    mix.add(thump(), t, 0.5)
+    mix.add(success(), t + 0.03, 0.4, wet=0.6)
+    mix.add(sparkle(hz(91), 6, 0.05), t + 0.1, 0.22, wet=0.7)
+
+
+
+def play_common(mix, c):
+    """Plays cue types shared by the Discord promo set. Returns False for unknown types."""
+    t, kind = c['t'], c['type']
+    g = c.get('gain', 1.0)
+    if kind == 'impact':
+        mix.add(impact(), t, 0.75 * g, wet=0.5)
+    elif kind == 'pop':
+        mix.add(pop(hz(c['note'])), t, 0.24 * g, pan=rng.uniform(-0.4, 0.4), wet=0.4)
+    elif kind == 'cta_click':
+        cta_click(mix, t)
+    elif kind == 'hit':
+        mix.add(hit(), t, 0.8 * g, wet=0.4)
+    elif kind == 'whoosh':
+        mix.add(whoosh(), t - 0.52, 0.8 * g, wet=0.3)
+    elif kind == 'riser':
+        mix.add(riser(c['end'] - t), t, 0.5 * g, wet=0.3)
+    elif kind == 'ping':
+        mix.add(ping(hz(c['note'])), t, 0.2 * g, wet=0.8)
+    elif kind == 'sparkle':
+        mix.add(sparkle(hz(c['note']), 5, 0.05), t, 0.2 * g, pan=rng.uniform(-0.4, 0.4), wet=0.7)
+    elif kind == 'ding':
+        mix.add(ding(hz(c.get('note', 88))), t, 0.3 * g, pan=rng.uniform(-0.3, 0.3), wet=0.5)
+    elif kind == 'place':
+        mix.add(place(c.get('k', 0)), t, 0.5 * g, pan=rng.uniform(-0.3, 0.3), wet=0.15)
+    elif kind == 'break':
+        mix.add(block_break(), t, 0.6 * g, pan=rng.uniform(-0.3, 0.3), wet=0.2)
+    elif kind == 'beep':
+        mix.add(beep(hz(c['note']), c.get('d', 0.2)), t, 0.5 * g, wet=0.3)
+    elif kind == 'firework':
+        mix.add(firework(), t, 0.5 * g, pan=rng.uniform(-0.5, 0.5), wet=0.5)
+    elif kind == 'tick':
+        mix.add(reel_tick(), t, 0.6 * g, pan=rng.uniform(-0.2, 0.2))
+    elif kind == 'typing':
+        mix.add(typing(), t, 0.5 * g, pan=rng.uniform(-0.2, 0.2))
+    elif kind == 'levelup':
+        mix.add(level_up(hz(c.get('note', 72))), t, 0.25 * g, wet=0.5)
+    else:
+        return False
+    return True
+
+
+def outro(mix, t0, dur, notes=(48, 55, 60, 64, 67)):
+    """End-card bed: warm pad, sub note and a fading pluck arpeggio."""
+    mix.add(pad(list(notes), dur, bright=0.4), t0, 0.28, wet=0.6)
+    mix.add(bass(hz(notes[0] - 12), 3.5, decay=1.2), t0, 0.5)
+    arp = [n + 12 for n in notes[1:]]
+    for i in range(int((dur - 0.6) / 0.25)):
+        mix.add(pluck(hz(arp[i % len(arp)] + 12)), t0 + 0.25 + i * 0.25, 0.1 * (1 - i / (dur * 4.5)),
+                pan=0.35 if i % 2 else -0.35, wet=0.45)
+
+
+def groove(mix, t0, t1, chords, step=2.0, kick_gain=0.85, arp_gain=0.12, bass_fn=None):
+    """Four-on-the-floor build: kick/clap/hats, 8th-note bass, 16th arpeggio. chords: [(triad, root)]."""
+    bass_fn = bass_fn or (lambda f, d: bass(f, d))
+    k = 0
+    while t0 + k * 0.5 < t1 - 1e-6:
+        bt = t0 + k * 0.5
+        mix.add(kick(), bt, kick_gain)
+        mix.add(hat(), bt + 0.25, 1.0, pan=0.25)
+        mix.add(hat(), bt + 0.125, 0.4, pan=-0.25)
+        if k % 2:
+            mix.add(clap(), bt, 0.6, wet=0.3)
+        k += 1
+    i = 0
+    t = t0
+    while t < t1 - 1e-6:
+        triad, root = chords[int((t - t0) // step) % len(chords)]
+        mix.add(pluck(hz([triad[0], triad[1], triad[2], triad[1]][i % 4] + 12), 0.2, 15), t, arp_gain,
+                pan=0.35 if i % 2 else -0.35, wet=0.35)
+        if i % 2 == 0:
+            mix.add(bass_fn(hz(root) * (2 if i % 8 == 6 else 1), 0.24), t, 0.32)
+        if i % 16 == 0:
+            mix.add(pad(list(triad), step + 0.3, bright=0.5), t, 0.14, wet=0.5)
+        t += 0.125
+        i += 1
+
+
 class Mix:
     def __init__(self, duration):
         self.N = int(SR * duration)

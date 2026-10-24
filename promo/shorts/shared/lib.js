@@ -23,8 +23,10 @@
   // visible between t0 and t1 with fades at both ends
   const window_ = (t, t0, t1, fin = 0.25, fout = 0.25) => Math.min(prog(t, t0, t0 + fin), 1 - prog(t, t1 - fout, t1));
 
-  function rgb(hex) {
-    const n = parseInt(hex.slice(1), 16);
+  // accepts '#rrggbb' or 'rgb(r,g,b)' so mixed colours can be mixed again
+  function rgb(col) {
+    if (col.startsWith('rgb')) return col.match(/[\d.]+/g).slice(0, 3).map(Number);
+    const n = parseInt(col.slice(1), 16);
     return [n >> 16, (n >> 8) & 255, n & 255];
   }
   function shade(hex, amt) {
@@ -592,14 +594,8 @@
     c: ['#39ff14', '#a8ff2e', '#e4ff3a', '#f3f7ef'][i % 4],
   }));
 
-  // o.top: optional headline lines above the logo, e.g. [[{t:'BUILT FOR'}], [{t:'SERVER OWNERS', c:'accent'}]]
-  function endCard(t, t0, o = {}) {
-    if (t < t0) return;
-    const lt = t - t0;
-    drawBrandBg();
-    floatingPixels(t, 24);
-    const lx = 540, ly = o.top ? 880 : 820, size = 640;
-
+  // logo slam with glow, sweeping beam, pulse rings, shockwave and pixel burst
+  function logoReveal(t, lt, lx, ly, size) {
     const gl = ctx.createRadialGradient(lx, ly, 0, lx, ly, size * 0.85);
     gl.addColorStop(0, NEON(0.3 * prog(lt, 0, 0.4)));
     gl.addColorStop(1, NEON(0));
@@ -655,6 +651,17 @@
       ctx.drawImage(LOGO, -size * 315.5 / 640, -size * 310.5 / 640, size, size);
       ctx.restore();
     }
+  }
+
+  // o.top: optional headline lines above the logo, e.g. [[{t:'BUILT FOR'}], [{t:'SERVER OWNERS', c:'accent'}]]
+  function endCard(t, t0, o = {}) {
+    if (t < t0) return;
+    const lt = t - t0;
+    drawBrandBg();
+    floatingPixels(t, 24);
+    const lx = 540, ly = o.top ? 880 : 820, size = 640;
+
+    logoReveal(t, lt, lx, ly, size);
     if (o.top) {
       o.top.forEach((parts, i) => headline(parts, 540, 300 + i * 112, 96, appear(t, t0 + 0.5 + i * 0.12)));
     }
@@ -687,6 +694,130 @@
     ctx.globalAlpha = appear(t, t0 + 1.75, 0.5);
     label(o.footer || 'JOIN THE COMMUNITY ON DISCORD', 540, pillY + 72, 22, MINT(0.65), 'center', 3);
     ctx.restore();
+  }
+
+
+  // ---------- "join the Discord" end card ----------
+  const BLURPLE = '#5865F2';
+  const CTA_CHIPS = [['UPDATES', '#5cc8ff'], ['EVENTS', '#ffd23a'], ['GIVEAWAYS', '#ff5d9e'], ['SNEAK PEEKS', '#a8ff2e']];
+  const CLICK_AT = 1.6;
+
+  function chatBubbleIcon(x, y, p, color) {
+    const rows = ['.########.', '##########', '##.##.##.#', '##########', '.########.', '...##.....', '..##......'];
+    ctx.fillStyle = color;
+    rows.forEach((row, r) => [...row].forEach((ch, c) => {
+      if (ch === '#') ctx.fillRect(x + c * p, y + r * p, p, p);
+    }));
+    ctx.fillStyle = BLURPLE;
+    [[2, 2], [5, 2], [8, 2]].forEach(([c, r]) => ctx.fillRect(x + c * p, y + r * p, p, p));
+  }
+
+  function cursorSprite(x, y, s) {
+    const map = ['X.........', 'XX........', 'XWX.......', 'XWWX......', 'XWWWX.....', 'XWWWWX....', 'XWWWWWX...',
+      'XWWWWWWX..', 'XWWWWWWWX.', 'XWWWWXXXXX', 'XWWXWX....', 'XWX.XWX...', 'XX..XWX...', 'X....XWX..', '.....XX...'];
+    map.forEach((row, r) => [...row].forEach((ch, c) => {
+      if (ch === '.') return;
+      ctx.fillStyle = ch === 'X' ? '#000' : '#fff';
+      ctx.fillRect(x + c * s, y + r * s, s, s);
+    }));
+  }
+
+  // o.top: optional headline lines above the logo
+  function discordCard(t, t0, o = {}) {
+    if (t < t0) return;
+    const lt = t - t0;
+    drawBrandBg();
+    floatingPixels(t, 24);
+    const ly = o.top ? 700 : 620;
+    logoReveal(t, lt, 540, ly, 500);
+    if (o.top) o.top.forEach((parts, i) => headline(parts, 540, 250 + i * 104, 88, appear(t, t0 + 0.3 + i * 0.1)));
+    const hy = ly + 370;
+    headline([{ t: 'JOIN THE' }], 540, hy, 100, appear(t, t0 + 0.45, 0.2), 980, { slam: true });
+    headline([{ t: 'DISCORD NOW', c: 'accent' }], 540, hy + 115, 128, appear(t, t0 + 0.6, 0.2), 980, { slam: true });
+
+    const by = hy + 270;
+    const be = prog(lt, 0.95, 1.3);
+    if (be > 0) {
+      const press = lt >= CLICK_AT && lt < CLICK_AT + 0.12 ? 0.92 : 1;
+      const pulse = lt > CLICK_AT + 0.12 ? 1 + 0.03 * Math.sin((lt - CLICK_AT) * 6) : 1;
+      const s = clamp(easeOutBack(be, 2.2), 0, 1.2) * press * pulse;
+      for (let k = 0; k < 3; k++) {
+        const age = lt - CLICK_AT - k * 0.18;
+        if (age < 0 || age > 0.9) continue;
+        const g = age / 0.9;
+        ctx.save();
+        ctx.strokeStyle = `rgba(150,160,255,${0.8 * (1 - g)})`;
+        ctx.lineWidth = lerp(10, 2, g);
+        pixelRectPath(540 - 330 - g * 160, by - 62 - g * 90, 660 + g * 320, 124 + g * 180, 10);
+        ctx.stroke();
+        ctx.restore();
+      }
+      ctx.save();
+      ctx.translate(540, by);
+      ctx.scale(s, s);
+      ctx.shadowColor = 'rgba(88,101,242,0.95)';
+      ctx.shadowBlur = 36 + 14 * Math.sin(lt * 5);
+      pixelRectPath(-330, -62, 660, 124, 10);
+      ctx.fillStyle = BLURPLE;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = '#b8beff';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(255,255,255,0.16)';
+      ctx.fillRect(-318, -52, 636, 14);
+      chatBubbleIcon(-268, -26, 7, '#ffffff');
+      label('JOIN THE DISCORD', -170, 3, 38, '#ffffff', 'left', 3, 700);
+      ctx.restore();
+      if (lt > CLICK_AT && lt < CLICK_AT + 1.0) {
+        const st = lt - CLICK_AT;
+        for (let i = 0; i < 26; i++) {
+          const a = hash(i * 4.1) * TAU, d = (140 + hash(i * 2.7) * 360) * easeOutCubic(Math.min(st / 0.6, 1));
+          pixelSquare(540 + Math.cos(a) * d, by + Math.sin(a) * d * 0.6, 10, ['#ffffff', '#b8beff', '#a8ff2e'][i % 3], 12 * (1 - st));
+        }
+      }
+    }
+    if (lt > 1.05 && lt < 2.4) {
+      const mv = easeOutCubic(prog(lt, 1.05, CLICK_AT - 0.05));
+      const cx = lerp(980, 600, mv), cy = lerp(by + 420, by + 10, mv);
+      ctx.save();
+      ctx.globalAlpha = 1 - prog(lt, 2.0, 2.4);
+      cursorSprite(cx, cy, lt >= CLICK_AT && lt < CLICK_AT + 0.12 ? 5 : 6);
+      ctx.restore();
+    }
+
+    const cy = by + 128;
+    const widths = CTA_CHIPS.map(([txt]) => textWidth(txt, '700 20px "Silkscreen"', 2) + 70);
+    const total = widths.reduce((a, b) => a + b, 0) + 12 * (CTA_CHIPS.length - 1);
+    let x = 540 - total / 2;
+    CTA_CHIPS.forEach(([txt, col], i) => {
+      chip(txt, x + widths[i] / 2, cy, prog(lt, 1.85 + i * 0.1, 2.2 + i * 0.1), col, 20);
+      x += widths[i] + 12;
+    });
+    ctx.save();
+    ctx.globalAlpha = appear(t, t0 + 2.4, 0.4);
+    label(o.footer || 'WEBSITE COMING SOON - LINK IN BIO', 540, cy + 80, 22, MINT(0.7), 'center', 3);
+    ctx.restore();
+  }
+
+  // sound cues for discordCard, to merge into a short's cue sheet
+  function discordCardEvents(t0) {
+    const ev = [{ type: 'impact', t: t0 }, { type: 'pop', t: t0 + 0.47, note: 88 }, { type: 'pop', t: t0 + 0.62, note: 93 },
+      { type: 'pop', t: t0 + 1.0, note: 84 }, { type: 'cta_click', t: t0 + CLICK_AT }];
+    CTA_CHIPS.forEach((_, i) => ev.push({ type: 'pop', t: t0 + 1.9 + i * 0.1, note: 96 + [0, 2, 4, 7][i] }));
+    return ev;
+  }
+
+  // ---------- pixel sprites ----------
+  // rows: array of strings; palette: { char: colour }. '.' is transparent.
+  function sprite(rows, palette) {
+    const c = document.createElement('canvas');
+    c.width = rows[0].length; c.height = rows.length;
+    const g = c.getContext('2d');
+    rows.forEach((row, y) => [...row].forEach((ch, x) => {
+      if (palette[ch]) { g.fillStyle = palette[ch]; g.fillRect(x, y, 1, 1); }
+    }));
+    return c;
   }
 
   // ---------- boot ----------
@@ -747,5 +878,7 @@
     pixelSquare, pixelRectPath, panel, chip,
     drawBrandBg, drawScanlines, vignette, skyGradient, floatingPixels,
     block, blockWorld, drawPlayer, makeBlips, radar, flash, shake, endCard, start,
+    logoReveal, discordCard, discordCardEvents, sprite, cursorSprite, BLURPLE,
+    getLogo: () => LOGO,
   };
 })();
