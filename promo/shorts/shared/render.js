@@ -3,6 +3,7 @@
 //   node render.js <page-url> video <out.mp4> <cues.json>
 //   node render.js <page-url> cover <out.png>
 //   node render.js <page-url> cues <cues.json>
+//   node render.js <page-url> frames <outDir>      (PNG per frame, keeps transparency)
 const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
@@ -24,6 +25,11 @@ async function main() {
       const file = path.join(out, `t${t.toFixed(2).padStart(5, '0')}.png`);
       fs.writeFileSync(file, await frame(t));
       console.log(file);
+    }
+  } else if (mode === 'frames') {
+    fs.mkdirSync(out, { recursive: true });
+    for (let f = 0; f < Math.round(FPS * DURATION); f++) {
+      fs.writeFileSync(path.join(out, `f${String(f).padStart(4, '0')}.png`), await frame(f / FPS));
     }
   } else if (mode === 'cues') {
     fs.writeFileSync(out, JSON.stringify(await page.evaluate(() => window.SHORT.events()), null, 1));

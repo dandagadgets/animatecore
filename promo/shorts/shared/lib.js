@@ -5,6 +5,7 @@
   'use strict';
 
   const W = 1080, H = 1920, FPS = 30;
+  const ASSETS = new URL('assets/', document.currentScript.src).href;
   const canvas = document.getElementById('ad');
   const ctx = canvas.getContext('2d');
 
@@ -700,7 +701,7 @@
 
   async function start(def) {
     const [img] = await Promise.all([
-      loadImage('../shared/assets/logo.png'),
+      loadImage(`${ASSETS}logo.png`),
       ...['700 40px "Pixelify Sans"', '400 40px "Pixelify Sans"', '400 40px "Silkscreen"',
         '700 40px "Silkscreen"', '800 40px "Inter"', '900 40px "Inter"'].map((f) => document.fonts.load(f)),
     ]);
@@ -712,8 +713,12 @@
     const render = (t) => {
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.globalAlpha = 1;
-      ctx.fillStyle = '#000';
-      ctx.fillRect(0, 0, W, H);
+      if (def.transparent) {
+        ctx.clearRect(0, 0, W, H);
+      } else {
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, W, H);
+      }
       ctx.shadowBlur = 0;
       ctx.imageSmoothingEnabled = false;
       def.render(t);
