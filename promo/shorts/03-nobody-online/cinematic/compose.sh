@@ -20,7 +20,7 @@ ffmpeg -y -loglevel error \
 [bg][ov]overlay=0:0:format=auto,format=yuv420p[a];\
 [2:v]setpts=PTS-STARTPTS,format=yuv420p[b];\
 [a][b]concat=n=2:v=1:a=0[v];\
-[3:a]asetpts=PTS-STARTPTS,afade=t=in:d=0.05[aud]" \
+[3:a]asetpts=PTS-STARTPTS,afade=t=in:d=0.05,volume=-1.2dB[aud]" \
   -map "[v]" -map "[aud]" -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p \
   -c:a aac -b:a 192k -shortest -movflags +faststart "$out"
 
