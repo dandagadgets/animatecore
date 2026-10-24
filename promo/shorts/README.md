@@ -25,6 +25,21 @@ your server.") that sits at 1/100 players in the rain. "It's not your server. No
 it." A radar ping breaks the storm, dawn rises, players spawn in and chat fills up.
 Ends on "Built for server owners."
 
+## Cinematic cut of Short 3 (Higgsfield)
+
+`mine-radar-03-nobody-online-cinematic.mp4` (15.7s) opens on an AI-generated shot of the empty
+server instead of the pixel flyover: a voxel castle in heavy rain with one lonely player at the
+gate. The captions, red 1/100 counter, chat and a lightning flash sit on top of it. At the radar
+ping, a flash cuts to the pixel world for the dawn, the crowd arriving and the end card.
+
+- Keyframe: Nano Banana 2. Shot: Wan 2.7 image-to-video, 5s, made from the keyframe.
+- `03-nobody-online/cinematic/overlay.js` draws the overlay on a transparent canvas. It is
+  rendered with `render.js frames` and encoded to `overlay.webm` (VP9 with alpha).
+- `03-nobody-online/cinematic/compose.sh <ai-clip.mp4> <out.mp4>` builds the cut. It reuses
+  this short's own soundtrack from 6.3s, so every sound effect stays in sync.
+- The finished file is in the Higgsfield media library. The generated clip isn't stored in this
+  repo because this build environment can't reach Higgsfield's CDN.
+
 ## Made for mobile
 
 - The hook text is on screen from the very first frame.
