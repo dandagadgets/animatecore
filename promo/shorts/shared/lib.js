@@ -766,8 +766,11 @@
       ctx.stroke();
       ctx.fillStyle = 'rgba(255,255,255,0.16)';
       ctx.fillRect(-318, -52, 636, 14);
-      chatBubbleIcon(-268, -26, 7, '#ffffff');
-      label('JOIN THE DISCORD', -170, 3, 38, '#ffffff', 'left', 3, 700);
+      // centre the icon + label as one group (letterSpacing adds a trailing gap, so drop it)
+      const tw = textWidth('JOIN THE DISCORD', '700 34px "Silkscreen"', 3) - 3;
+      const gx = -(70 + 26 + tw) / 2;
+      chatBubbleIcon(gx, -25, 7, '#ffffff');
+      label('JOIN THE DISCORD', gx + 70 + 26, 3, 34, '#ffffff', 'left', 3, 700);
       ctx.restore();
       if (lt > CLICK_AT && lt < CLICK_AT + 1.0) {
         const st = lt - CLICK_AT;
