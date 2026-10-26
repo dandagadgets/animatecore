@@ -1,8 +1,10 @@
 # PotSMP Season IV — 3 YouTube Shorts ad tests
 
 Three vertical ads (1080×1920, 30 fps), each a different angle on Season IV, for A/B testing on
-YouTube. All copy comes from the Season IV announcement, and each ends on the same card: the
-PotSMP logo, SEASON IV, OUT NOW, JAVA + BEDROCK, PROXIMITY VOICE CHAT and **IP IN DESCRIPTION**.
+YouTube. All copy comes from the Season IV announcement. A small **IP: POTSMP.FUN** tag stays at
+the top of the screen the whole time, and each ad ends on the same card: the PotSMP logo,
+SEASON IV, OUT NOW, a big **IP: POTSMP.FUN** pill, **BEDROCK PORT: 19132**, JAVA + BEDROCK and
+PROXIMITY VOICE CHAT. The IP and port live in `IP` and `PORT` at the top of `shared/pot.js`.
 
 | # | Ad | Length | Angle | Hook |
 |---|---|---|---|---|
@@ -12,10 +14,11 @@ PotSMP logo, SEASON IV, OUT NOW, JAVA + BEDROCK, PROXIMITY VOICE CHAT and **IP I
 
 Each has a `-cover.png` thumbnail in `out/`.
 
+- **Assumption:** the port is labelled **BEDROCK PORT**, since Java players only need the IP.
 - **Assumption:** the ads say **OUT NOW**, since the announcement gave 24 Oct 2026 as the release
   date. The End War event is shown as "week one", meaning 7 days after launch.
 - **Testing tip:** run all three with the same targeting and budget for a few days, then compare
-  view rate and average view duration. The pinned comment or description should carry the IP.
+  view rate and average view duration. Put the IP in the description and pinned comment too.
 - Music and sound effects are synthesized from scratch, so there are no copyright claims. Audio
   sits at about −14 LUFS with true peaks at or below −1 dBTP after AAC encoding.
 
