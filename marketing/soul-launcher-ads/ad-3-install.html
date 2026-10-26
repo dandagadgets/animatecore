@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Soul Launcher ad 3: Install in two minutes</title>
+<link rel="stylesheet" href="brand.css">
+<script src="pixel.js"></script>
+<style>
+  /* 9:16 story. Key content stays clear of the top ~200px and bottom ~300px that apps cover. */
+  .ad { width: 1080px; height: 1920px; }
+  .bg {
+    inset: 0;
+    background:
+      radial-gradient(620px 560px at 50% 22%, rgba(94, 234, 212, 0.16), transparent 70%),
+      radial-gradient(800px 600px at 50% 100%, rgba(45, 212, 191, 0.07), transparent 70%),
+      linear-gradient(180deg, #0e121a 0%, #0a0d12 100%);
+  }
+  .top { left: 0; right: 0; top: 150px; display: flex; justify-content: center; }
+  .scene { left: 140px; width: 800px; top: 236px; height: 586px; }
+  .eyebrow { left: 0; right: 0; top: 856px; text-align: center; }
+  h1 { left: 0; right: 0; top: 896px; text-align: center; font-size: 150px; }
+  .steps { left: 72px; right: 72px; top: 1212px; display: grid; gap: 16px; }
+  .step { display: flex; align-items: center; gap: 26px; padding: 22px 30px 22px 24px; }
+  .num {
+    flex: none; width: 62px; height: 62px; border-radius: 50%;
+    border: 2.5px solid rgba(94, 234, 212, 0.6); background: rgba(94, 234, 212, 0.08);
+    display: grid; place-items: center; color: var(--teal);
+    font-family: "Baloo 2"; font-weight: 800; font-size: 32px; padding-top: 4px;
+  }
+  .step h2 { font-size: 33px; font-weight: 800; line-height: 1.15; }
+  .step p { font-size: 24px; font-weight: 600; color: var(--muted); line-height: 1.38; margin-top: 3px; }
+  .step .chip { font-size: 20px; padding: 1px 10px; color: var(--text); }
+  .cta { left: 0; right: 0; top: 1640px; display: flex; flex-direction: column; align-items: center; gap: 22px; }
+  .cta .btn { height: 96px; font-size: 33px; padding: 0 54px; }
+  .cta p { font-size: 24px; font-weight: 700; color: var(--muted); }
+  .cta p b { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="ad">
+  <div class="bg"></div>
+
+  <div class="top"><div class="brand"><img src="logo.png" alt="">Soul Launcher</div></div>
+
+  <div class="scene" id="scene"></div>
+
+  <div class="eyebrow">Free and open source</div>
+  <h1 class="display">Install in<br><span class="teal">two minutes.</span></h1>
+
+  <div class="steps">
+    <div class="step card">
+      <div class="num">1</div>
+      <div><h2>Download</h2><p>Grab <span class="chip">SoulLauncher-Setup.exe</span> and run it.</p></div>
+    </div>
+    <div class="step card">
+      <div class="num">2</div>
+      <div><h2>Create a Space</h2><p>Pick Minecraft, pick software, add content if you want, name it.</p></div>
+    </div>
+    <div class="step card">
+      <div class="num">3</div>
+      <div><h2>Press Play</h2><p>Java, libraries, and loaders download themselves on first run.</p></div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div class="btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>
+      Download for Windows
+    </div>
+    <p><b>~125 MB</b> RAM while idling · <b>0</b> telemetry · <b>0</b> ads</p>
+  </div>
+</div>
+<script>
+  const sc = new Pixel.Scene(100);
+  sc.halo(1.5, 1, 3, 3.8, '#5eead4', 0.22);
+  sc.blocks(Pixel.SHAPES.stairs());
+  sc.badge(1.5, 2, 2, '1', 0.3);
+  sc.badge(1.5, 1, 3, '2', 0.3);
+  sc.badge(1, 0, 4, '3', 0.3);
+  sc.flame(2, 0, 4, 1.05);
+  document.getElementById('scene').innerHTML = sc.svg();
+</script>
+</body>
+</html>

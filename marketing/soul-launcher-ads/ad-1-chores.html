@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Soul Launcher ad 1: Minus the chores</title>
+<link rel="stylesheet" href="brand.css">
+<script src="pixel.js"></script>
+<style>
+  .ad { width: 1080px; height: 1080px; }
+  .bg {
+    inset: 0;
+    background:
+      radial-gradient(520px 460px at 80% 36%, rgba(94, 234, 212, 0.15), transparent 70%),
+      radial-gradient(700px 520px at -5% 105%, rgba(45, 212, 191, 0.07), transparent 70%),
+      linear-gradient(180deg, #0e121a 0%, #0a0d12 100%);
+  }
+  .top { left: 72px; right: 72px; top: 64px; display: flex; justify-content: space-between; align-items: center; }
+  h1 { left: 72px; top: 196px; font-size: 124px; }
+  .scene { right: 34px; top: 116px; width: 450px; height: 516px; }
+  .chores { left: 72px; right: 72px; top: 648px; display: grid; gap: 14px; }
+  .chore { display: flex; align-items: center; gap: 22px; height: 76px; padding: 0 30px 0 22px; }
+  .check { flex: none; width: 40px; height: 40px; border-radius: 11px; background: var(--teal); display: grid; place-items: center; }
+  .check svg { width: 26px; height: 26px; }
+  .what {
+    font-size: 30px; font-weight: 700; color: #868d99;
+    text-decoration: line-through; text-decoration-color: rgba(94, 234, 212, 0.85); text-decoration-thickness: 3px;
+  }
+  .now { margin-left: auto; font-size: 26px; font-weight: 800; color: var(--teal); }
+  .foot { left: 72px; right: 72px; bottom: 58px; display: flex; align-items: center; gap: 30px; }
+  .meta { color: var(--muted); font-size: 24px; font-weight: 700; line-height: 1.35; }
+  .meta b { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="ad">
+  <div class="bg"></div>
+
+  <div class="top">
+    <div class="brand"><img src="logo.png" alt="">Soul Launcher</div>
+    <div class="pill">Free &amp; open source</div>
+  </div>
+
+  <h1 class="display">Minecraft,<br><span class="teal">minus the<br>chores.</span></h1>
+
+  <div class="scene" id="scene"></div>
+
+  <div class="chores">
+    <div class="chore card">
+      <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#04231e" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+      <span class="what">Hunting down the right Java</span>
+      <span class="now">installs itself</span>
+    </div>
+    <div class="chore card">
+      <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#04231e" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+      <span class="what">Running loader installers by hand</span>
+      <span class="now">installs itself</span>
+    </div>
+    <div class="chore card">
+      <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#04231e" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+      <span class="what">Copying servers between setups</span>
+      <span class="now">syncs itself</span>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>
+      Download for Windows
+    </div>
+    <div class="meta"><b>Free, open source, GPL-3.0.</b><br>No telemetry. No ads.</div>
+  </div>
+</div>
+<script>
+  const sc = new Pixel.Scene(100);
+  sc.halo(2, 2, 1, 3.2, '#5eead4', 0.22);
+  sc.blocks(Pixel.SHAPES.island());
+  sc.flame(2, 2, 1, 1.05);
+  document.getElementById('scene').innerHTML = sc.svg();
+</script>
+</body>
+</html>

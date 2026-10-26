@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Soul Launcher ad 2: Sync without a sync button</title>
+<link rel="stylesheet" href="brand.css">
+<script src="pixel.js"></script>
+<style>
+  .ad { width: 1080px; height: 1350px; }
+  .bg {
+    inset: 0;
+    background:
+      radial-gradient(640px 420px at 50% 70%, rgba(94, 234, 212, 0.10), transparent 70%),
+      radial-gradient(600px 400px at 100% 0%, rgba(45, 212, 191, 0.07), transparent 70%),
+      linear-gradient(180deg, #0e121a 0%, #0a0d12 100%);
+  }
+  .top { left: 72px; right: 72px; top: 64px; display: flex; justify-content: space-between; align-items: center; }
+  h1 { left: 72px; top: 166px; font-size: 100px; }
+  .sub { left: 72px; top: 384px; width: 900px; font-size: 29px; line-height: 1.42; font-weight: 600; color: var(--muted); }
+
+  .label { left: 72px; top: 514px; font-size: 19px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); }
+  .label b { color: var(--text); }
+
+  /* In-game server row: square corners and a grey outline, like the game's own list. */
+  .mc {
+    left: 72px; right: 72px; top: 552px; height: 128px;
+    display: flex; align-items: center; gap: 22px; padding: 0 28px 0 16px;
+    background: rgba(0, 0, 0, 0.55); outline: 3px solid #c9c9c9; outline-offset: -3px;
+  }
+  .mc .icon { width: 96px; height: 96px; background: #20242c; display: grid; place-items: center; flex: none; }
+  .mc .icon div { width: 84px; height: 84px; }
+  .mc .name { font-size: 32px; font-weight: 800; color: #fff; }
+  .mc .motd { font-size: 23px; font-weight: 600; color: #9aa0a8; margin-top: 4px; }
+  .mc .right { margin-left: auto; display: flex; align-items: center; gap: 18px; color: #9aa0a8; font-size: 23px; font-weight: 700; }
+  .bars { display: flex; align-items: flex-end; gap: 4px; height: 26px; }
+  .bars i { width: 6px; background: #5bdc4c; display: block; }
+  .added {
+    right: 92px; top: 534px; z-index: 2;
+    background: var(--teal); color: var(--teal-ink); font-weight: 800; font-size: 19px;
+    padding: 6px 16px; border-radius: 999px; box-shadow: 0 6px 20px rgba(94, 234, 212, 0.3);
+  }
+
+  .link { left: 539px; top: 680px; width: 2px; height: 66px; background: linear-gradient(var(--teal), rgba(94, 234, 212, 0.5)); }
+  .link-tag {
+    left: 50%; top: 694px; transform: translateX(-50%);
+    background: #0d1016; border: 1.5px solid rgba(94, 234, 212, 0.4); color: var(--teal);
+    border-radius: 999px; padding: 6px 18px; font-weight: 800; font-size: 19px; white-space: nowrap;
+  }
+
+  .cat { left: 72px; right: 72px; top: 746px; padding: 22px 24px 24px; }
+  .cat-head { display: flex; align-items: center; justify-content: space-between; padding: 0 6px 18px; }
+  .cat-name { display: flex; align-items: baseline; gap: 14px; }
+  .cat-name small { font-size: 18px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); }
+  .cat-name span { font-size: 27px; font-weight: 700; color: var(--text); }
+  .files { display: flex; gap: 10px; font-size: 19px; }
+  .rows { display: grid; gap: 10px; }
+  .row {
+    display: flex; align-items: center; gap: 20px; height: 88px; padding: 0 22px 0 14px;
+    background: #12141a; border: 1.5px solid var(--line); border-radius: 18px;
+  }
+  .row.src { border-color: rgba(94, 234, 212, 0.55); background: #121a1c; }
+  .row .blk { width: 60px; height: 60px; flex: none; }
+  .row .sp { font-size: 27px; font-weight: 800; }
+  .row .sp small { display: block; font-size: 18px; font-weight: 700; color: var(--dim); margin-top: 1px; }
+  .row .has { margin-left: auto; display: flex; align-items: center; gap: 12px; font-size: 23px; font-weight: 700; color: var(--text); }
+  .tick { width: 34px; height: 34px; border-radius: 50%; background: var(--teal); display: grid; place-items: center; }
+  .tick svg { width: 22px; height: 22px; }
+
+  .foot { left: 72px; right: 72px; bottom: 64px; display: flex; align-items: center; justify-content: space-between; }
+  .foot p { font-size: 27px; font-weight: 800; line-height: 1.32; }
+  .foot p span { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="ad">
+  <div class="bg"></div>
+
+  <div class="top">
+    <div class="brand"><img src="logo.png" alt="">Soul Launcher</div>
+    <div class="pill">Sync without a sync button</div>
+  </div>
+
+  <h1 class="display">Add a server once.<br><span class="teal">Every Space has it.</span></h1>
+  <p class="sub">Group Spaces that play together into a category. Add a server <span style="white-space:nowrap">in-game</span> in one of them, and every Space in the category has it.</p>
+
+  <div class="label">In-game, inside <b>Fabric 1.21.1</b></div>
+  <div class="mc">
+    <div class="icon"><div class="scene" id="server-icon"></div></div>
+    <div>
+      <div class="name">Family Nights SMP</div>
+      <div class="motd">Saturday build night. Bring snacks.</div>
+    </div>
+    <div class="right">3/10 <span class="bars"><i style="height:30%"></i><i style="height:48%"></i><i style="height:66%"></i><i style="height:84%"></i><i style="height:100%"></i></span></div>
+  </div>
+  <div class="added">+ Added</div>
+
+  <div class="link"></div>
+  <div class="link-tag">linked, not copied</div>
+
+  <div class="cat card">
+    <div class="cat-head">
+      <div class="cat-name"><small>Category</small><span class="mono">family-nights</span></div>
+      <div class="files"><span class="chip">servers.dat</span><span class="chip">options.txt</span></div>
+    </div>
+    <div class="rows">
+      <div class="row src">
+        <div class="blk scene" data-block="log"></div>
+        <div class="sp">Fabric 1.21.1<small>Space · added it here</small></div>
+        <div class="has">Family Nights SMP <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#04231e" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span></div>
+      </div>
+      <div class="row">
+        <div class="blk scene" data-block="stone"></div>
+        <div class="sp">Forge 1.21.1<small>Space</small></div>
+        <div class="has">Family Nights SMP <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#04231e" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span></div>
+      </div>
+      <div class="row">
+        <div class="blk scene" data-block="grass"></div>
+        <div class="sp">Vanilla 1.21.1<small>Space</small></div>
+        <div class="has">Family Nights SMP <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#04231e" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <p>No export. No copy-paste.<br><span>No settings screen.</span></p>
+    <div class="btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>
+      Download for Windows
+    </div>
+  </div>
+</div>
+<script>
+  const icon = new Pixel.Scene(100);
+  icon.blocks([{ x: 0, y: 0, z: 0, t: 'soul' }]).flame(0, 0, 1, 0.9, false);
+  document.getElementById('server-icon').innerHTML = icon.svg(4);
+  document.querySelectorAll('[data-block]').forEach((el) => {
+    el.innerHTML = new Pixel.Scene(100).blocks([{ x: 0, y: 0, z: 0, t: el.dataset.block }]).svg(4);
+  });
+</script>
+</body>
+</html>
