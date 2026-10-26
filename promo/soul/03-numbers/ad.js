@@ -39,20 +39,20 @@
     const lock = lt - 0.85;
     const pulse = lock > 0 ? 1 + 0.1 * Math.exp(-lock * 8) : 1;
     ctx.save();
-    ctx.translate(540, 640); ctx.scale(pulse, pulse); ctx.translate(-540, -640);
-    S.title([{ t: `~${n}`, c: 'mint' }, { t: ' MB' }], 540, 640, 250, 1);
+    ctx.translate(540, 750); ctx.scale(pulse, pulse); ctx.translate(-540, -750);
+    S.title([{ t: `~${n}`, c: 'mint' }, { t: ' MB' }], 540, 750, 250, 1);
     ctx.restore();
-    if (lock > 0) { S.shockwave(540, 640, lock, 'rgba(94,234,212,A)', 900); S.burst(540, 640, lock, 1.0, 0.7); }
-    S.title([{ t: 'RAM while idling.' }], 540, 830, 76, appear(t, SEG[0] + 0.9, 0.3));
+    if (lock > 0) { S.shockwave(540, 750, lock, 'rgba(94,234,212,A)', 900); S.burst(540, 750, lock, 1.0, 0.7); }
+    S.title([{ t: 'RAM while idling.' }], 540, 940, 76, appear(t, SEG[0] + 0.9, 0.3));
     // the memory bar: a mint sliver for the launcher, the rest fills with the game
     const be = appear(t, 1.05, 0.35);
     if (be > 0) {
       ctx.save();
       ctx.globalAlpha *= be;
       ctx.translate(0, (1 - be) * 40);
-      S.kicker('YOUR RAM', 540, 980, 1, C.dim, 24);
-      S.card(90, 1020, 900, 130, { r: 28 });
-      const x0 = 112, w = 856, y0 = 1042, h = 86;
+      S.kicker('YOUR RAM', 540, 1090, 1, C.dim, 24);
+      S.card(90, 1130, 900, 130, { r: 28 });
+      const x0 = 112, w = 856, y0 = 1152, h = 86;
       ctx.beginPath(); ctx.roundRect(x0, y0, w, h, 18); ctx.fillStyle = '#0b0e13'; ctx.fill();
       ctx.save();
       ctx.shadowColor = S.MINT(0.9); ctx.shadowBlur = 20;
@@ -71,8 +71,8 @@
         ctx.restore();
       }
       ctx.fillStyle = C.mint;
-      ctx.beginPath(); ctx.moveTo(x0 + 12, 1162); ctx.lineTo(x0 + 24, 1182); ctx.lineTo(x0, 1182); ctx.closePath(); ctx.fill();
-      S.text('Soul Launcher', x0 - 2, 1212, 30, C.mint, 'left', 700);
+      ctx.beginPath(); ctx.moveTo(x0 + 12, 1272); ctx.lineTo(x0 + 24, 1292); ctx.lineTo(x0, 1292); ctx.closePath(); ctx.fill();
+      S.text('Soul Launcher', x0 - 2, 1322, 30, C.mint, 'left', 700);
       ctx.restore();
     }
   }
@@ -96,7 +96,7 @@
     slam([{ t: '0', c: '#1aa893' }], 540, 640, 620, lt, { dark: true });
     ctx.restore();
     slam([{ t: '0', c: C.ink }], 540, 640, 620, lt, { dark: true });
-    ZERO_LINES.forEach((parts, i) => slam(parts, 540, 1040 + i * 120, i === 2 ? 76 : 104, lt - (i + 1) * B * 0.75, { dark: true, maxW: 940 }));
+    ZERO_LINES.forEach((parts, i) => slam(parts, 540, 1060 + i * 132, i === 2 ? 82 : 112, lt - (i + 1) * B * 0.75, { dark: true, maxW: 940 }));
   }
 
   // ---------- 2. four steps ----------
@@ -108,9 +108,9 @@
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, H);
     S.embers(t, 14, 6, 0.5);
-    slam([{ t: '4', c: 'gold' }, { t: ' steps.' }], 540, 440, 200, lt);
+    slam([{ t: '4', c: 'gold' }, { t: ' steps.' }], 540, 520, 200, lt);
     STEPS.forEach((name, i) => {
-      const x = i % 2 ? 790 : 290, y = 700 + Math.floor(i / 2) * 230;
+      const x = i % 2 ? 790 : 290, y = 790 + Math.floor(i / 2) * 230;
       const e = prog(lt, B * 0.5 * (i + 1) - 0.1, B * 0.5 * (i + 1) + 0.12);
       if (e <= 0) return;
       const s = clamp(easeOutBack(e, 2.4), 0, 1.3);
@@ -124,10 +124,10 @@
       ctx.restore();
     });
     const press = lt > S2_CLICK ? Math.exp(-(lt - S2_CLICK) * 10) : 0;
-    S.button('Then play', 540, 1210, 700, 150, prog(lt, S2_PLAY, S2_PLAY + 0.2), { icon: 'play', size: 64, press, glow: 50 });
-    S.ripple(540, 1210, lt - S2_CLICK, S.MINT, 380);
-    if (lt > S2_CLICK) S.burst(540, 1210, lt - S2_CLICK, 0.9, 0.5);
-    const cp = S.path(lt, [[S2_PLAY, 1000, 1700], [S2_CLICK - 0.05, 700, 1240], [S2_CLICK + 0.5, 1100, 1650]]);
+    S.button('Then play', 540, 1300, 700, 150, prog(lt, S2_PLAY, S2_PLAY + 0.2), { icon: 'play', size: 64, press, glow: 50 });
+    S.ripple(540, 1300, lt - S2_CLICK, S.MINT, 380);
+    if (lt > S2_CLICK) S.burst(540, 1300, lt - S2_CLICK, 0.9, 0.5);
+    const cp = S.path(lt, [[S2_PLAY, 1000, 1700], [S2_CLICK - 0.05, 700, 1330], [S2_CLICK + 0.5, 1100, 1650]]);
     if (lt > S2_PLAY && lt < S2_CLICK + 0.5) S.cursor(cp.x, cp.y, 1, press);
   }
 
@@ -154,7 +154,13 @@
     ctx.globalAlpha *= ce;
     ctx.translate(0, (1 - ce) * 80);
     S.card(110, 560, 860, 440, { r: 34, stroke: S.MINT(0.45), glow: 18, glowColor: S.MINT(0.35) });
-    S.text('⚡', 176, 646, 54, C.gold, 'center', 700);
+    ctx.fillStyle = C.gold;
+    ctx.beginPath();
+    [[184, 610], [156, 652], [176, 652], [166, 688], [198, 640], [178, 640], [192, 610]].forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
+    ctx.closePath();
+    ctx.shadowColor = 'rgba(242,180,3,0.7)'; ctx.shadowBlur = 18;
+    ctx.fill();
+    ctx.shadowBlur = 0;
     S.title([{ t: 'OneClient' }], 220, 640, 76, 1, { align: 'left' });
     S.text('Tuned Fabric FPS build', 160, 712, 32, C.dim, 'left', 600);
     [['Sodium', '#5eead4'], ['Lithium', '#56bde8'], ['Iris', '#b48cff'], ['+ more', C.dim]].reduce((x, [s, col], i) => {
@@ -225,7 +231,7 @@
   const RESULTS = [
     { name: 'Sodium', src: 'Modrinth', ok: true, t: 1.0 },
     { name: 'Sodium Extra', src: 'CurseForge', ok: true, t: 1.12 },
-    { name: 'Legacy Zoom', src: 'CurseForge', ok: false, t: 1.24 },
+    { name: 'An old zoom mod', src: 'CurseForge', ok: false, t: 1.24 },
   ];
   function seg4(t, lt) {
     S.drawBg(t, { mint: 1.1 });
@@ -294,11 +300,12 @@
     for (let c = 0; c < 3; c++) {
       for (let r = 0; r < 26; r++) {
         const y = ((r * 80 - t * (90 + c * 40)) % 2080 + 2080) % 2080 - 80;
-        ctx.globalAlpha = 0.11 + 0.06 * hash(r + c * 31);
+        ctx.globalAlpha = 0.07 + 0.04 * hash(r + c * 31);
         S.text(CODE[(r * 3 + c * 7) % CODE.length], 40 + c * 360, y, 24, C.mint, 'left', 500, 'JetBrains Mono');
       }
     }
     ctx.restore();
+    S.blob(540, 820, 760, 'rgba(5,7,10,0.9)');
     S.blob(540, 760, 700, S.MINT(0.14));
     slam([{ t: '100%', c: 'mint' }], 540, 560, 280, lt);
     slam([{ t: 'open source.' }], 540, 770, 118, lt - B * 0.75);
