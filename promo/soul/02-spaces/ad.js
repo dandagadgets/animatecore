@@ -284,10 +284,10 @@
     ctx.save();
     ctx.globalAlpha *= e;
     ctx.translate(0, (1 - e) * 40);
-    S.card(NODE.x - 300, NODE.y - 64, 600, 128, { r: 26, stroke: S.MINT(0.4 + 0.6 * hit), glow: 20 * hit });
-    S.text('shared/', NODE.x - 250, NODE.y + 2, 34, C.text, 'left', 700, 'JetBrains Mono');
-    S.pill('servers.dat', NODE.x + 30, NODE.y, 1, { size: 24, family: 'JetBrains Mono', weight: 500, pad: 18, color: C.mint, stroke: S.MINT(0.4 + 0.6 * hit) });
-    S.pill('options.txt', NODE.x + 200, NODE.y, 1, { size: 24, family: 'JetBrains Mono', weight: 500, pad: 18, color: C.mint });
+    S.card(NODE.x - 330, NODE.y - 64, 660, 128, { r: 26, stroke: S.MINT(0.4 + 0.6 * hit), glow: 20 * hit });
+    S.text('shared/', NODE.x - 296, NODE.y + 2, 34, C.text, 'left', 700, 'JetBrains Mono');
+    S.pill('servers.dat', NODE.x - 24, NODE.y, 1, { size: 24, family: 'JetBrains Mono', weight: 500, pad: 18, color: C.mint, stroke: S.MINT(0.4 + 0.6 * hit) });
+    S.pill('options.txt', NODE.x + 190, NODE.y, 1, { size: 24, family: 'JetBrains Mono', weight: 500, pad: 18, color: C.mint });
     ctx.restore();
   }
 
@@ -405,7 +405,7 @@
     CATS.forEach((_, ci) => {
       const at = ci === 0 ? DONE_CLICK + 0.3 : ARRIVE[ci];
       const e = prog(t, at, at + 0.25) * (1 - prog(t, SLIDE - 0.3, SLIDE));
-      S.pill('+ Friday Night SMP', CAT_X[ci], CAT_Y - SS - 74, e, { size: 20, pad: 16, color: C.mint, stroke: S.MINT(0.6) });
+      S.pill('+ Friday Night SMP', CAT_X[ci], CAT_Y - SS - 36, e, { size: 20, pad: 16, color: C.mint, stroke: S.MINT(0.6) });
     });
   }
 
@@ -421,7 +421,7 @@
     linkMode = 'down';
     links(t, SL_Y - 20, e);
     CAT_X.forEach((x, ci) => {
-      const v = sliderVal(t, ci * 0.07);
+      const v = sliderVal(t, ci * 0.025);
       ctx.save();
       ctx.globalAlpha *= e;
       ctx.translate(0, (1 - e) * 50);
@@ -474,9 +474,9 @@
       }
       if (ln.link && t > ln.link) {
         const le = prog(t, ln.link, ln.link + 0.22);
-        const lx = 120 + S.width(ln.a, 36, 700, 'JetBrains Mono') + 110;
-        S.pill('linked', lx, y, le, { size: 26, color: C.ink, fill: C.mint, stroke: C.mint, pad: 22, glow: 20 });
-        S.icon('link', lx - 100, y, 34 * clamp(le * 2), C.mint);
+        const end = 120 + S.width(ln.a, 36, 700, 'JetBrains Mono');
+        S.icon('link', end + 36, y, 34 * clamp(le * 2), C.mint);
+        S.pill('linked', end + 126, y, le, { size: 26, color: C.ink, fill: C.mint, stroke: C.mint, pad: 22, glow: 20 });
       }
     });
     ctx.restore();
@@ -528,7 +528,6 @@
     if (t >= END) { S.endCard(t, END, { top: [[{ t: 'Spaces that ' }, { t: 'sync themselves.', c: 'mint' }]] }); return; }
     S.drawBg(t);
     S.embers(t, 16, 2, 0.6);
-    titles(t);
     if (t < GRID) {
       hook(t);
     } else if (t < TREE + 0.2) {
@@ -542,9 +541,10 @@
       packet(t);
       ctx.restore();
       serverPanel(t);
-      cursor(t);
     }
     tree(t);
+    titles(t);
+    if (t >= GRID && t < TREE + 0.2) cursor(t);
   }
 
   const CLICKS = [ADD_CLICK, DONE_CLICK];
