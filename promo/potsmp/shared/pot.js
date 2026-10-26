@@ -14,6 +14,7 @@
   const PINK = (a) => `rgba(255,79,163,${a})`;
   const GOLD = (a) => `rgba(255,201,60,${a})`;
   const H_OPTS = { outline: C.plum, shadow: C.shadow };
+  const IP = 'POTSMP.FUN', PORT = '19132';
 
   const IMG = {};
   const ASSETS = new URL('assets/', document.currentScript.src).href;
@@ -213,7 +214,7 @@
     // logo slam with shockwave
     const le = prog(lt, 0, 0.55);
     const s = lerp(0.3, 1, easeOutBack(le, 1.6)) * (1 + 0.012 * Math.sin(Math.max(0, lt - 0.6) * 2.4));
-    const lw = 800, lh = lw * 567 / 768, ly = o.top ? 690 : 620;
+    const lw = 720, lh = lw * 567 / 768, ly = o.top ? 660 : 600;
     if (lt < 0.8) {
       ctx.save();
       ctx.strokeStyle = `rgba(255,143,208,${1 - lt / 0.8})`;
@@ -240,19 +241,41 @@
       }
     }
     if (o.top) o.top.forEach((parts, i) => M.headline(parts, 540, 200 + i * 100, 84, appear(t, t0 + 0.3 + i * 0.1), 980, H_OPTS));
-    const ry = ly + lh / 2 + 70;
+    const ry = ly + lh / 2 + 60;
     ribbon('SEASON IV', 540, ry, prog(lt, 0.45, 0.8));
-    M.headline([{ t: 'OUT NOW', c: 'pink' }], 540, ry + 140, 150, appear(t, t0 + 0.7, 0.18), 980, { ...H_OPTS, slam: true });
+    M.headline([{ t: 'OUT NOW', c: 'pink' }], 540, ry + 130, 140, appear(t, t0 + 0.7, 0.18), 980, { ...H_OPTS, slam: true });
+    // the server address, front and centre
+    const pe = prog(lt, 1.0, 1.35);
+    if (pe > 0) {
+      const py = ry + 250;
+      const w = M.textWidth(`IP: ${IP}`, '700 44px "Silkscreen"', 4) + 100;
+      const sc = clamp(easeOutBack(pe, 2), 0, 1.2) * (1 + 0.025 * Math.sin(lt * 6));
+      ctx.save();
+      ctx.translate(540, py);
+      ctx.scale(sc, sc);
+      M.pixelRectPath(-w / 2, -50, w, 100, 10);
+      ctx.fillStyle = C.pink;
+      ctx.shadowColor = PINK(0.9);
+      ctx.shadowBlur = 30 + 12 * Math.sin(lt * 6);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = '#ffd1ec';
+      ctx.lineWidth = 5;
+      ctx.stroke();
+      M.label(`IP: ${IP}`, 0, 3, 44, C.white, 'center', 4, 700);
+      ctx.restore();
+    }
+    ribbon(`BEDROCK PORT: ${PORT}`, 540, ry + 352, prog(lt, 1.25, 1.55), C.gold, C.ink, 26);
     const chips = [['JAVA + BEDROCK', C.gold], ['PROXIMITY VOICE CHAT', C.pink2]];
     const widths = chips.map(([txt]) => M.textWidth(txt, '700 22px "Silkscreen"', 2) + 76);
     let x = 540 - (widths[0] + widths[1] + 16) / 2;
     chips.forEach(([txt, col], i) => {
-      const e = prog(lt, 1.05 + i * 0.12, 1.4 + i * 0.12);
+      const e = prog(lt, 1.5 + i * 0.12, 1.85 + i * 0.12);
       if (e > 0) {
         const w = widths[i];
         const sc = clamp(easeOutBack(e, 2), 0, 1.2);
         ctx.save();
-        ctx.translate(x + w / 2, ry + 265);
+        ctx.translate(x + w / 2, ry + 445);
         ctx.scale(sc, 1);
         M.pixelRectPath(-w / 2, -28, w, 56, 6);
         ctx.fillStyle = 'rgba(26,6,20,0.92)';
@@ -268,36 +291,35 @@
       }
       x += widths[i] + 16;
     });
-    const pe = prog(lt, 1.5, 1.85);
-    if (pe > 0) {
-      const py = ry + 380;
-      const txt = o.cta || 'IP IN DESCRIPTION';
-      const w = M.textWidth(txt, '700 34px "Silkscreen"', 4) + 90;
-      const sc = clamp(easeOutBack(pe, 2), 0, 1.2) * (1 + 0.03 * Math.sin(lt * 6));
-      ctx.save();
-      ctx.translate(540, py);
-      ctx.scale(sc, sc);
-      M.pixelRectPath(-w / 2, -42, w, 84, 10);
-      ctx.fillStyle = C.pink;
-      ctx.shadowColor = PINK(0.9);
-      ctx.shadowBlur = 30 + 12 * Math.sin(lt * 6);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-      ctx.strokeStyle = '#ffd1ec';
-      ctx.lineWidth = 4;
-      ctx.stroke();
-      M.label(txt, 0, 3, 34, C.white, 'center', 4, 700);
-      ctx.restore();
-      if (pe >= 1) downArrow(540, py + 64, t);
-    }
+  }
+
+  // small always-on server address tag at the top of the frame
+  function ipTag(t, alpha = 1) {
+    if (alpha <= 0) return;
+    const txt = `IP: ${IP}`;
+    const w = M.textWidth(txt, '700 32px "Silkscreen"', 3) + 84;
+    ctx.save();
+    ctx.globalAlpha *= alpha;
+    M.pixelRectPath(540 - w / 2, 112, w, 72, 8);
+    ctx.fillStyle = 'rgba(26,6,20,0.88)';
+    ctx.fill();
+    ctx.strokeStyle = C.pink;
+    ctx.lineWidth = 3;
+    ctx.shadowColor = PINK(0.7);
+    ctx.shadowBlur = 14;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    M.pixelSquare(540 - w / 2 + 30, 148, 16, Math.floor(t * 2) % 2 ? C.pink2 : C.gold, 10);
+    M.label(txt, 540 - w / 2 + 54, 149, 32, C.white, 'left', 3, 700);
+    ctx.restore();
   }
 
   function endCardEvents(t0) {
     return [
       { type: 'impact', t: t0 }, { type: 'sparkle', t: t0 + 0.1, note: 88 },
       { type: 'hit', t: t0 + 0.47, gain: 0.7 }, { type: 'hit', t: t0 + 0.72 },
-      { type: 'pop', t: t0 + 1.08, note: 88 }, { type: 'pop', t: t0 + 1.2, note: 91 },
-      { type: 'cta_click', t: t0 + 1.52 },
+      { type: 'cta_click', t: t0 + 1.02 }, { type: 'pop', t: t0 + 1.28, note: 91 },
+      { type: 'pop', t: t0 + 1.55, note: 88 }, { type: 'pop', t: t0 + 1.67, note: 93 },
     ];
   }
 
@@ -488,6 +510,6 @@
 
   window.POT = {
     C, PINK, GOLD, H_OPTS, IMG, drawBg, twinkles, bats, splash, potion, rays, shine, ribbon, downArrow,
-    endCard, endCardEvents, start, boss, eyesOnly, chest, sword, lightning, coin, crown, check,
+    IP, PORT, ipTag, endCard, endCardEvents, start, boss, eyesOnly, chest, sword, lightning, coin, crown, check,
   };
 })();

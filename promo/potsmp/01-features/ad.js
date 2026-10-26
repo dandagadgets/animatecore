@@ -422,6 +422,7 @@
     }
     SPLASH.forEach((i) => P.splash(t, cardT(i) - 0.24, i % 2 ? C.gold : C.pink));
     P.splash(t, MORE - 0.12, C.pink);
+    P.ipTag(t);
     M.drawScanlines();
     M.flash(t, HOOK, 0.4, 10, '255,220,240');
     M.flash(t, MORE, 0.7, 7, '255,220,240');

@@ -291,6 +291,7 @@
     }
     P.splash(t, SWITCH, C.pink);
     P.splash(t, FLEX - 0.24, C.gold);
+    P.ipTag(t);
     M.drawScanlines();
     M.flash(t, PICK, 0.6, 7, '255,235,190');
   }

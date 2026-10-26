@@ -244,6 +244,7 @@
       M.headline([{ t: 'DEFEAT HIM?', c: 'pink' }], 540, 970, 140, appear(t, DARE + 0.45, 0.2), 980, { ...HO, slam: true });
       ctx.restore();
       P.eyesOnly(540, 1240, 26, 0.6 + 0.4 * Math.sin(t * 5));
+      P.ipTag(t);
       M.drawScanlines();
       M.flash(t, DARE, 0.9, 9, '255,80,110');
       return;
@@ -284,6 +285,7 @@
       if (t < c.t0 || t >= c.t1) return;
       M.caption(c.lines, 540, c.t0 >= FIGHT ? 600 : 520, 70, c.t0 === 0 ? 1 : appear(t, c.t0, 0.22));
     });
+    P.ipTag(t);
     M.drawScanlines();
     M.flash(t, RISE, 0.35, 6, '160,255,250');
     M.flash(t, TITLE, 0.4, 8, '255,220,240');
