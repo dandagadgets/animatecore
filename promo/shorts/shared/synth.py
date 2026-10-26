@@ -322,6 +322,55 @@ def cta_click(mix, t):
 
 
 
+def splash_sfx():
+    """Liquid potion splash: wet noise burst + a few bubbly pops."""
+    t = tv(0.7)
+    wet = band_noise(0.7, 200, 4000) * np.exp(-t * 9) * 0.7
+    out = wet + sweep(500 * np.exp(-t * 8) + 120, t) * np.exp(-t * 14) * 0.4
+    for k in range(5):
+        b = pop(hz(76 + k * 3 + int(rng.integers(0, 3))))
+        i0 = int((0.08 + k * 0.07) * SR)
+        out[i0:i0 + len(b)] += b[: len(out) - i0] * 0.35
+    return out
+
+
+def zap():
+    """Lightning strike: sharp crack then a rolling rumble."""
+    t = tv(1.6)
+    crack = band_noise(1.6, 1500, 14000) * np.exp(-t * 30) * 1.2
+    sizzle = band_noise(1.6, 4000, 12000) * np.exp(-t * 6) * 0.2 * (rng.random(len(t)) > 0.6)
+    rumble_ = band_noise(1.6, 30, 300) * np.exp(-t * 2.2) * (np.minimum(1, t / 0.05)) * 1.1
+    return crack + sizzle + rumble_
+
+
+def growl(d=1.4):
+    """Monster growl: detuned low saws with a slow tremolo and breathy noise."""
+    t = tv(d)
+    f = 55 * (1 + 0.04 * np.sin(2 * np.pi * 3 * t))
+    saw = sum(np.sin(2 * np.pi * np.cumsum(f * (1 + det)) * k / SR) / k for k in range(1, 10) for det in (-0.01, 0.012))
+    trem = 0.6 + 0.4 * np.sin(2 * np.pi * 9 * t)
+    breath = band_noise(d, 150, 1500) * 0.6
+    env = np.minimum(1, t / 0.15) * np.minimum(1, (d - t) / 0.4)
+    return (saw * 0.22 * trem + breath * trem) * env
+
+
+def braam(root=hz(38), d=2.2):
+    """Cinematic low brass hit."""
+    t = tv(d)
+    sig = sum(np.sin(2 * np.pi * root * r * k * t) / k for r in (1, 1.5, 2) for k in range(1, 8))
+    env = np.minimum(1, t / 0.04) * np.exp(-t * 1.4)
+    return np.tanh(sig * 0.6) * env * 0.7
+
+
+def bubbles(d):
+    out = np.zeros(int(d * SR))
+    for _ in range(int(d * 6)):
+        b = pop(hz(rng.uniform(70, 90)))
+        i0 = int(rng.uniform(0, d - 0.2) * SR)
+        out[i0:i0 + len(b)] += b[: len(out) - i0] * rng.uniform(0.1, 0.3)
+    return out
+
+
 def play_common(mix, c):
     """Plays cue types shared by the Discord promo set. Returns False for unknown types."""
     t, kind = c['t'], c['type']
@@ -356,6 +405,20 @@ def play_common(mix, c):
         mix.add(reel_tick(), t, 0.6 * g, pan=rng.uniform(-0.2, 0.2))
     elif kind == 'typing':
         mix.add(typing(), t, 0.5 * g, pan=rng.uniform(-0.2, 0.2))
+    elif kind == 'splash':
+        mix.add(splash_sfx(), t, 0.6 * g, wet=0.4)
+    elif kind == 'swipe':
+        mix.add(whoosh(0.35), t - 0.22, 0.6 * g, pan=rng.uniform(-0.3, 0.3))
+    elif kind == 'zap':
+        mix.add(zap(), t, 0.7 * g, wet=0.5)
+    elif kind == 'growl':
+        mix.add(growl(), t, 0.6 * g, wet=0.5)
+    elif kind == 'coin':
+        mix.add(coin(hz(88 + int(rng.integers(0, 4)) * 2)), t, 0.14 * g, pan=rng.uniform(-0.5, 0.5), wet=0.3)
+    elif kind == 'latch':
+        mix.add(latch(), t, 0.5 * g, wet=0.4)
+    elif kind == 'uiclick':
+        mix.add(ui_click(), t, 0.7 * g)
     elif kind == 'levelup':
         mix.add(level_up(hz(c.get('note', 72))), t, 0.25 * g, wet=0.5)
     else:
@@ -373,15 +436,15 @@ def outro(mix, t0, dur, notes=(48, 55, 60, 64, 67)):
                 pan=0.35 if i % 2 else -0.35, wet=0.45)
 
 
-def groove(mix, t0, t1, chords, step=2.0, kick_gain=0.85, arp_gain=0.12, bass_fn=None):
+def groove(mix, t0, t1, chords, step=2.0, kick_gain=0.85, arp_gain=0.12, bass_fn=None, beat=0.5):
     """Four-on-the-floor build: kick/clap/hats, 8th-note bass, 16th arpeggio. chords: [(triad, root)]."""
     bass_fn = bass_fn or (lambda f, d: bass(f, d))
     k = 0
-    while t0 + k * 0.5 < t1 - 1e-6:
-        bt = t0 + k * 0.5
+    while t0 + k * beat < t1 - 1e-6:
+        bt = t0 + k * beat
         mix.add(kick(), bt, kick_gain)
-        mix.add(hat(), bt + 0.25, 1.0, pan=0.25)
-        mix.add(hat(), bt + 0.125, 0.4, pan=-0.25)
+        mix.add(hat(), bt + beat / 2, 1.0, pan=0.25)
+        mix.add(hat(), bt + beat / 4, 0.4, pan=-0.25)
         if k % 2:
             mix.add(clap(), bt, 0.6, wet=0.3)
         k += 1
@@ -392,10 +455,10 @@ def groove(mix, t0, t1, chords, step=2.0, kick_gain=0.85, arp_gain=0.12, bass_fn
         mix.add(pluck(hz([triad[0], triad[1], triad[2], triad[1]][i % 4] + 12), 0.2, 15), t, arp_gain,
                 pan=0.35 if i % 2 else -0.35, wet=0.35)
         if i % 2 == 0:
-            mix.add(bass_fn(hz(root) * (2 if i % 8 == 6 else 1), 0.24), t, 0.32)
+            mix.add(bass_fn(hz(root) * (2 if i % 8 == 6 else 1), beat * 0.48), t, 0.32)
         if i % 16 == 0:
             mix.add(pad(list(triad), step + 0.3, bright=0.5), t, 0.14, wet=0.5)
-        t += 0.125
+        t += beat / 4
         i += 1
 
 

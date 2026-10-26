@@ -49,11 +49,15 @@
   const MINT = (a) => `rgba(214,255,200,${a})`;
 
   // ---------- text ----------
-  function accentFill(y, size) {
+  // gradient fills for headline words: { c: 'accent' | 'pink' | 'gold' }
+  const ACCENTS = {
+    accent: { stops: ['#f2ff4d', '#a8ff2e', '#3fd10f'], glow: 'rgba(57,255,20,0.55)' },
+    pink: { stops: ['#ffd1ec', '#ff6fbf', '#e0217f'], glow: 'rgba(255,79,163,0.55)' },
+    gold: { stops: ['#fff6b8', '#ffd23f', '#e08a00'], glow: 'rgba(255,200,60,0.5)' },
+  };
+  function accentFill(y, size, kind = 'accent') {
     const g = ctx.createLinearGradient(0, y - size * 0.42, 0, y + size * 0.42);
-    g.addColorStop(0, '#f2ff4d');
-    g.addColorStop(0.5, '#a8ff2e');
-    g.addColorStop(1, '#3fd10f');
+    ACCENTS[kind].stops.forEach((c, i) => g.addColorStop(i / 2, c));
     return g;
   }
 
@@ -86,14 +90,14 @@
       const d = size * 0.07;
       ctx.fillStyle = opts.shadow || COL.shadow;
       ctx.fillText(p.t, cx + d, y + d);
-      ctx.strokeStyle = '#020802';
+      ctx.strokeStyle = opts.outline || '#020802';
       ctx.lineWidth = size * 0.1;
       ctx.strokeText(p.t, cx, y);
-      if (p.c === 'accent') {
+      if (ACCENTS[p.c]) {
         ctx.save();
-        ctx.shadowColor = NEON(0.55);
+        ctx.shadowColor = ACCENTS[p.c].glow;
         ctx.shadowBlur = 26;
-        ctx.fillStyle = accentFill(y, size);
+        ctx.fillStyle = accentFill(y, size, p.c);
         ctx.fillText(p.t, cx, y);
         ctx.restore();
       } else {
@@ -207,13 +211,14 @@
     ctx.restore();
   }
 
-  function chip(text, cx, cy, e, color, size = 24) {
+  // opts.stroke: border colour (default neon green)
+  function chip(text, cx, cy, e, color, size = 24, opts = {}) {
     if (e <= 0) return;
     const tw = textWidth(text, `700 ${size}px "Silkscreen"`, 2);
     const w = tw + 86, h = size * 2.4;
     const sx = clamp(easeOutBack(clamp(e), 2.0), 0, 1.2);
     ctx.save();
-    panel(cx - w * sx / 2, cy - h / 2, w * sx, h, 6);
+    panel(cx - w * sx / 2, cy - h / 2, w * sx, h, 6, opts.stroke ? { stroke: opts.stroke, glowColor: opts.stroke, fill: 'rgba(26,6,20,0.92)' } : {});
     if (e > 0.6) {
       ctx.globalAlpha *= prog(e, 0.6, 1);
       const ix = cx - w / 2 + 30;
