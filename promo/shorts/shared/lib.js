@@ -54,6 +54,7 @@
     accent: { stops: ['#f2ff4d', '#a8ff2e', '#3fd10f'], glow: 'rgba(57,255,20,0.55)' },
     pink: { stops: ['#ffd1ec', '#ff6fbf', '#e0217f'], glow: 'rgba(255,79,163,0.55)' },
     gold: { stops: ['#fff6b8', '#ffd23f', '#e08a00'], glow: 'rgba(255,200,60,0.5)' },
+    cyan: { stops: ['#e6feff', '#3fe0e8', '#0f9fc4'], glow: 'rgba(63,224,232,0.55)' },
   };
   function accentFill(y, size, kind = 'accent') {
     const g = ctx.createLinearGradient(0, y - size * 0.42, 0, y + size * 0.42);
@@ -865,7 +866,11 @@
     window.SHORT = {
       FPS, DURATION: def.duration, COVER: def.cover ?? def.duration - 1,
       events: def.events || (() => []),
-      frame(t) { render(t); return canvas.toDataURL('image/png').split(',')[1]; },
+      // def.prepare(t) (optional, async) lets a short load images it needs before the frame is drawn
+      frame(t) {
+        const snap = () => { render(t); return canvas.toDataURL('image/png').split(',')[1]; };
+        return def.prepare ? def.prepare(t).then(snap) : snap();
+      },
     };
     window.AD_READY = true;
     if (new URLSearchParams(location.search).has('render')) return;

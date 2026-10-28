@@ -1,0 +1,17 @@
+{
+  "fps": 30,
+  "size": [432, 768],
+  "clips": {
+    "boss":    { "src": "potsmp/out/potsmp-02-drowned-captain.mp4", "t0": 7.3, "dur": 2.4, "label": "BOSS TRAILERS" },
+    "season":  { "src": "potsmp/out/potsmp-01-features.mp4",        "t0": 5.4, "dur": 2.4, "label": "SEASON LAUNCHES" },
+    "crates":  { "src": "potsmp/out/potsmp-03-crates.mp4",          "t0": 6.9, "dur": 2.4, "label": "FEATURE DROPS" },
+    "chaos":   { "src": "soul/out/soul-01-chores.mp4",              "t0": 5.3, "dur": 2.6, "label": "COMEDY ADS" },
+    "spaces":  { "src": "soul/out/soul-02-spaces.mp4",              "t0": 0.4, "dur": 2.4, "label": "EXPLAINERS" },
+    "numbers": { "src": "soul/out/soul-03-numbers.mp4",             "t0": 0.0, "dur": 2.6, "label": "HYPE EDITS" },
+    "worlds":  { "src": "shorts/out/mine-radar-02-every-world.mp4", "t0": 1.2, "dur": 2.6, "label": "SERVER LISTS" },
+    "loot":    { "src": "discord/out/mine-radar-02-loot-reel.mp4",  "t0": 5.6, "dur": 2.4, "label": "DISCORD PROMOS" },
+    "launch":  { "src": "discord/out/mine-radar-05-launch.mp4",     "t0": 4.6, "dur": 2.2, "label": "LAUNCH TRAILERS" },
+    "build":   { "src": "discord/out/mine-radar-04-the-build.mp4",  "t0": 5.0, "dur": 2.2, "label": "BUILD REVEALS" },
+    "crowd":   { "src": "shorts/out/mine-radar-03-nobody-online.mp4", "t0": 12.4, "dur": 2.2, "label": "SERVER STORIES" }
+  }
+}
