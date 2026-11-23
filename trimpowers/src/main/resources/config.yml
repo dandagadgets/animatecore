@@ -1,0 +1,276 @@
+# ============================================================
+#  TrimPowers - Trims SMP
+#  Every armor trim pattern = passive perks (per piece worn)
+#  + a full-set ability (Sneak + F, or /trims ability).
+#  Change any number below, then run /trims reload.
+# ============================================================
+
+settings:
+  # How many pieces of the SAME trim are needed to unlock its ability (1-4).
+  pieces-for-ability: 4
+  # SNEAK_SWAP = Sneak + F (swap-hands key) fires the ability. COMMAND_ONLY = only /trims ability.
+  trigger: SNEAK_SWAP
+  # Worlds where trim powers (passives and abilities) are turned off.
+  disabled-worlds: []
+  hud:
+    # Action bar showing your ability cooldown and active effects (players can toggle with /trims hud).
+    enabled: true
+    # Show "READY" when your ability is off cooldown (otherwise only shows while cooling down).
+    show-ready: true
+  targets:
+    # Abilities can hit other players (still respects world PvP and scoreboard teams with friendly-fire off).
+    players: true
+    hostile-mobs: true
+    # Animals, villagers, golems, etc. Off by default so area abilities don't wreck farms.
+    other-mobs: false
+    # Ask protection plugins (WorldGuard, GriefPrevention, Lands...) before an ability touches someone.
+    respect-protection: true
+  # Withers, Ender Dragons, Wardens and Elder Guardians ignore Stun and Root.
+  boss-crowd-control-immunity: true
+  # Drinking milk clears custom debuffs too.
+  milk-cleanses-debuffs: true
+
+# ------------------------------------------------------------
+#  Custom effects (shared settings; strength/duration come from the ability that applies them)
+# ------------------------------------------------------------
+effects:
+  bleed:
+    interval-ticks: 20          # damage every second
+  shocked:
+    interval-ticks: 15
+    interrupt-items: true       # zaps interrupt eating, blocking and drawing bows
+  soulburn:
+    interval-ticks: 20
+    healing-reduction: 0.5      # -50% healing while burning
+  frostbite:
+    freeze-visual: true         # frozen screen overlay (no vanilla freeze damage)
+  marked:
+    glow: true
+  warded:
+    break-pulse-radius: 5.0
+    break-pulse-damage: 3.0
+    break-pulse-knockback: 1.2
+  berserk:
+    lifesteal: 0.15             # heal 15% of melee damage dealt
+    speed-bonus: 0.10
+  overcharged:
+    chain-targets: 3
+    chain-radius: 5.0
+    shocked-seconds: 3
+    shocked-damage: 0.5
+    proc-cooldown-ticks: 10     # stops spam-clicking from chaining every click
+  shadowstep:
+    reveal-bonus-damage: 0.6    # +60% damage on the first hit out of Shadowstep
+    reveal-bleed-seconds: 4
+    reveal-bleed-damage: 1.0
+
+# ------------------------------------------------------------
+#  Trim powers  (cooldowns in seconds, damage in half-hearts)
+# ------------------------------------------------------------
+powers:
+  sentry:
+    enabled: true
+    cooldown: 18
+    passive:
+      projectile-damage-per-piece: 0.06
+    ability:                    # Volley
+      arrows: 5
+      spread-degrees: 10
+      speed: 2.6
+      arrow-damage: 2.0
+      bleed-seconds: 4
+      bleed-damage: 1.0
+
+  dune:
+    enabled: true
+    cooldown: 25
+    passive:
+      knockback-resistance-per-piece: 0.08
+    ability:                    # Sandstorm
+      duration: 5
+      radius: 5
+      damage-per-second: 1.5
+      blindness-seconds: 2
+
+  coast:
+    enabled: true
+    cooldown: 14
+    passive:
+      swim-speed-per-piece: 0.1
+      oxygen-bonus-per-piece: 1.0
+    ability:                    # Riptide Surge
+      power: 1.9
+      damage: 4
+      hit-radius: 2.0
+      knockback: 1.0
+
+  wild:
+    enabled: true
+    cooldown: 22
+    passive:
+      root-chance-per-piece: 0.04
+      root-seconds: 1.5
+    ability:                    # Entangle
+      radius: 7
+      root-seconds: 3.5
+      damage: 2
+
+  ward:
+    enabled: true
+    cooldown: 30
+    passive:
+      damage-reduction-per-piece: 0.03
+    ability:                    # Bulwark
+      duration: 10
+      shield: 10
+
+  eye:
+    enabled: true
+    cooldown: 30
+    passive:
+      night-vision-pieces: 2
+    ability:                    # All-Seeing Eye
+      radius: 24
+      mark-seconds: 8
+      extra-damage-taken: 0.2
+      screen-effect: true       # marked players see the elder guardian face
+
+  vex:
+    enabled: true
+    cooldown: 10
+    passive:
+      speed-per-piece: 0.04
+    ability:                    # Phase Blink
+      range: 10
+      damage: 2
+      hex-radius: 3
+      hex-seconds: 5
+      hex-strength: 0.25
+
+  tide:
+    enabled: true
+    cooldown: 20
+    passive:
+      wet-damage-per-piece: 0.05
+    ability:                    # Tidal Wave
+      length: 12
+      travel-ticks: 14
+      width: 4.4
+      damage: 4
+      push: 1.1
+      frostbite-seconds: 4
+      frostbite-slow: 0.35
+
+  snout:
+    enabled: true
+    cooldown: 35
+    passive:
+      melee-damage-per-piece: 0.03
+      knockback-per-piece: 0.15
+    ability:                    # Berserk
+      duration: 8
+      damage-bonus: 0.3
+
+  rib:
+    enabled: true
+    cooldown: 22
+    passive:
+      fire-damage-reduction-per-piece: 0.25
+      burn-time-reduction-per-piece: 0.2
+    ability:                    # Hellfire Ring
+      radius: 7
+      expand-ticks: 12
+      damage: 4
+      soulburn-seconds: 5
+      soulburn-damage: 1.0
+
+  spire:
+    enabled: true
+    cooldown: 18
+    passive:
+      fall-damage-reduction-per-piece: 0.15
+    ability:                    # Skyward
+      launch-power: 1.5
+      cushion-seconds: 6
+      radius: 4
+      damage: 2
+      levitation-seconds: 2
+
+  wayfinder:
+    enabled: true
+    cooldown: 25
+    passive:
+      hunger-save-chance-per-piece: 0.1
+      terrain-efficiency-per-piece: 0.1
+    ability:                    # Recall
+      anchor-seconds: 20
+      heal: 4
+      cleanse: true
+
+  shaper:
+    enabled: true
+    cooldown: 20
+    passive:
+      mining-speed-per-piece: 0.05
+    ability:                    # Earthshatter
+      length: 10
+      ticks-per-block: 2
+      damage: 4
+      stun-seconds: 1.5
+      knock-up: 0.6
+
+  silence:
+    enabled: true
+    cooldown: 30
+    passive:
+      sneak-speed-per-piece: 0.15
+      sculk-immunity-pieces: 2
+    ability:                    # Shadowstep
+      duration: 6
+
+  raiser:
+    enabled: true
+    cooldown: 22
+    passive:
+      xp-bonus-per-piece: 0.1
+    ability:                    # Upheaval
+      radius: 6
+      damage: 3
+      lift: 1.1
+      stun-seconds: 2
+
+  host:
+    enabled: true
+    cooldown: 25
+    passive:
+      max-health-per-piece: 1.0
+    ability:                    # Soul Siphon
+      radius: 7
+      max-targets: 5
+      damage: 3
+      heal-ratio: 0.5
+      hex-seconds: 5
+      hex-strength: 0.2
+
+  flow:
+    enabled: true
+    cooldown: 12
+    passive:
+      safe-fall-per-piece: 1.0
+      jump-strength-per-piece: 0.02
+    ability:                    # Gale Dash
+      dash-power: 2.0
+      burst-radius: 4
+      burst-knockback: 1.4
+      damage: 2
+      cushion-seconds: 4
+
+  bolt:
+    enabled: true
+    cooldown: 30
+    passive:
+      attack-speed-per-piece: 0.04
+    ability:                    # Overcharge
+      duration: 8
+      chain-damage: 3
+      lightning-visual: false   # true = real lightning flash (thunder is heard far away)

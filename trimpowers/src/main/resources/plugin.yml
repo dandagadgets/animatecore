@@ -1,0 +1,21 @@
+name: TrimPowers
+version: '${project.version}'
+main: com.trimsmp.trimpowers.TrimPowersPlugin
+api-version: '1.21'
+author: Trims SMP
+description: 'Armor trims grant passive perks per piece and a full-set ability, with custom status effects.'
+folia-supported: false
+
+commands:
+  trims:
+    description: Trim powers - info, list, and use your ability.
+    usage: /<command> [info|list|ability|hud|give|effect|cleanse|resetcd|reload]
+    aliases: [trimpowers, trim]
+
+permissions:
+  trimpowers.use:
+    description: Use trim abilities.
+    default: true
+  trimpowers.admin:
+    description: Give trimmed sets, apply effects, reset cooldowns, reload.
+    default: op
