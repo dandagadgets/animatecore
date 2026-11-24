@@ -96,7 +96,7 @@ final class EffectBehaviors {
             case SHADOWSTEP -> {
                 if (e instanceof Player player) {
                     for (Player other : plugin.getServer().getOnlinePlayers()) {
-                        if (!other.equals(player)) {
+                        if (!other.equals(player) && !plugin.perks().has(other, com.trimsmp.trimpowers.perk.Perk.TRUESIGHT)) {
                             other.hideEntity(plugin, player);
                         }
                     }

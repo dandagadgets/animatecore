@@ -41,12 +41,15 @@ public final class PerkTask {
     private final Set<UUID> doubleJumpArmed = new HashSet<>();
     private final Map<UUID, Long> doubleJumpReadyAt = new HashMap<>();
     private final Set<UUID> pathBoosted = new HashSet<>();
+    private final NamespacedKey rushKey;
+    private final Map<UUID, Long> rushUntil = new HashMap<>();
     private BukkitTask task;
     private int tick;
 
     public PerkTask(TrimPowersPlugin plugin) {
         this.plugin = plugin;
         this.pathKey = new NamespacedKey(plugin, "perk_pathfinder");
+        this.rushKey = new NamespacedKey(plugin, "perk_spectral_rush");
     }
 
     public void start() {
@@ -69,17 +72,101 @@ public final class PerkTask {
         if (pathBoosted.remove(player.getUniqueId())) {
             Attrs.remove(player, "movement_speed", pathKey);
         }
+        if (rushUntil.remove(player.getUniqueId()) != null) {
+            Attrs.remove(player, "movement_speed", rushKey);
+        }
+    }
+
+    /** Spectral Rush: a short speed burst after getting hit. */
+    void spectralRush(Player player, PerkParams params) {
+        Attrs.set(player, "movement_speed", rushKey, params.d("speed-bonus", 0.3), AttributeModifier.Operation.ADD_SCALAR);
+        boolean fresh = !rushUntil.containsKey(player.getUniqueId());
+        rushUntil.put(player.getUniqueId(), System.currentTimeMillis() + (long) (params.d("seconds", 2) * 1000));
+        if (fresh) {
+            Fx.particle(player.getLocation().add(0, 1, 0), Particle.WHITE_ASH, 15, 0.4, 0.05);
+            Fx.sound(player.getLocation(), Sound.ENTITY_VEX_CHARGE, 0.6f, 1.6f);
+        }
     }
 
     private void run() {
         tick += 2;
+        long now = System.currentTimeMillis();
         for (Player player : plugin.getServer().getOnlinePlayers()) {
             doubleJump(player);
+            Long rush = rushUntil.get(player.getUniqueId());
+            if (rush != null && rush <= now) {
+                rushUntil.remove(player.getUniqueId());
+                Attrs.remove(player, "movement_speed", rushKey);
+            }
             if (tick % 10 == 0) {
                 pathfinder(player);
             }
             if (tick % 20 == 0) {
                 oceanBlessing(player);
+                sunBlessed(player);
+                overgrowth(player);
+            }
+            if (tick % 40 == 0) {
+                PerkParams escort = plugin.perks().active(player, Perk.PILLAGER_ESCORT);
+                if (escort != null) {
+                    plugin.allies().checkPillagerEscort(player, escort);
+                }
+            }
+        }
+        if (tick % 10 == 0) {
+            truesight();
+        }
+    }
+
+    // ---- Sun-Blessed & Overgrowth ----
+
+    private void sunBlessed(Player player) {
+        PerkParams params = plugin.perks().active(player, Perk.SUN_BLESSED);
+        if (params == null || player.isDead() || !player.getWorld().isDayTime() || player.getWorld().hasStorm()
+                || player.getLocation().getBlock().getLightFromSky() < 15) {
+            return;
+        }
+        regenerate(player, params.d("heal-per-second", 0.4), Particle.WAX_ON);
+    }
+
+    private void overgrowth(Player player) {
+        PerkParams params = plugin.perks().active(player, Perk.OVERGROWTH);
+        if (params == null || player.isDead()) {
+            return;
+        }
+        Material below = player.getLocation().subtract(0, 0.2, 0).getBlock().getType();
+        if (below == Material.GRASS_BLOCK || below == Material.MOSS_BLOCK || below == Material.MOSS_CARPET
+                || below == Material.PODZOL || below == Material.ROOTED_DIRT || below == Material.MYCELIUM
+                || org.bukkit.Tag.LEAVES.isTagged(below)) {
+            regenerate(player, params.d("heal-per-second", 0.4), Particle.HAPPY_VILLAGER);
+        }
+    }
+
+    private void regenerate(Player player, double amount, Particle particle) {
+        if (amount > 0 && player.getHealth() < getMaxHealth(player)) {
+            player.heal(amount, EntityRegainHealthEvent.RegainReason.MAGIC_REGEN);
+            if (tick % 60 == 0) {
+                Fx.particle(player.getLocation().add(0, 1.2, 0), particle, 4, 0.4, 0);
+            }
+        }
+    }
+
+    // ---- Truesight: Shadowstep can't hide players from you ----
+
+    private void truesight() {
+        for (var hidden : plugin.effects().entitiesWith(com.trimsmp.trimpowers.effect.EffectType.SHADOWSTEP)) {
+            if (!(hidden instanceof Player stepper)) {
+                continue;
+            }
+            for (Player viewer : plugin.getServer().getOnlinePlayers()) {
+                if (viewer.equals(stepper)) {
+                    continue;
+                }
+                if (plugin.perks().has(viewer, Perk.TRUESIGHT)) {
+                    viewer.showEntity(plugin, stepper);
+                } else {
+                    viewer.hideEntity(plugin, stepper);
+                }
             }
         }
     }

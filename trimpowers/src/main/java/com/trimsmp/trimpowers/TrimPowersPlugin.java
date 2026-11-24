@@ -8,6 +8,7 @@ import com.trimsmp.trimpowers.listener.AbilityListener;
 import com.trimsmp.trimpowers.listener.CombatListener;
 import com.trimsmp.trimpowers.listener.EffectListener;
 import com.trimsmp.trimpowers.listener.PassiveListener;
+import com.trimsmp.trimpowers.perk.AllyManager;
 import com.trimsmp.trimpowers.perk.PerkListener;
 import com.trimsmp.trimpowers.perk.PerkManager;
 import com.trimsmp.trimpowers.perk.PerkTask;
@@ -35,6 +36,7 @@ public final class TrimPowersPlugin extends JavaPlugin {
     private PerkManager perks;
     private PerkTask perkTask;
     private TrimEditor editor;
+    private AllyManager allies;
 
     @Override
     public void onEnable() {
@@ -51,6 +53,7 @@ public final class TrimPowersPlugin extends JavaPlugin {
         this.perks = new PerkManager(this);
         perks.load(getConfig());
         this.perkTask = new PerkTask(this);
+        this.allies = new AllyManager(this);
         this.editor = new TrimEditor(this);
         this.tracker = new TrimTracker(this);
         this.hud = new HudTask(this);
@@ -62,6 +65,7 @@ public final class TrimPowersPlugin extends JavaPlugin {
         pm.registerEvents(new AbilityListener(this), this);
         pm.registerEvents(new PerkListener(this, perkTask), this);
         pm.registerEvents(editor, this);
+        pm.registerEvents(allies, this);
 
         TrimsCommand command = new TrimsCommand(this);
         PluginCommand pluginCommand = getCommand("trims");
@@ -74,6 +78,7 @@ public final class TrimPowersPlugin extends JavaPlugin {
         tracker.start();
         hud.start();
         perkTask.start();
+        allies.start();
         for (Player player : getServer().getOnlinePlayers()) {
             tracker.refresh(player);
         }
@@ -87,6 +92,9 @@ public final class TrimPowersPlugin extends JavaPlugin {
         }
         if (perkTask != null) {
             perkTask.stop();
+        }
+        if (allies != null) {
+            allies.stop();
         }
         if (tracker != null) {
             tracker.stop();
@@ -139,5 +147,9 @@ public final class TrimPowersPlugin extends JavaPlugin {
 
     public TrimEditor editor() {
         return editor;
+    }
+
+    public AllyManager allies() {
+        return allies;
     }
 }

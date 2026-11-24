@@ -22,22 +22,22 @@ action-bar HUD.
 
 | Trim | Passive | Potions | Signature passives | Ability |
 |---|---|---|---|---|
-| Sentry | +24% projectile damage | Hero of the Village | – | **Volley**: 5 bleeding arrows |
-| Dune | +32% knockback resistance | Fire Resistance | – | **Sandstorm**: damages and blinds |
+| Sentry | +24% projectile damage | Hero of the Village | Piercing Shots, Pillager Escort | **Volley**: 5 bleeding arrows |
+| Dune | +32% knockback resistance | Fire Resistance | Sun-Blessed, Sand Veil | **Sandstorm**: damages and blinds |
 | Coast | +40% swim speed, more oxygen | Conduit Power, Dolphin's Grace | Undertow | **Riptide Surge** |
-| Wild | 16% chance on hit to Root | Health Boost | – | **Entangle**: root enemies |
+| Wild | 16% chance on hit to Root | Health Boost | Overgrowth, Beast Tamer | **Entangle**: root enemies |
 | Ward | -12% damage taken | – | Swords deal 1.5x | **Bulwark**: shield + sonic pulse |
-| Eye | +2 block reach | Night Vision | – | **All-Seeing Eye**: mark enemies |
-| Vex | +16% speed | Speed | – | **Phase Blink**: teleport + hex |
+| Eye | +2 block reach | Night Vision | Seeker, Truesight | **All-Seeing Eye**: mark enemies |
+| Vex | +16% speed | Speed | Vex Swarm, Spectral Rush | **Phase Blink**: teleport + hex |
 | Tide | +20% damage when wet | – | Ocean's Blessing | **Tidal Wave**: frostbite wave |
-| Snout | +12% melee damage, knockback | Haste | – | **Berserk**: damage + lifesteal |
+| Snout | +12% melee damage, knockback | Haste | Bloodlust, Crushing Crits | **Berserk**: damage + lifesteal |
 | Rib | Immune to fire and lava | Resistance | Half fall damage | **Hellfire Ring**: soulburn |
 | Spire | -60% fall damage | Regeneration | Jump 2 blocks higher | **Skyward**: launch + levitate |
 | Wayfinder | 40% chance to not lose hunger | – | Pathfinder, Navigator | **Recall**: anchor teleport |
 | Shaper | +20% mining speed | – | Vein Miner, Auto-Smelt, Prospector | **Earthshatter**: rock line + stun |
 | Silence | +60% sneak speed, sculk-proof | – | Warden's Calm, Deep Dark Sight, Shadow Crawl | **Shadowstep**: vanish + invisibility |
 | Raiser | +40% XP | – | Wisdom, Bounce, XP Hunter, Level Power | **Upheaval**: knock-up + stun |
-| Host | +2 hearts max health | Regeneration | – | **Soul Siphon**: drain + heal |
+| Host | +2 hearts max health | Regeneration | Soul Shield | **Soul Siphon**: drain + heal |
 | Flow | Safer falls, higher jumps | Speed | Double Jump | **Gale Dash**: wind dash |
 | Bolt | +16% attack speed | – | Static Charge, Chain Reaction | **Overcharge**: chain lightning |
 
@@ -69,6 +69,19 @@ Any passive can go on any trim, either in `/trims editor` or under `powers.<trim
 | Double Jump | `double-jump` | Jump again in mid-air (3s cooldown) |
 | Static Charge | `static-charge` | 15% chance lightning strikes whoever hits you |
 | Chain Reaction | `chain-reaction` | Every 4th hit in a row arcs lightning to a nearby enemy |
+| Piercing Shots | `piercing-shots` | Your arrows pierce through 1 extra enemy |
+| Pillager Escort | `pillager-escort` | Hold an Ominous Banner at a pillager outpost: 5 pillagers join you and fight for you for 5 min (10 min cooldown) |
+| Sun-Blessed | `sun-blessed` | Regenerate health under open daytime sky |
+| Sand Veil | `sand-veil` | 20% chance melee attackers are blinded for 2s |
+| Overgrowth | `overgrowth` | Regenerate health while standing on grass, moss or leaves |
+| Beast Tamer | `beast-tamer` | Your tamed pets deal +50% damage and take 50% less |
+| Seeker | `seeker` | Anyone who hits you is Marked for 3s |
+| Truesight | `truesight` | Shadowstep can't hide players from you; immune to Blindness |
+| Vex Swarm | `vex-swarm` | Using your ability summons 2 vexes that fight for you for 15s |
+| Spectral Rush | `spectral-rush` | Getting hit gives +30% speed for 2s |
+| Bloodlust | `bloodlust` | Each kill heals 2 hearts and gives a speed burst |
+| Crushing Crits | `crushing-crits` | Critical hits Stun for 0.75s (6s cooldown) |
+| Soul Shield | `soul-shield` | Dropping below 4 hearts gives Resistance II for 5s (60s cooldown) |
 
 ## Custom effects
 
@@ -119,6 +132,9 @@ Permissions: `trimpowers.use` (everyone by default) and `trimpowers.admin` (ops 
   it gave, so it never removes a potion you drank or a beacon effect, and leftovers are cleaned up even after a crash.
 - **Double Jump** works by briefly allowing flight, so it can trip some anti-cheat plugins. It never touches
   players who already have `/fly` or creative.
+- **Allies (Pillager Escort, Vex Swarm):** they follow you and fight whoever you fight or whoever attacks you,
+  plus nearby hostile mobs. They never attack you, your pets or villagers, drop no loot, and vanish when they expire
+  or when you log out or die.
 - **No griefing:** Earthshatter's rocks are display entities, and Vein Miner breaks blocks exactly as if the player
   mined them (protection plugins and tool durability apply).
 - **Crash-safe:** stat bonuses and slows are never saved to player data, so a crash can't leave someone stuck slowed or stunned.

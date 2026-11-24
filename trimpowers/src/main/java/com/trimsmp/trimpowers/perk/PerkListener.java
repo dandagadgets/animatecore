@@ -62,6 +62,7 @@ public final class PerkListener implements Listener {
     private final PerkTask task;
     private final Map<UUID, int[]> comboHits = new HashMap<>();
     private final Map<UUID, Long> comboLastHit = new HashMap<>();
+    private final Map<UUID, Long> critReadyAt = new HashMap<>();
     private boolean veinMining;
 
     public PerkListener(TrimPowersPlugin plugin, PerkTask task) {
@@ -108,6 +109,8 @@ public final class PerkListener implements Listener {
         PotionEffectType type = event.getModifiedType();
         if ((type.equals(PotionEffectType.DARKNESS) || type.equals(PotionEffectType.BLINDNESS))
                 && perk(player, Perk.DEEP_DARK_SIGHT) != null) {
+            event.setCancelled(true);
+        } else if (type.equals(PotionEffectType.BLINDNESS) && perk(player, Perk.TRUESIGHT) != null) {
             event.setCancelled(true);
         }
     }
@@ -168,6 +171,17 @@ public final class PerkListener implements Listener {
 
         if (!(damager instanceof Player attacker)) {
             return;
+        }
+
+        // Crushing Crits: critical hits stun.
+        PerkParams crits = perk(attacker, Perk.CRUSHING_CRITS);
+        if (crits != null && event.isCritical()) {
+            long now = System.currentTimeMillis();
+            if (critReadyAt.getOrDefault(attacker.getUniqueId(), 0L) <= now && Targets.canAffect(plugin, attacker, victim)) {
+                critReadyAt.put(attacker.getUniqueId(), now + (long) (crits.d("cooldown", 6) * 1000));
+                plugin.effects().apply(victim, EffectType.STUN, (int) Math.round(crits.d("stun-seconds", 0.75) * 20), 0, attacker);
+                Fx.sound(victim.getLocation(), Sound.ENTITY_IRON_GOLEM_DAMAGE, 0.8f, 0.7f);
+            }
         }
 
         // Undertow: pull enemies in water toward you.
@@ -371,13 +385,125 @@ public final class PerkListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onKill(EntityDeathEvent event) {
-        if (event.getEntity() instanceof Player || event.getEntity().getKiller() == null) {
+        Player killer = event.getEntity().getKiller();
+        if (killer == null || killer.equals(event.getEntity())) {
             return;
         }
-        PerkParams hunter = perk(event.getEntity().getKiller(), Perk.XP_HUNTER);
-        if (hunter != null && event.getDroppedExp() > 0) {
+        PerkParams hunter = perk(killer, Perk.XP_HUNTER);
+        if (hunter != null && !(event.getEntity() instanceof Player) && event.getDroppedExp() > 0) {
             event.setDroppedExp((int) Math.round(event.getDroppedExp() * hunter.d("multiplier", 1.5)));
         }
+        PerkParams bloodlust = perk(killer, Perk.BLOODLUST);
+        if (bloodlust != null && !killer.isDead()) {
+            killer.heal(bloodlust.d("heal", 4), org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason.MAGIC);
+            int ticks = (int) Math.round(bloodlust.d("speed-seconds", 3) * 20);
+            if (ticks > 0) {
+                killer.addPotionEffect(new org.bukkit.potion.PotionEffect(PotionEffectType.SPEED, ticks, 1, true, false, true));
+            }
+            Fx.dust(killer.getLocation().add(0, 1, 0), org.bukkit.Color.fromRGB(0x8a0303), 1.4f, 12, 0.4);
+            Fx.sound(killer.getLocation(), Sound.ENTITY_PLAYER_BURP, 0.6f, 0.6f);
+        }
+    }
+
+    // ---- Piercing Shots ----
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onLaunch(org.bukkit.event.entity.ProjectileLaunchEvent event) {
+        if (event.getEntity() instanceof org.bukkit.entity.AbstractArrow arrow && !(arrow instanceof org.bukkit.entity.Trident)
+                && arrow.getShooter() instanceof Player shooter) {
+            PerkParams piercing = perk(shooter, Perk.PIERCING_SHOTS);
+            if (piercing != null) {
+                arrow.setPierceLevel(Math.min(127, arrow.getPierceLevel() + Math.max(0, piercing.i("extra-pierce", 1))));
+            }
+        }
+    }
+
+    // ---- Beast Tamer ----
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onPetDamage(EntityDamageByEntityEvent event) {
+        if (Damage.isProbe()) {
+            return;
+        }
+        if (event.getDamager() instanceof org.bukkit.entity.Tameable pet && pet.isTamed()
+                && pet.getOwner() instanceof Player owner && owner.isOnline()) {
+            PerkParams tamer = perk(owner, Perk.BEAST_TAMER);
+            if (tamer != null) {
+                event.setDamage(event.getDamage() * (1 + tamer.d("damage-bonus", 0.5)));
+            }
+        }
+        if (event.getEntity() instanceof org.bukkit.entity.Tameable pet && pet.isTamed()
+                && pet.getOwner() instanceof Player owner && owner.isOnline()) {
+            PerkParams tamer = perk(owner, Perk.BEAST_TAMER);
+            if (tamer != null) {
+                event.setDamage(event.getDamage() * Math.max(0, 1 - tamer.d("damage-reduction", 0.5)));
+            }
+        }
+    }
+
+    // ---- Seeker, Sand Veil, Spectral Rush (when you get hit) ----
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onDefend(EntityDamageByEntityEvent event) {
+        if (Damage.isInternal() || Damage.isProbe() || !(event.getEntity() instanceof Player defender)) {
+            return;
+        }
+        Entity damager = event.getDamager();
+        boolean melee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK;
+        LivingEntity attacker = damager instanceof Projectile shot && shot.getShooter() instanceof LivingEntity shooter
+                ? shooter : damager instanceof LivingEntity living ? living : null;
+
+        PerkParams rush = perk(defender, Perk.SPECTRAL_RUSH);
+        if (rush != null) {
+            task.spectralRush(defender, rush);
+        }
+        if (attacker == null || attacker.equals(defender)) {
+            return;
+        }
+        PerkParams seeker = perk(defender, Perk.SEEKER);
+        if (seeker != null && Targets.canAffect(plugin, defender, attacker)) {
+            plugin.effects().apply(attacker, EffectType.MARKED, (int) Math.round(seeker.d("mark-seconds", 3) * 20),
+                    seeker.d("extra-damage", 0.2), defender);
+        }
+        PerkParams veil = perk(defender, Perk.SAND_VEIL);
+        if (veil != null && melee && ThreadLocalRandom.current().nextDouble() < veil.d("chance", 0.2)
+                && Targets.canAffect(plugin, defender, attacker)) {
+            attacker.addPotionEffect(new org.bukkit.potion.PotionEffect(PotionEffectType.BLINDNESS,
+                    (int) Math.round(veil.d("blind-seconds", 2) * 20), 0, false, false, true));
+            Fx.block(attacker.getEyeLocation(), Particle.FALLING_DUST, Material.SAND.createBlockData(), 15, 0.3);
+            Fx.sound(attacker.getLocation(), Sound.BLOCK_SAND_BREAK, 1f, 0.8f);
+        }
+    }
+
+    // ---- Soul Shield ----
+
+    private final Map<UUID, Long> soulShieldReadyAt = new HashMap<>();
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onLowHealth(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player player)) {
+            return;
+        }
+        PerkParams shield = perk(player, Perk.SOUL_SHIELD);
+        if (shield == null) {
+            return;
+        }
+        double after = player.getHealth() - event.getFinalDamage();
+        long now = System.currentTimeMillis();
+        if (after <= 0 || after >= shield.d("below-hearts", 4) * 2 || soulShieldReadyAt.getOrDefault(player.getUniqueId(), 0L) > now) {
+            return;
+        }
+        soulShieldReadyAt.put(player.getUniqueId(), now + (long) (shield.d("cooldown", 60) * 1000));
+        int ticks = (int) Math.round(shield.d("seconds", 5) * 20);
+        int amplifier = Math.max(0, shield.i("level", 2) - 1);
+        plugin.getServer().getScheduler().runTask(plugin, () -> {
+            if (player.isOnline() && !player.isDead()) {
+                player.addPotionEffect(new org.bukkit.potion.PotionEffect(PotionEffectType.RESISTANCE, ticks, amplifier, true, true, true));
+                Fx.particle(player.getLocation().add(0, 1, 0), Particle.SOUL, 20, 0.5, 0.05);
+                Fx.sound(player.getLocation(), Sound.PARTICLE_SOUL_ESCAPE, 1.5f, 0.8f);
+                plugin.hud().flash(player, com.trimsmp.trimpowers.util.Text.mm("<aqua><b>⛨ Soul Shield!"));
+            }
+        });
     }
 
     // ---- Double Jump ----
@@ -395,6 +521,8 @@ public final class PerkListener implements Listener {
         UUID id = event.getPlayer().getUniqueId();
         comboHits.remove(id);
         comboLastHit.remove(id);
+        critReadyAt.remove(id);
+        soulShieldReadyAt.remove(id);
         task.forget(event.getPlayer());
     }
 }

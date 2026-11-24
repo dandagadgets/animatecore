@@ -75,7 +75,9 @@ effects:
 #  perks: signature passives for the full set. Any perk works on any trim:
 #     weapon-damage, fall-damage, extra-jump, ocean-blessing, undertow, pathfinder, navigator,
 #     vein-miner, auto-smelt, prospector, wardens-calm, deep-dark-sight, shadow-crawl, wisdom,
-#     bounce, xp-hunter, level-power, double-jump, static-charge, chain-reaction
+#     bounce, xp-hunter, level-power, double-jump, static-charge, chain-reaction,
+#     piercing-shots, pillager-escort, sun-blessed, sand-veil, overgrowth, beast-tamer,
+#     seeker, truesight, vex-swarm, spectral-rush, bloodlust, crushing-crits, soul-shield
 #  Easiest way to change both: /trims editor in-game (saves here automatically).
 # ------------------------------------------------------------
 powers:
@@ -85,7 +87,14 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: hero_of_the_village
         level: 1
-    perks: {}                   # full-set signature passives
+    perks:                      # full-set signature passives
+      piercing-shots:
+        extra-pierce: 1
+      pillager-escort:
+        count: 5
+        minutes: 5.0
+        cooldown-minutes: 10.0
+        outpost-radius: 48.0
     passive:
       projectile-damage: 0.24
     ability:                    # Volley
@@ -102,7 +111,12 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: fire_resistance
         level: 1
-    perks: {}                   # full-set signature passives
+    perks:                      # full-set signature passives
+      sun-blessed:
+        heal-per-second: 0.4
+      sand-veil:
+        chance: 0.2
+        blind-seconds: 2.0
     passive:
       knockback-resistance: 0.32
     ability:                    # Sandstorm
@@ -138,7 +152,12 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: health_boost
         level: 1
-    perks: {}                   # full-set signature passives
+    perks:                      # full-set signature passives
+      overgrowth:
+        heal-per-second: 0.4
+      beast-tamer:
+        damage-bonus: 0.5
+        damage-reduction: 0.5
     passive:
       root-chance: 0.16
       root-seconds: 1.5
@@ -166,7 +185,11 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: night_vision
         level: 1
-    perks: {}                   # full-set signature passives
+    perks:                      # full-set signature passives
+      seeker:
+        mark-seconds: 3.0
+        extra-damage: 0.2
+      truesight: true
     passive:
       block-reach: 2.0
     ability:                    # All-Seeing Eye
@@ -181,7 +204,13 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: speed
         level: 1
-    perks: {}                   # full-set signature passives
+    perks:                      # full-set signature passives
+      vex-swarm:
+        count: 2
+        seconds: 15.0
+      spectral-rush:
+        speed-bonus: 0.3
+        seconds: 2.0
     passive:
       speed: 0.16
     ability:                    # Phase Blink
@@ -216,7 +245,13 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: haste
         level: 1
-    perks: {}                   # full-set signature passives
+    perks:                      # full-set signature passives
+      bloodlust:
+        heal: 4.0
+        speed-seconds: 3.0
+      crushing-crits:
+        stun-seconds: 0.75
+        cooldown: 6.0
     passive:
       melee-damage: 0.12
       knockback: 0.6
@@ -340,7 +375,12 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: regeneration
         level: 1
-    perks: {}                   # full-set signature passives
+    perks:                      # full-set signature passives
+      soul-shield:
+        below-hearts: 4.0
+        seconds: 5.0
+        level: 2
+        cooldown: 60.0
     passive:
       max-health: 4.0
     ability:                    # Soul Siphon

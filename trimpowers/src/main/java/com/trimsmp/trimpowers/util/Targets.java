@@ -43,7 +43,7 @@ public final class Targets {
         if (!(target instanceof LivingEntity living) || target.equals(caster) || living.isDead() || !living.isValid()) {
             return false;
         }
-        if (target instanceof ArmorStand || living.isInvulnerable()) {
+        if (target instanceof ArmorStand || living.isInvulnerable() || plugin.allies().isAllyOf(target, caster)) {
             return false;
         }
         Settings settings = plugin.settings();

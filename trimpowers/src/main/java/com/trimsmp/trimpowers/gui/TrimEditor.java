@@ -131,10 +131,10 @@ public final class TrimEditor implements Listener {
     private void openPerks(Player player, String trim) {
         TrimPower power = plugin.powers().get(trim);
         Holder holder = new Holder(Page.PERKS, trim);
-        Inventory inv = create(holder, 36, "<dark_gray>" + power.name() + " » Passives");
+        Inventory inv = create(holder, 54, "<dark_gray>" + power.name() + " » Passives");
         Map<Perk, PerkParams> active = plugin.perks().of(trim);
         Perk[] perks = Perk.values();
-        for (int i = 0; i < perks.length && i < 27; i++) {
+        for (int i = 0; i < perks.length && i < 45; i++) {
             Perk perk = perks[i];
             PerkParams params = active.get(perk);
             boolean on = params != null;
@@ -147,9 +147,9 @@ public final class TrimEditor implements Listener {
             inv.setItem(i, item(perk.icon(), (on ? "<green><b>" : "<white>") + perk.displayName(), lore, on));
             setSlot(holder, i, perk);
         }
-        inv.setItem(27, item(Material.ARROW, "<gray>« Back", List.of(), false));
-        setSlot(holder, 27, "back");
-        inv.setItem(31, item(Material.BOOK, "<gold>Signature passives", List.of(
+        inv.setItem(45, item(Material.ARROW, "<gray>« Back", List.of(), false));
+        setSlot(holder, 45, "back");
+        inv.setItem(49, item(Material.BOOK, "<gold>Signature passives", List.of(
                 "<gray>Active while wearing the full",
                 "<gray>set (all 4 pieces) of this trim.",
                 "<gray>Any passive works on any trim."), false));

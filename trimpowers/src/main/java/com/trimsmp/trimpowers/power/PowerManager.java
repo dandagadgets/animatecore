@@ -194,6 +194,12 @@ public final class PowerManager {
         }
         plugin.hud().flash(player, Text.mm(power.tag() + "<b>✦ " + power.abilityName() + "!</b>"));
         long cooldown = power.activate(player);
+        if (cooldown != TrimPower.NO_COOLDOWN) {
+            com.trimsmp.trimpowers.perk.PerkParams swarm = plugin.perks().active(player, com.trimsmp.trimpowers.perk.Perk.VEX_SWARM);
+            if (swarm != null) {
+                plugin.allies().summonVexes(player, swarm);
+            }
+        }
         if (cooldown == TrimPower.DEFAULT_COOLDOWN) {
             cooldown = power.cooldownSeconds() * 1000L;
         }
