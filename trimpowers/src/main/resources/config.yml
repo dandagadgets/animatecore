@@ -63,14 +63,29 @@ effects:
     reveal-bonus-damage: 0.6    # +60% damage on the first hit out of Shadowstep
     reveal-bleed-seconds: 4
     reveal-bleed-damage: 1.0
+    invisibility-potion: true   # Shadowstep also gives vanilla Invisibility
 
 # ------------------------------------------------------------
 #  Trim powers  (cooldowns in seconds, damage in half-hearts)
+#
+#  potions: permanent potion effects while wearing the trim.
+#     effect = any non-instant effect (speed, strength, haste, resistance, night_vision, ...)
+#     level  = 1 for Speed I, 2 for Speed II ...   pieces = how many pieces needed (1-4)
+#  perks: signature passives for the full set. Any perk works on any trim:
+#     weapon-damage, fall-damage, extra-jump, ocean-blessing, undertow, pathfinder, navigator,
+#     vein-miner, auto-smelt, prospector, wardens-calm, deep-dark-sight, shadow-crawl, wisdom,
+#     bounce, xp-hunter, level-power, double-jump, static-charge, chain-reaction
+#  Easiest way to change both: /trims editor in-game (saves here automatically).
 # ------------------------------------------------------------
 powers:
   sentry:
     enabled: true
     cooldown: 18
+    potions:                    # permanent potion effects (change in-game with /trims editor)
+      - effect: hero_of_the_village
+        level: 1
+        pieces: 4
+    perks: {}                   # full-set signature passives
     passive:
       projectile-damage-per-piece: 0.06
     ability:                    # Volley
@@ -84,6 +99,11 @@ powers:
   dune:
     enabled: true
     cooldown: 25
+    potions:                    # permanent potion effects (change in-game with /trims editor)
+      - effect: fire_resistance
+        level: 1
+        pieces: 4
+    perks: {}                   # full-set signature passives
     passive:
       knockback-resistance-per-piece: 0.08
     ability:                    # Sandstorm
@@ -95,6 +115,17 @@ powers:
   coast:
     enabled: true
     cooldown: 14
+    potions:                    # permanent potion effects (change in-game with /trims editor)
+      - effect: conduit_power
+        level: 1
+        pieces: 4
+      - effect: dolphins_grace
+        level: 1
+        pieces: 4
+    perks:                      # full-set signature passives
+      undertow:
+        damage-bonus: 0.3
+        pull: 0.5
     passive:
       swim-speed-per-piece: 0.1
       oxygen-bonus-per-piece: 1.0
@@ -107,6 +138,11 @@ powers:
   wild:
     enabled: true
     cooldown: 22
+    potions:                    # permanent potion effects (change in-game with /trims editor)
+      - effect: health_boost
+        level: 1
+        pieces: 4
+    perks: {}                   # full-set signature passives
     passive:
       root-chance-per-piece: 0.04
       root-seconds: 1.5
@@ -118,6 +154,10 @@ powers:
   ward:
     enabled: true
     cooldown: 30
+    potions: []                 # permanent potion effects (change in-game with /trims editor)
+    perks:                      # full-set signature passives
+      weapon-damage:
+        sword: 1.5
     passive:
       damage-reduction-per-piece: 0.03
     ability:                    # Bulwark
@@ -127,8 +167,13 @@ powers:
   eye:
     enabled: true
     cooldown: 30
+    potions:                    # permanent potion effects (change in-game with /trims editor)
+      - effect: night_vision
+        level: 1
+        pieces: 4
+    perks: {}                   # full-set signature passives
     passive:
-      night-vision-pieces: 2
+      block-reach-per-piece: 0.5
     ability:                    # All-Seeing Eye
       radius: 24
       mark-seconds: 8
@@ -138,6 +183,11 @@ powers:
   vex:
     enabled: true
     cooldown: 10
+    potions:                    # permanent potion effects (change in-game with /trims editor)
+      - effect: speed
+        level: 1
+        pieces: 4
+    perks: {}                   # full-set signature passives
     passive:
       speed-per-piece: 0.04
     ability:                    # Phase Blink
@@ -150,6 +200,11 @@ powers:
   tide:
     enabled: true
     cooldown: 20
+    potions: []                 # permanent potion effects (change in-game with /trims editor)
+    perks:                      # full-set signature passives
+      ocean-blessing:
+        damage-bonus: 0.25
+        heal-per-second: 0.4
     passive:
       wet-damage-per-piece: 0.05
     ability:                    # Tidal Wave
@@ -164,6 +219,11 @@ powers:
   snout:
     enabled: true
     cooldown: 35
+    potions:                    # permanent potion effects (change in-game with /trims editor)
+      - effect: haste
+        level: 1
+        pieces: 4
+    perks: {}                   # full-set signature passives
     passive:
       melee-damage-per-piece: 0.03
       knockback-per-piece: 0.15
@@ -174,6 +234,13 @@ powers:
   rib:
     enabled: true
     cooldown: 22
+    potions:                    # permanent potion effects (change in-game with /trims editor)
+      - effect: resistance
+        level: 1
+        pieces: 4
+    perks:                      # full-set signature passives
+      fall-damage:
+        multiplier: 0.5
     passive:
       fire-damage-reduction-per-piece: 0.25
       burn-time-reduction-per-piece: 0.2
@@ -187,6 +254,13 @@ powers:
   spire:
     enabled: true
     cooldown: 18
+    potions:                    # permanent potion effects (change in-game with /trims editor)
+      - effect: regeneration
+        level: 1
+        pieces: 4
+    perks:                      # full-set signature passives
+      extra-jump:
+        blocks: 2.0
     passive:
       fall-damage-reduction-per-piece: 0.15
     ability:                    # Skyward
@@ -199,6 +273,11 @@ powers:
   wayfinder:
     enabled: true
     cooldown: 25
+    potions: []                 # permanent potion effects (change in-game with /trims editor)
+    perks:                      # full-set signature passives
+      pathfinder:
+        speed-bonus: 0.3
+      navigator: true
     passive:
       hunger-save-chance-per-piece: 0.1
       terrain-efficiency-per-piece: 0.1
@@ -210,6 +289,14 @@ powers:
   shaper:
     enabled: true
     cooldown: 20
+    potions: []                 # permanent potion effects (change in-game with /trims editor)
+    perks:                      # full-set signature passives
+      vein-miner:
+        max-blocks: 16
+        require-sneak: true
+      auto-smelt: true
+      prospector:
+        chance: 0.15
     passive:
       mining-speed-per-piece: 0.05
     ability:                    # Earthshatter
@@ -222,6 +309,12 @@ powers:
   silence:
     enabled: true
     cooldown: 30
+    potions: []                 # permanent potion effects (change in-game with /trims editor)
+    perks:                      # full-set signature passives
+      wardens-calm: true
+      deep-dark-sight: true
+      shadow-crawl:
+        sneak-speed: 1.0
     passive:
       sneak-speed-per-piece: 0.15
       sculk-immunity-pieces: 2
@@ -231,6 +324,17 @@ powers:
   raiser:
     enabled: true
     cooldown: 22
+    potions: []                 # permanent potion effects (change in-game with /trims editor)
+    perks:                      # full-set signature passives
+      wisdom:
+        keep-levels: 0.5
+      bounce:
+        min-fall: 5.0
+      xp-hunter:
+        multiplier: 1.5
+      level-power:
+        per-level: 0.01
+        max: 0.3
     passive:
       xp-bonus-per-piece: 0.1
     ability:                    # Upheaval
@@ -242,6 +346,11 @@ powers:
   host:
     enabled: true
     cooldown: 25
+    potions:                    # permanent potion effects (change in-game with /trims editor)
+      - effect: regeneration
+        level: 1
+        pieces: 4
+    perks: {}                   # full-set signature passives
     passive:
       max-health-per-piece: 1.0
     ability:                    # Soul Siphon
@@ -255,6 +364,15 @@ powers:
   flow:
     enabled: true
     cooldown: 12
+    potions:                    # permanent potion effects (change in-game with /trims editor)
+      - effect: speed
+        level: 1
+        pieces: 4
+    perks:                      # full-set signature passives
+      double-jump:
+        cooldown: 3.0
+        power: 0.9
+        forward: 0.4
     passive:
       safe-fall-per-piece: 1.0
       jump-strength-per-piece: 0.02
@@ -268,6 +386,17 @@ powers:
   bolt:
     enabled: true
     cooldown: 30
+    potions: []                 # permanent potion effects (change in-game with /trims editor)
+    perks:                      # full-set signature passives
+      static-charge:
+        chance: 0.15
+        damage: 3.0
+        shocked-seconds: 2.0
+      chain-reaction:
+        hits: 4
+        window-seconds: 4.0
+        damage: 3.0
+        radius: 5.0
     passive:
       attack-speed-per-piece: 0.04
     ability:                    # Overcharge

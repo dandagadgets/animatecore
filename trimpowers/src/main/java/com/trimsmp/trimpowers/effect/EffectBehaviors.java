@@ -19,6 +19,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -98,6 +100,10 @@ final class EffectBehaviors {
                             other.hideEntity(plugin, player);
                         }
                     }
+                }
+                if (settings().effectFlag("shadowstep", "invisibility-potion", true)) {
+                    e.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, fx.durationTicks(), 0, true, false, true));
+                    fx.flag = true;
                 }
                 for (Entity near : e.getNearbyEntities(32, 16, 32)) {
                     if (near instanceof Mob mob && e.equals(mob.getTarget())) {
@@ -274,6 +280,12 @@ final class EffectBehaviors {
                 if (e instanceof Player player) {
                     for (Player other : plugin.getServer().getOnlinePlayers()) {
                         other.showEntity(plugin, player);
+                    }
+                }
+                if (fx.flag) {
+                    PotionEffect invisibility = e.getPotionEffect(PotionEffectType.INVISIBILITY);
+                    if (invisibility != null && !invisibility.isInfinite() && invisibility.getDuration() <= fx.durationTicks()) {
+                        e.removePotionEffect(PotionEffectType.INVISIBILITY);
                     }
                 }
                 if (e.isValid()) {

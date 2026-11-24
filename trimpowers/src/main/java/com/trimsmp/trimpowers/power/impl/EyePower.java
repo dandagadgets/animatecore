@@ -2,28 +2,23 @@ package com.trimsmp.trimpowers.power.impl;
 
 import com.trimsmp.trimpowers.TrimPowersPlugin;
 import com.trimsmp.trimpowers.effect.EffectType;
+import com.trimsmp.trimpowers.power.AttributeSink;
 import com.trimsmp.trimpowers.power.TrimPower;
 import com.trimsmp.trimpowers.util.Fx;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
-/** Eye (strongholds): night vision, and marking every enemy around you so they take extra damage. */
+/** Eye (strongholds): longer reach, and marking every enemy around you so they take extra damage. */
 public final class EyePower extends TrimPower {
 
-    private static final int NIGHT_VISION_TICKS = 320;
     private static final Color EYE = Color.fromRGB(0xb26bff);
-    private final Set<UUID> nightVisionGiven = new HashSet<>();
 
     public EyePower(TrimPowersPlugin plugin) {
         super(plugin, "eye", "Eye", "All-Seeing Eye", 0x9B6BE0);
@@ -35,26 +30,8 @@ public final class EyePower extends TrimPower {
     }
 
     @Override
-    public void passiveTick(Player player, int pieces) {
-        if (pieces >= i("passive.night-vision-pieces", 2)) {
-            PotionEffect current = player.getPotionEffect(PotionEffectType.NIGHT_VISION);
-            if (current == null || current.getDuration() < 240) {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, NIGHT_VISION_TICKS, 0, true, false, true));
-                nightVisionGiven.add(player.getUniqueId());
-            }
-        } else {
-            clearPassive(player);
-        }
-    }
-
-    @Override
-    public void clearPassive(Player player) {
-        if (nightVisionGiven.remove(player.getUniqueId())) {
-            PotionEffect current = player.getPotionEffect(PotionEffectType.NIGHT_VISION);
-            if (current != null && current.getDuration() <= NIGHT_VISION_TICKS) {
-                player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-            }
-        }
+    public void collectAttributes(int pieces, AttributeSink sink) {
+        sink.add("block_interaction_range", d("passive.block-reach-per-piece", 0.5) * pieces, AttributeModifier.Operation.ADD_NUMBER);
     }
 
     @Override
@@ -92,7 +69,7 @@ public final class EyePower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "Night vision while wearing <white>" + i("passive.night-vision-pieces", 2) + "+</white> pieces.";
+        return "<white>+" + n(d("passive.block-reach-per-piece", 0.5)) + "</white> block reach per piece (building and mining).";
     }
 
     @Override

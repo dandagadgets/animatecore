@@ -2,11 +2,13 @@ package com.trimsmp.trimpowers.hud;
 
 import com.trimsmp.trimpowers.TrimPowersPlugin;
 import com.trimsmp.trimpowers.effect.ActiveEffect;
+import com.trimsmp.trimpowers.perk.Perk;
 import com.trimsmp.trimpowers.power.TrimPower;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
@@ -85,6 +87,9 @@ public final class HudTask {
 
     private Component build(Player player) {
         List<Component> parts = new ArrayList<>();
+        if (plugin.perks().has(player, Perk.NAVIGATOR)) {
+            parts.add(navigator(player));
+        }
         TrimPower power = plugin.powers().setPower(player);
         if (power != null) {
             long remaining = plugin.powers().remainingMillis(player, power.key());
@@ -104,5 +109,35 @@ public final class HudTask {
             return null;
         }
         return Component.join(JoinConfiguration.separator(Component.text("  |  ", NamedTextColor.DARK_GRAY)), parts);
+    }
+
+    private static final String[] DIRECTIONS = {"S", "SW", "W", "NW", "N", "NE", "E", "SE"};
+
+    /** "123 64 -456  NE  Plains" for the Navigator perk. */
+    @SuppressWarnings("deprecation")
+    private static Component navigator(Player player) {
+        Location loc = player.getLocation();
+        float yaw = (loc.getYaw() % 360 + 360) % 360;
+        String facing = DIRECTIONS[(int) Math.floor((yaw + 22.5) / 45.0) % 8];
+        String biome;
+        try {
+            biome = prettyKey(loc.getBlock().getBiome().getKey().getKey());
+        } catch (RuntimeException ex) {
+            biome = "?";
+        }
+        return Component.text(loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ() + " ", NamedTextColor.WHITE)
+                .append(Component.text(facing + " ", NamedTextColor.GOLD))
+                .append(Component.text(biome, NamedTextColor.GREEN));
+    }
+
+    private static String prettyKey(String key) {
+        StringBuilder sb = new StringBuilder();
+        for (String word : key.split("_")) {
+            if (!sb.isEmpty()) {
+                sb.append(' ');
+            }
+            sb.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1));
+        }
+        return sb.toString();
     }
 }

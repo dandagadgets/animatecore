@@ -60,6 +60,7 @@ public final class TrimTracker {
                 ? TrimProfile.EMPTY
                 : TrimProfile.scan(player, plugin.settings().piecesForAbility());
         TrimProfile before = profiles.put(player.getUniqueId(), now);
+        plugin.potions().apply(player, now);
         if (before == null || !before.counts().equals(now.counts())) {
             applyAttributes(player, now);
             if (before != null) {
@@ -89,6 +90,7 @@ public final class TrimTracker {
     public void forget(Player player) {
         TrimProfile profile = profiles.remove(player.getUniqueId());
         removeAttributes(player);
+        plugin.potions().clear(player);
         if (profile != null) {
             for (String key : profile.counts().keySet()) {
                 TrimPower power = plugin.powers().get(key);
@@ -131,6 +133,8 @@ public final class TrimTracker {
             power.collectAttributes(entry.getValue(), (attribute, amount, operation) ->
                     sums.merge(attribute + "|" + operation.name(), amount, Double::sum));
         }
+        plugin.perks().collectAttributes(profile, (attribute, amount, operation) ->
+                sums.merge(attribute + "|" + operation.name(), amount, Double::sum));
         Map<NamespacedKey, String> applied = new HashMap<>();
         for (Map.Entry<String, Double> entry : sums.entrySet()) {
             if (Math.abs(entry.getValue()) < 1.0E-9) {

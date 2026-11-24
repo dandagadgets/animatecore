@@ -2,11 +2,16 @@ package com.trimsmp.trimpowers;
 
 import com.trimsmp.trimpowers.command.TrimsCommand;
 import com.trimsmp.trimpowers.effect.EffectManager;
+import com.trimsmp.trimpowers.gui.TrimEditor;
 import com.trimsmp.trimpowers.hud.HudTask;
 import com.trimsmp.trimpowers.listener.AbilityListener;
 import com.trimsmp.trimpowers.listener.CombatListener;
 import com.trimsmp.trimpowers.listener.EffectListener;
 import com.trimsmp.trimpowers.listener.PassiveListener;
+import com.trimsmp.trimpowers.perk.PerkListener;
+import com.trimsmp.trimpowers.perk.PerkManager;
+import com.trimsmp.trimpowers.perk.PerkTask;
+import com.trimsmp.trimpowers.potion.PotionPassiveManager;
 import com.trimsmp.trimpowers.power.PowerManager;
 import com.trimsmp.trimpowers.trim.TrimTracker;
 import org.bukkit.command.PluginCommand;
@@ -26,6 +31,10 @@ public final class TrimPowersPlugin extends JavaPlugin {
     private PowerManager powers;
     private TrimTracker tracker;
     private HudTask hud;
+    private PotionPassiveManager potions;
+    private PerkManager perks;
+    private PerkTask perkTask;
+    private TrimEditor editor;
 
     @Override
     public void onEnable() {
@@ -37,6 +46,12 @@ public final class TrimPowersPlugin extends JavaPlugin {
         this.powers = new PowerManager(this);
         powers.registerDefaults();
         powers.load(getConfig());
+        this.potions = new PotionPassiveManager(this);
+        potions.load(getConfig());
+        this.perks = new PerkManager(this);
+        perks.load(getConfig());
+        this.perkTask = new PerkTask(this);
+        this.editor = new TrimEditor(this);
         this.tracker = new TrimTracker(this);
         this.hud = new HudTask(this);
 
@@ -45,6 +60,8 @@ public final class TrimPowersPlugin extends JavaPlugin {
         pm.registerEvents(new EffectListener(this), this);
         pm.registerEvents(new PassiveListener(this), this);
         pm.registerEvents(new AbilityListener(this), this);
+        pm.registerEvents(new PerkListener(this, perkTask), this);
+        pm.registerEvents(editor, this);
 
         TrimsCommand command = new TrimsCommand(this);
         PluginCommand pluginCommand = getCommand("trims");
@@ -56,6 +73,7 @@ public final class TrimPowersPlugin extends JavaPlugin {
         effects.start();
         tracker.start();
         hud.start();
+        perkTask.start();
         for (Player player : getServer().getOnlinePlayers()) {
             tracker.refresh(player);
         }
@@ -66,6 +84,9 @@ public final class TrimPowersPlugin extends JavaPlugin {
     public void onDisable() {
         if (hud != null) {
             hud.stop();
+        }
+        if (perkTask != null) {
+            perkTask.stop();
         }
         if (tracker != null) {
             tracker.stop();
@@ -83,6 +104,8 @@ public final class TrimPowersPlugin extends JavaPlugin {
         reloadConfig();
         settings.load(getConfig());
         powers.load(getConfig());
+        potions.load(getConfig());
+        perks.load(getConfig());
         tracker.resetAll();
     }
 
@@ -104,5 +127,17 @@ public final class TrimPowersPlugin extends JavaPlugin {
 
     public HudTask hud() {
         return hud;
+    }
+
+    public PotionPassiveManager potions() {
+        return potions;
+    }
+
+    public PerkManager perks() {
+        return perks;
+    }
+
+    public TrimEditor editor() {
+        return editor;
     }
 }

@@ -8,8 +8,8 @@ import com.trimsmp.trimpowers.effect.EffectType;
 import com.trimsmp.trimpowers.power.impl.SentryPower;
 import com.trimsmp.trimpowers.util.Damage;
 import com.trimsmp.trimpowers.util.Fx;
+import com.trimsmp.trimpowers.util.Lightning;
 import com.trimsmp.trimpowers.util.Targets;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -39,7 +39,6 @@ import java.util.UUID;
 public final class CombatListener implements Listener {
 
     private static final Set<String> UNBLOCKABLE = Set.of("VOID", "KILL", "WORLD_BORDER", "SUICIDE");
-    private static final Color SPARK = Color.fromRGB(0xfff27a);
 
     private final TrimPowersPlugin plugin;
     private final Map<UUID, Long> chainReadyAt = new HashMap<>();
@@ -58,10 +57,12 @@ public final class CombatListener implements Listener {
         boolean internal = Damage.isInternal();
 
         LivingEntity attacker = null;
+        Entity damagerEntity = null;
         boolean melee = false;
         boolean projectile = false;
         if (event instanceof EntityDamageByEntityEvent byEntity) {
             Entity damager = byEntity.getDamager();
+            damagerEntity = damager;
             if (damager instanceof Projectile shot && shot.getShooter() instanceof LivingEntity shooter) {
                 attacker = shooter;
                 projectile = !internal;
@@ -82,6 +83,7 @@ public final class CombatListener implements Listener {
         if (attacker != null && !internal) {
             if (attacker instanceof Player player) {
                 damage = plugin.powers().applyOutgoing(player, victim, damage, melee, projectile);
+                damage = plugin.perks().outgoing(player, victim, damage, melee, projectile, damagerEntity);
             }
             ActiveEffect hex = effects.get(attacker, EffectType.HEXED);
             if (hex != null) {
@@ -113,6 +115,7 @@ public final class CombatListener implements Listener {
         }
         if (victim instanceof Player player) {
             damage = plugin.powers().applyIncoming(player, event, damage);
+            damage = plugin.perks().incoming(player, event, damage);
         }
         if (event.getCause() == EntityDamageEvent.DamageCause.FALL && effects.has(victim, EffectType.CUSHIONED)) {
             event.setCancelled(true);
@@ -213,10 +216,7 @@ public final class CombatListener implements Listener {
                 continue;
             }
             Location to = target.getLocation().add(0, target.getHeight() * 0.6, 0);
-            Fx.zigzag(from, to, 0.3, 0.35, p -> {
-                Fx.particle(p, Particle.ELECTRIC_SPARK, 1, 0, 0);
-                Fx.dust(p, SPARK, 0.6f, 1, 0);
-            });
+            Lightning.arc(from, to);
             Damage.ability(target, overcharge.potency(), attacker);
             plugin.effects().apply(target, EffectType.SHOCKED, shockTicks, shockDamage, attacker);
             from = to;

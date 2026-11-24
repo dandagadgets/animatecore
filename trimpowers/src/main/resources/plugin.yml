@@ -9,7 +9,7 @@ folia-supported: false
 commands:
   trims:
     description: Trim powers - info, list, and use your ability.
-    usage: /<command> [info|list|ability|hud|give|effect|cleanse|resetcd|reload]
+    usage: /<command> [info|list|ability|hud|editor|potion|perk|give|effect|cleanse|resetcd|reload]
     aliases: [trimpowers, trim]
 
 permissions:

@@ -2,6 +2,10 @@ package com.trimsmp.trimpowers.command;
 
 import com.trimsmp.trimpowers.TrimPowersPlugin;
 import com.trimsmp.trimpowers.effect.EffectType;
+import com.trimsmp.trimpowers.perk.Perk;
+import com.trimsmp.trimpowers.perk.PerkParams;
+import com.trimsmp.trimpowers.potion.PotionPassive;
+import com.trimsmp.trimpowers.potion.PotionPassiveManager;
 import com.trimsmp.trimpowers.power.TrimPower;
 import com.trimsmp.trimpowers.trim.TrimProfile;
 import com.trimsmp.trimpowers.util.Text;
@@ -20,6 +24,7 @@ import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +36,7 @@ import java.util.Map;
 public final class TrimsCommand implements TabExecutor {
 
     private static final List<String> PLAYER_SUBS = List.of("info", "list", "ability", "hud", "help");
-    private static final List<String> ADMIN_SUBS = List.of("give", "effect", "cleanse", "resetcd", "reload");
+    private static final List<String> ADMIN_SUBS = List.of("editor", "potion", "perk", "give", "effect", "cleanse", "resetcd", "reload");
     private static final List<String> MATERIALS = List.of("quartz", "iron", "netherite", "redstone", "copper",
             "gold", "emerald", "diamond", "lapis", "amethyst");
     private static final Material[] NETHERITE_SET = {Material.NETHERITE_HELMET, Material.NETHERITE_CHESTPLATE,
@@ -70,6 +75,15 @@ public final class TrimsCommand implements TabExecutor {
             case "effect" -> effect(sender, args);
             case "cleanse" -> cleanse(sender, args);
             case "resetcd" -> resetCooldowns(sender, args);
+            case "editor" -> {
+                if (sender instanceof Player player) {
+                    plugin.editor().openMain(player);
+                } else {
+                    Text.send(sender, "<red>Only players can open the editor. Use /trims potion or /trims perk instead.");
+                }
+            }
+            case "potion", "potions" -> potionCommand(sender, args);
+            case "perk", "perks" -> perkCommand(sender, args);
             case "reload" -> {
                 plugin.reload();
                 Text.send(sender, "<green>Config reloaded.");
@@ -90,6 +104,8 @@ public final class TrimsCommand implements TabExecutor {
         }
         Text.raw(sender, " <white>/trims info</white> <gray>your trims · <white>/trims list</white> <gray>all powers · <white>/trims hud</white> <gray>toggle HUD");
         if (sender.hasPermission("trimpowers.admin")) {
+            Text.raw(sender, " <dark_gray>admin: <gold>/trims editor</gold> <gray>choose each trim's potions and passives");
+            Text.raw(sender, " <dark_gray>admin: <gray>/trims potion <trim> add|remove|clear|list · perk <trim> add|remove|list");
             Text.raw(sender, " <dark_gray>admin: <gray>/trims give <pattern> [material] [player] · effect <player> <effect> <seconds> [potency] · cleanse [player] · resetcd [player] · reload");
         }
     }
@@ -117,6 +133,16 @@ public final class TrimsCommand implements TabExecutor {
             }
             Text.raw(player, " " + power.tag() + "<b>" + power.name() + "</b> <gray>(" + entry.getValue() + "/4)");
             Text.raw(player, "   <dark_gray>Passive: <gray>" + power.passiveText());
+            for (PotionPassive potion : plugin.potions().of(power.key())) {
+                boolean on = entry.getValue() >= potion.pieces();
+                Text.raw(player, "   <dark_gray>Potion: " + (on ? "<aqua>" : "<gray>") + PotionPassiveManager.describe(potion)
+                        + (on ? " <green>✔" : " <dark_gray>(needs " + potion.pieces() + " pieces)"));
+            }
+            for (Map.Entry<Perk, PerkParams> perk : plugin.perks().of(power.key()).entrySet()) {
+                boolean on = entry.getValue() >= needed;
+                Text.raw(player, "   <dark_gray>Signature: " + (on ? "<light_purple>" : "<gray>") + perk.getKey().displayName()
+                        + (on ? " <green>✔ " : " <dark_gray>(needs " + needed + " pieces) ") + "<gray>" + perk.getKey().describe(perk.getValue()));
+            }
             if (power.key().equals(profile.setKey())) {
                 long remaining = plugin.powers().remainingMillis(player, power.key());
                 String status = remaining > 0 ? "<gray>" + ((remaining + 999) / 1000) + "s" : "<green>ready";
@@ -135,11 +161,118 @@ public final class TrimsCommand implements TabExecutor {
                     + "<gray>Passive (per piece): <white>" + power.passiveText() + "\n"
                     + "<gray>Ability (" + plugin.settings().piecesForAbility() + " pieces): " + power.tag()
                     + power.abilityName() + "\n<white>" + power.abilityText() + "\n"
-                    + "<dark_gray>Cooldown: " + power.cooldownSeconds() + "s" + (power.enabled() ? "" : " <red>(disabled)");
+                    + "<dark_gray>Cooldown: " + power.cooldownSeconds() + "s" + (power.enabled() ? "" : " <red>(disabled)")
+                    + extrasHover(power);
             Component line = Text.mm(" " + power.tag() + "■ " + power.name() + " <dark_gray>— <gray>" + power.abilityName())
                     .hoverEvent(HoverEvent.showText(Text.mm(hover)));
             sender.sendMessage(line);
         }
+    }
+
+    private String extrasHover(TrimPower power) {
+        StringBuilder sb = new StringBuilder();
+        for (PotionPassive potion : plugin.potions().of(power.key())) {
+            sb.append("\n<aqua>Potion: ").append(PotionPassiveManager.describe(potion))
+                    .append(" <dark_gray>(").append(potion.pieces()).append(" pieces)");
+        }
+        for (Map.Entry<Perk, PerkParams> perk : plugin.perks().of(power.key()).entrySet()) {
+            sb.append("\n<light_purple>").append(perk.getKey().displayName()).append(": <white>")
+                    .append(perk.getKey().describe(perk.getValue()));
+        }
+        return sb.toString();
+    }
+
+    /** /trims potion <trim> add <effect> [level] [pieces] | remove <effect> | clear | list */
+    private void potionCommand(CommandSender sender, String[] args) {
+        if (args.length < 3) {
+            Text.send(sender, "<gray>Usage: /trims potion <trim> add <effect> [level] [pieces] | remove <effect> | clear | list");
+            return;
+        }
+        TrimPower power = plugin.powers().get(args[1].toLowerCase(Locale.ROOT));
+        if (power == null) {
+            Text.send(sender, "<red>Unknown trim: " + args[1]);
+            return;
+        }
+        String action = args[2].toLowerCase(Locale.ROOT);
+        switch (action) {
+            case "list" -> {
+                List<PotionPassive> potions = plugin.potions().of(power.key());
+                Text.send(sender, power.tag() + power.name() + "<gray> potions: " + (potions.isEmpty() ? "<dark_gray>none" : ""));
+                for (PotionPassive potion : potions) {
+                    Text.raw(sender, " <aqua>" + PotionPassiveManager.describe(potion) + " <dark_gray>(" + potion.pieces() + " pieces)");
+                }
+            }
+            case "clear" -> {
+                plugin.potions().clear(power.key());
+                Text.send(sender, "<green>Removed all potions from the " + power.name() + " trim.");
+            }
+            case "add", "set", "remove" -> {
+                if (args.length < 4) {
+                    Text.send(sender, "<red>Name a potion effect, e.g. speed, strength, night_vision.");
+                    return;
+                }
+                PotionEffectType type = PotionPassiveManager.parseType(args[3]);
+                if (type == null) {
+                    Text.send(sender, "<red>Unknown (or instant) potion effect: " + args[3]);
+                    return;
+                }
+                if (action.equals("remove")) {
+                    boolean removed = plugin.potions().remove(power.key(), type);
+                    Text.send(sender, removed ? "<green>Removed " + PotionPassiveManager.pretty(type) + " from " + power.name() + "."
+                            : "<gray>" + power.name() + " doesn't give " + PotionPassiveManager.pretty(type) + ".");
+                    return;
+                }
+                try {
+                    int level = args.length >= 5 ? Integer.parseInt(args[4]) : 1;
+                    int pieces = args.length >= 6 ? Integer.parseInt(args[5]) : plugin.settings().piecesForAbility();
+                    plugin.potions().set(power.key(), type, level, pieces);
+                    PotionPassive now = plugin.potions().find(power.key(), type);
+                    Text.send(sender, "<green>" + power.name() + " now gives " + PotionPassiveManager.describe(now)
+                            + " with " + now.pieces() + " piece(s).");
+                } catch (NumberFormatException ex) {
+                    Text.send(sender, "<red>Level and pieces must be whole numbers.");
+                }
+            }
+            default -> Text.send(sender, "<red>Use add, remove, clear or list.");
+        }
+    }
+
+    /** /trims perk <trim> add|remove <perk> | list */
+    private void perkCommand(CommandSender sender, String[] args) {
+        if (args.length < 3) {
+            Text.send(sender, "<gray>Usage: /trims perk <trim> add <perk> | remove <perk> | list");
+            return;
+        }
+        TrimPower power = plugin.powers().get(args[1].toLowerCase(Locale.ROOT));
+        if (power == null) {
+            Text.send(sender, "<red>Unknown trim: " + args[1]);
+            return;
+        }
+        String action = args[2].toLowerCase(Locale.ROOT);
+        if (action.equals("list")) {
+            Map<Perk, PerkParams> perks = plugin.perks().of(power.key());
+            Text.send(sender, power.tag() + power.name() + "<gray> signature passives: " + (perks.isEmpty() ? "<dark_gray>none" : ""));
+            for (Map.Entry<Perk, PerkParams> perk : perks.entrySet()) {
+                Text.raw(sender, " <light_purple>" + perk.getKey().displayName() + " <gray>" + perk.getKey().describe(perk.getValue()));
+            }
+            return;
+        }
+        Perk perk = args.length >= 4 ? Perk.byId(args[3]) : null;
+        if (perk == null) {
+            Text.send(sender, "<red>Name a passive: " + String.join(", ", Arrays.stream(Perk.values()).map(Perk::id).toList()));
+            return;
+        }
+        boolean has = plugin.perks().of(power.key()).containsKey(perk);
+        boolean wantOn = action.equals("add");
+        if (!wantOn && !action.equals("remove")) {
+            Text.send(sender, "<red>Use add, remove or list.");
+            return;
+        }
+        if (has != wantOn) {
+            plugin.perks().toggle(power.key(), perk);
+        }
+        Text.send(sender, (wantOn ? "<green>" + power.name() + " now has " : "<green>" + power.name() + " no longer has ")
+                + perk.displayName() + ".");
     }
 
     @SuppressWarnings("deprecation")
@@ -252,6 +385,20 @@ public final class TrimsCommand implements TabExecutor {
                 default -> List.of();
             };
             case "cleanse", "resetcd" -> args.length == 2 ? filter(onlineNames(), args[1]) : List.of();
+            case "potion", "potions" -> switch (args.length) {
+                case 2 -> filter(plugin.powers().all().stream().map(TrimPower::key).toList(), args[1]);
+                case 3 -> filter(List.of("add", "remove", "clear", "list"), args[2]);
+                case 4 -> filter(PotionPassiveManager.grantableTypes().stream().map(PotionPassiveManager::name).toList(), args[3]);
+                case 5 -> List.of("1", "2", "3");
+                case 6 -> List.of("1", "2", "3", "4");
+                default -> List.of();
+            };
+            case "perk", "perks" -> switch (args.length) {
+                case 2 -> filter(plugin.powers().all().stream().map(TrimPower::key).toList(), args[1]);
+                case 3 -> filter(List.of("add", "remove", "list"), args[2]);
+                case 4 -> filter(Arrays.stream(Perk.values()).map(Perk::id).toList(), args[3]);
+                default -> List.of();
+            };
             default -> List.of();
         };
     }
