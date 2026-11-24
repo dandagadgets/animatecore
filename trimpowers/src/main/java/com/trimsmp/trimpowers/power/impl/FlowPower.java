@@ -31,9 +31,9 @@ public final class FlowPower extends TrimPower {
     }
 
     @Override
-    public void collectAttributes(int pieces, AttributeSink sink) {
-        sink.add("safe_fall_distance", d("passive.safe-fall-per-piece", 1.0) * pieces, AttributeModifier.Operation.ADD_NUMBER);
-        sink.add("jump_strength", d("passive.jump-strength-per-piece", 0.02) * pieces, AttributeModifier.Operation.ADD_NUMBER);
+    public void collectAttributes(AttributeSink sink) {
+        sink.add("safe_fall_distance", d("passive.safe-fall", 4.0), AttributeModifier.Operation.ADD_NUMBER);
+        sink.add("jump_strength", d("passive.jump-strength", 0.08), AttributeModifier.Operation.ADD_NUMBER);
     }
 
     @Override
@@ -71,7 +71,7 @@ public final class FlowPower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "<white>+" + n(d("passive.safe-fall-per-piece", 1.0)) + "</white> safe fall distance and higher jumps per piece.";
+        return "<white>+" + n(d("passive.safe-fall", 4.0)) + "</white> safe fall distance and higher jumps.";
     }
 
     @Override

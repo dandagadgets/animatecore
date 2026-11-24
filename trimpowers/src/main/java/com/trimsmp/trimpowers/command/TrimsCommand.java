@@ -94,15 +94,15 @@ public final class TrimsCommand implements TabExecutor {
     }
 
     private void help(CommandSender sender) {
-        Text.raw(sender, Text.PREFIX + "<white>Trim Powers</white> <gray>— wear trimmed armor, gain powers.");
-        Text.raw(sender, " <gray>Each trimmed piece gives that trim's <white>passive</white>; wear <white>"
-                + plugin.settings().piecesForAbility() + "</white> of the same trim to unlock its <white>ability</white>.");
+        Text.raw(sender, Text.PREFIX + "<white>Trim Powers</white> <gray>— wear a full trimmed set, gain powers.");
+        Text.raw(sender, " <gray>Wear a <white>full set</white> (all 4 armor pieces with the same trim) to unlock that trim's"
+                + " <white>passive</white>, <white>potions</white>, <white>signature passives</white> and <white>ability</white>.");
         if (plugin.settings().sneakSwapTrigger()) {
             Text.raw(sender, " <gray>Use your ability: <white>Sneak + F</white> (swap hands) or <white>/trims ability</white>.");
         } else {
             Text.raw(sender, " <gray>Use your ability: <white>/trims ability</white>.");
         }
-        Text.raw(sender, " <white>/trims info</white> <gray>your trims · <white>/trims list</white> <gray>all powers · <white>/trims hud</white> <gray>toggle HUD");
+        Text.raw(sender, " <white>/trims info</white> <gray>your trim · <white>/trims list</white> <gray>all trims · <white>/trims hud</white> <gray>toggle HUD");
         if (sender.hasPermission("trimpowers.admin")) {
             Text.raw(sender, " <dark_gray>admin: <gold>/trims editor</gold> <gray>choose each trim's potions and passives");
             Text.raw(sender, " <dark_gray>admin: <gray>/trims potion <trim> add|remove|clear|list · perk <trim> add|remove|list");
@@ -116,53 +116,48 @@ public final class TrimsCommand implements TabExecutor {
             return;
         }
         TrimProfile profile = plugin.tracker().refresh(player);
-        if (profile.isEmpty()) {
-            Text.send(player, "<gray>You aren't wearing any trimmed armor. See <white>/trims list</white> for what each trim does.");
+        TrimPower power = plugin.powers().get(profile.setKey());
+        if (power == null) {
+            if (profile.isEmpty()) {
+                Text.send(player, "<gray>You aren't wearing any trimmed armor. See <white>/trims list</white> for what each trim does.");
+                return;
+            }
+            Text.raw(player, Text.PREFIX + "<gray>No full set yet. Wear all <white>4</white> pieces with the same trim to activate it:");
+            for (Map.Entry<String, Integer> entry : profile.counts().entrySet()) {
+                TrimPower worn = plugin.powers().get(entry.getKey());
+                if (worn != null) {
+                    Text.raw(player, " " + worn.tag() + "■ " + worn.name() + " <gray>" + entry.getValue() + "/4 pieces");
+                }
+            }
             return;
         }
-        int needed = plugin.settings().piecesForAbility();
-        Text.raw(player, Text.PREFIX + "<white>Your trims:");
-        for (Map.Entry<String, Integer> entry : profile.counts().entrySet()) {
-            TrimPower power = plugin.powers().get(entry.getKey());
-            if (power == null) {
-                continue;
-            }
-            if (!power.enabled()) {
-                Text.raw(player, " " + power.tag() + "■ " + power.name() + " <dark_gray>(disabled)");
-                continue;
-            }
-            Text.raw(player, " " + power.tag() + "<b>" + power.name() + "</b> <gray>(" + entry.getValue() + "/4)");
-            Text.raw(player, "   <dark_gray>Passive: <gray>" + power.passiveText());
-            for (PotionPassive potion : plugin.potions().of(power.key())) {
-                boolean on = entry.getValue() >= potion.pieces();
-                Text.raw(player, "   <dark_gray>Potion: " + (on ? "<aqua>" : "<gray>") + PotionPassiveManager.describe(potion)
-                        + (on ? " <green>✔" : " <dark_gray>(needs " + potion.pieces() + " pieces)"));
-            }
-            for (Map.Entry<Perk, PerkParams> perk : plugin.perks().of(power.key()).entrySet()) {
-                boolean on = entry.getValue() >= needed;
-                Text.raw(player, "   <dark_gray>Signature: " + (on ? "<light_purple>" : "<gray>") + perk.getKey().displayName()
-                        + (on ? " <green>✔ " : " <dark_gray>(needs " + needed + " pieces) ") + "<gray>" + perk.getKey().describe(perk.getValue()));
-            }
-            if (power.key().equals(profile.setKey())) {
-                long remaining = plugin.powers().remainingMillis(player, power.key());
-                String status = remaining > 0 ? "<gray>" + ((remaining + 999) / 1000) + "s" : "<green>ready";
-                Text.raw(player, "   <dark_gray>Ability: " + power.tag() + power.abilityName()
-                        + " <dark_gray>[" + status + "<dark_gray>] <gray>" + power.abilityText());
-            } else {
-                Text.raw(player, "   <dark_gray>Ability: <gray>" + power.abilityName() + " <dark_gray>(needs " + needed + " pieces)");
-            }
+        if (!power.enabled()) {
+            Text.send(player, power.tag() + power.name() + " <gray>set — <red>this trim is disabled on the server.");
+            return;
         }
+        Text.raw(player, Text.PREFIX + power.tag() + "<b>" + power.name() + " Set</b> <green>active");
+        Text.raw(player, "  <dark_gray>Passive: <gray>" + power.passiveText());
+        for (PotionPassive potion : plugin.potions().of(power.key())) {
+            Text.raw(player, "  <dark_gray>Potion: <aqua>" + PotionPassiveManager.describe(potion));
+        }
+        for (Map.Entry<Perk, PerkParams> perk : plugin.perks().of(power.key()).entrySet()) {
+            Text.raw(player, "  <dark_gray>Signature: <light_purple>" + perk.getKey().displayName() + " <gray>"
+                    + perk.getKey().describe(perk.getValue()));
+        }
+        long remaining = plugin.powers().remainingMillis(player, power.key());
+        String status = remaining > 0 ? "<gray>" + ((remaining + 999) / 1000) + "s" : "<green>ready";
+        Text.raw(player, "  <dark_gray>Ability: " + power.tag() + power.abilityName()
+                + " <dark_gray>[" + status + "<dark_gray>] <gray>" + power.abilityText());
     }
 
     private void list(CommandSender sender) {
-        Text.raw(sender, Text.PREFIX + "<white>All trim powers</white> <dark_gray>(hover for details)");
+        Text.raw(sender, Text.PREFIX + "<white>All trims</white> <dark_gray>(full set of 4 pieces · hover for details)");
         for (TrimPower power : plugin.powers().all()) {
-            String hover = power.tag() + "<b>" + power.name() + " Trim</b>\n"
-                    + "<gray>Passive (per piece): <white>" + power.passiveText() + "\n"
-                    + "<gray>Ability (" + plugin.settings().piecesForAbility() + " pieces): " + power.tag()
-                    + power.abilityName() + "\n<white>" + power.abilityText() + "\n"
-                    + "<dark_gray>Cooldown: " + power.cooldownSeconds() + "s" + (power.enabled() ? "" : " <red>(disabled)")
-                    + extrasHover(power);
+            String hover = power.tag() + "<b>" + power.name() + " Set</b> <dark_gray>(all 4 pieces)\n"
+                    + "<gray>Passive: <white>" + power.passiveText()
+                    + extrasHover(power) + "\n"
+                    + "<gray>Ability: " + power.tag() + power.abilityName() + "\n<white>" + power.abilityText() + "\n"
+                    + "<dark_gray>Cooldown: " + power.cooldownSeconds() + "s" + (power.enabled() ? "" : " <red>(disabled)");
             Component line = Text.mm(" " + power.tag() + "■ " + power.name() + " <dark_gray>— <gray>" + power.abilityName())
                     .hoverEvent(HoverEvent.showText(Text.mm(hover)));
             sender.sendMessage(line);
@@ -172,8 +167,7 @@ public final class TrimsCommand implements TabExecutor {
     private String extrasHover(TrimPower power) {
         StringBuilder sb = new StringBuilder();
         for (PotionPassive potion : plugin.potions().of(power.key())) {
-            sb.append("\n<aqua>Potion: ").append(PotionPassiveManager.describe(potion))
-                    .append(" <dark_gray>(").append(potion.pieces()).append(" pieces)");
+            sb.append("\n<gray>Potion: <aqua>").append(PotionPassiveManager.describe(potion));
         }
         for (Map.Entry<Perk, PerkParams> perk : plugin.perks().of(power.key()).entrySet()) {
             sb.append("\n<light_purple>").append(perk.getKey().displayName()).append(": <white>")
@@ -182,10 +176,10 @@ public final class TrimsCommand implements TabExecutor {
         return sb.toString();
     }
 
-    /** /trims potion <trim> add <effect> [level] [pieces] | remove <effect> | clear | list */
+    /** /trims potion <trim> add <effect> [level] | remove <effect> | clear | list */
     private void potionCommand(CommandSender sender, String[] args) {
         if (args.length < 3) {
-            Text.send(sender, "<gray>Usage: /trims potion <trim> add <effect> [level] [pieces] | remove <effect> | clear | list");
+            Text.send(sender, "<gray>Usage: /trims potion <trim> add <effect> [level] | remove <effect> | clear | list");
             return;
         }
         TrimPower power = plugin.powers().get(args[1].toLowerCase(Locale.ROOT));
@@ -199,7 +193,7 @@ public final class TrimsCommand implements TabExecutor {
                 List<PotionPassive> potions = plugin.potions().of(power.key());
                 Text.send(sender, power.tag() + power.name() + "<gray> potions: " + (potions.isEmpty() ? "<dark_gray>none" : ""));
                 for (PotionPassive potion : potions) {
-                    Text.raw(sender, " <aqua>" + PotionPassiveManager.describe(potion) + " <dark_gray>(" + potion.pieces() + " pieces)");
+                    Text.raw(sender, " <aqua>" + PotionPassiveManager.describe(potion));
                 }
             }
             case "clear" -> {
@@ -224,13 +218,11 @@ public final class TrimsCommand implements TabExecutor {
                 }
                 try {
                     int level = args.length >= 5 ? Integer.parseInt(args[4]) : 1;
-                    int pieces = args.length >= 6 ? Integer.parseInt(args[5]) : plugin.settings().piecesForAbility();
-                    plugin.potions().set(power.key(), type, level, pieces);
+                    plugin.potions().set(power.key(), type, level);
                     PotionPassive now = plugin.potions().find(power.key(), type);
-                    Text.send(sender, "<green>" + power.name() + " now gives " + PotionPassiveManager.describe(now)
-                            + " with " + now.pieces() + " piece(s).");
+                    Text.send(sender, "<green>The " + power.name() + " set now gives " + PotionPassiveManager.describe(now) + ".");
                 } catch (NumberFormatException ex) {
-                    Text.send(sender, "<red>Level and pieces must be whole numbers.");
+                    Text.send(sender, "<red>Level must be a whole number.");
                 }
             }
             default -> Text.send(sender, "<red>Use add, remove, clear or list.");
@@ -390,7 +382,6 @@ public final class TrimsCommand implements TabExecutor {
                 case 3 -> filter(List.of("add", "remove", "clear", "list"), args[2]);
                 case 4 -> filter(PotionPassiveManager.grantableTypes().stream().map(PotionPassiveManager::name).toList(), args[3]);
                 case 5 -> List.of("1", "2", "3");
-                case 6 -> List.of("1", "2", "3", "4");
                 default -> List.of();
             };
             case "perk", "perks" -> switch (args.length) {

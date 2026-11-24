@@ -27,8 +27,8 @@ public final class RaiserPower extends TrimPower {
         return 22;
     }
 
-    public double xpBonus(int pieces) {
-        return d("passive.xp-bonus-per-piece", 0.1) * pieces;
+    public double xpBonus() {
+        return d("passive.xp-bonus", 0.4);
     }
 
     @Override
@@ -66,7 +66,7 @@ public final class RaiserPower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "Gain <white>+" + pct(d("passive.xp-bonus-per-piece", 0.1)) + "</white> experience per piece.";
+        return "Gain <white>+" + pct(d("passive.xp-bonus", 0.4)) + "</white> experience.";
     }
 
     @Override

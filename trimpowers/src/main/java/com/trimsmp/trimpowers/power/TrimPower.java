@@ -18,7 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.List;
 
 /**
- * One trim pattern's power: passive perks that scale per worn piece, plus a full-set ability.
+ * One trim pattern's power: a passive and an ability, both active only while wearing the full set (all 4 pieces).
  * Every number is read from {@code powers.<key>} in config.yml, with the defaults written here.
  */
 public abstract class TrimPower {
@@ -83,28 +83,28 @@ public abstract class TrimPower {
         return false;
     }
 
-    // ---- passive hooks (pieces = how many pieces of this trim are worn) ----
+    // ---- full-set passive hooks ----
 
-    public void collectAttributes(int pieces, AttributeSink sink) {
+    public void collectAttributes(AttributeSink sink) {
     }
 
-    /** Called once a second while at least one piece is worn. */
-    public void passiveTick(Player player, int pieces) {
+    /** Called once a second while the full set is worn. */
+    public void passiveTick(Player player) {
     }
 
-    /** The player no longer wears any piece of this trim. */
+    /** The player took off the full set. */
     public void clearPassive(Player player) {
     }
 
-    public double outgoing(Player attacker, LivingEntity victim, double damage, int pieces, boolean melee, boolean projectile) {
+    public double outgoing(Player attacker, LivingEntity victim, double damage, boolean melee, boolean projectile) {
         return damage;
     }
 
-    public double incoming(Player victim, EntityDamageEvent event, double damage, int pieces) {
+    public double incoming(Player victim, EntityDamageEvent event, double damage) {
         return damage;
     }
 
-    public void onMeleeHit(Player attacker, LivingEntity victim, int pieces) {
+    public void onMeleeHit(Player attacker, LivingEntity victim) {
     }
 
     // ---- ability ----

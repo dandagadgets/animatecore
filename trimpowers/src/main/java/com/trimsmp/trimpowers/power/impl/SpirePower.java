@@ -33,8 +33,8 @@ public final class SpirePower extends TrimPower {
     }
 
     @Override
-    public void collectAttributes(int pieces, AttributeSink sink) {
-        sink.add("fall_damage_multiplier", -d("passive.fall-damage-reduction-per-piece", 0.15) * pieces,
+    public void collectAttributes(AttributeSink sink) {
+        sink.add("fall_damage_multiplier", -d("passive.fall-damage-reduction", 0.6),
                 AttributeModifier.Operation.ADD_NUMBER);
     }
 
@@ -71,7 +71,7 @@ public final class SpirePower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "Take <white>" + pct(d("passive.fall-damage-reduction-per-piece", 0.15)) + "</white> less fall damage per piece.";
+        return "Take <white>" + pct(d("passive.fall-damage-reduction", 0.6)) + "</white> less fall damage.";
     }
 
     @Override

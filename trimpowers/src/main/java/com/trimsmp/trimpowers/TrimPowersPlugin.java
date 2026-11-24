@@ -20,8 +20,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * TrimPowers - every armor trim pattern grants passive perks that scale with how many trimmed pieces you wear,
- * and a full set of one pattern unlocks an active ability (Shift + F by default). Abilities apply custom status
+ * TrimPowers - wearing a full set (all 4 pieces) with the same armor trim unlocks that trim's passive, permanent
+ * potion effects, signature passives and an active ability (Sneak + F by default). Abilities apply custom status
  * effects (bleed, stun, frostbite, shocked, ...) handled by {@link EffectManager}.
  */
 public final class TrimPowersPlugin extends JavaPlugin {

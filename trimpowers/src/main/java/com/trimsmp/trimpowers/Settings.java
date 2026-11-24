@@ -11,7 +11,6 @@ import java.util.Set;
 /** Global settings from the {@code settings:} and {@code effects:} sections of config.yml. */
 public final class Settings {
 
-    private int piecesForAbility = 4;
     private boolean sneakSwapTrigger = true;
     private final Set<String> disabledWorlds = new HashSet<>();
     private boolean hudEnabled = true;
@@ -25,7 +24,6 @@ public final class Settings {
     private ConfigurationSection effects;
 
     public void load(FileConfiguration config) {
-        piecesForAbility = Math.max(1, Math.min(4, config.getInt("settings.pieces-for-ability", 4)));
         sneakSwapTrigger = !"COMMAND_ONLY".equalsIgnoreCase(config.getString("settings.trigger", "SNEAK_SWAP"));
         disabledWorlds.clear();
         for (String world : config.getStringList("settings.disabled-worlds")) {
@@ -49,10 +47,6 @@ public final class Settings {
 
     public boolean effectFlag(String effect, String key, boolean def) {
         return effects == null ? def : effects.getBoolean(effect + "." + key, def);
-    }
-
-    public int piecesForAbility() {
-        return piecesForAbility;
     }
 
     public boolean sneakSwapTrigger() {

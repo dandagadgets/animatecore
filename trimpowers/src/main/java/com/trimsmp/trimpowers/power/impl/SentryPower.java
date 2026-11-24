@@ -40,8 +40,8 @@ public final class SentryPower extends TrimPower {
     }
 
     @Override
-    public double outgoing(Player attacker, LivingEntity victim, double damage, int pieces, boolean melee, boolean projectile) {
-        return projectile ? damage * (1 + d("passive.projectile-damage-per-piece", 0.06) * pieces) : damage;
+    public double outgoing(Player attacker, LivingEntity victim, double damage, boolean melee, boolean projectile) {
+        return projectile ? damage * (1 + d("passive.projectile-damage", 0.24)) : damage;
     }
 
     @Override
@@ -83,7 +83,7 @@ public final class SentryPower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "Projectiles deal <white>+" + pct(d("passive.projectile-damage-per-piece", 0.06)) + "</white> damage per piece.";
+        return "Projectiles deal <white>+" + pct(d("passive.projectile-damage", 0.24)) + "</white> damage.";
     }
 
     @Override

@@ -30,8 +30,8 @@ public final class EyePower extends TrimPower {
     }
 
     @Override
-    public void collectAttributes(int pieces, AttributeSink sink) {
-        sink.add("block_interaction_range", d("passive.block-reach-per-piece", 0.5) * pieces, AttributeModifier.Operation.ADD_NUMBER);
+    public void collectAttributes(AttributeSink sink) {
+        sink.add("block_interaction_range", d("passive.block-reach", 2.0), AttributeModifier.Operation.ADD_NUMBER);
     }
 
     @Override
@@ -69,7 +69,7 @@ public final class EyePower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "<white>+" + n(d("passive.block-reach-per-piece", 0.5)) + "</white> block reach per piece (building and mining).";
+        return "<white>+" + n(d("passive.block-reach", 2.0)) + "</white> block reach (building and mining).";
     }
 
     @Override

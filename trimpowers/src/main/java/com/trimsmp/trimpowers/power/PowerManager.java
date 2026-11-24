@@ -164,8 +164,8 @@ public final class PowerManager {
         TrimPower power = get(profile.setKey());
         if (power == null) {
             if (explicit) {
-                Text.send(player, "<gray>Wear <white>" + plugin.settings().piecesForAbility()
-                        + "</white> armor pieces with the same trim to unlock an ability. See <white>/trims list</white>.");
+                Text.send(player, "<gray>Wear a <white>full set</white> (all 4 armor pieces with the same trim) to unlock its powers."
+                        + " See <white>/trims list</white>.");
             }
             return false;
         }
@@ -211,40 +211,25 @@ public final class PowerManager {
     // ---- passive routing ----
 
     public double applyOutgoing(Player attacker, LivingEntity victim, double damage, boolean melee, boolean projectile) {
-        for (Map.Entry<String, Integer> entry : plugin.tracker().profile(attacker).counts().entrySet()) {
-            TrimPower power = powers.get(entry.getKey());
-            if (power != null && power.enabled()) {
-                damage = power.outgoing(attacker, victim, damage, entry.getValue(), melee, projectile);
-            }
-        }
-        return damage;
+        TrimPower power = setPower(attacker);
+        return power == null ? damage : power.outgoing(attacker, victim, damage, melee, projectile);
     }
 
     public double applyIncoming(Player victim, EntityDamageEvent event, double damage) {
-        for (Map.Entry<String, Integer> entry : plugin.tracker().profile(victim).counts().entrySet()) {
-            TrimPower power = powers.get(entry.getKey());
-            if (power != null && power.enabled()) {
-                damage = power.incoming(victim, event, damage, entry.getValue());
-            }
-        }
-        return damage;
+        TrimPower power = setPower(victim);
+        return power == null ? damage : power.incoming(victim, event, damage);
     }
 
     public void onMeleeHit(Player attacker, LivingEntity victim) {
-        for (Map.Entry<String, Integer> entry : plugin.tracker().profile(attacker).counts().entrySet()) {
-            TrimPower power = powers.get(entry.getKey());
-            if (power != null && power.enabled()) {
-                power.onMeleeHit(attacker, victim, entry.getValue());
-            }
+        TrimPower power = setPower(attacker);
+        if (power != null) {
+            power.onMeleeHit(attacker, victim);
         }
     }
 
-    /** Pieces of {@code key} the player wears, or 0 if that power is disabled. */
-    public int pieces(Player player, String key) {
-        TrimPower power = powers.get(key);
-        if (power == null || !power.enabled()) {
-            return 0;
-        }
-        return plugin.tracker().profile(player).pieces(key);
+    /** Whether the player wears a full set of {@code key} (and that power is enabled). */
+    public boolean hasSet(Player player, String key) {
+        TrimPower power = setPower(player);
+        return power != null && power.key().equals(key);
     }
 }

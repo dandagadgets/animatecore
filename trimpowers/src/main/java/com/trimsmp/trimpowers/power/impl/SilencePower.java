@@ -24,13 +24,13 @@ public final class SilencePower extends TrimPower {
     }
 
     @Override
-    public void collectAttributes(int pieces, AttributeSink sink) {
-        sink.add("sneaking_speed", d("passive.sneak-speed-per-piece", 0.15) * pieces, AttributeModifier.Operation.ADD_SCALAR);
+    public void collectAttributes(AttributeSink sink) {
+        sink.add("sneaking_speed", d("passive.sneak-speed", 0.6), AttributeModifier.Operation.ADD_SCALAR);
     }
 
-    /** Pieces needed before sculk sensors and shriekers ignore you. */
-    public int sculkImmunityPieces() {
-        return i("passive.sculk-immunity-pieces", 2);
+    /** Whether sculk sensors and shriekers ignore the wearer. */
+    public boolean sculkImmunity() {
+        return b("passive.sculk-immunity", true);
     }
 
     @Override
@@ -48,8 +48,8 @@ public final class SilencePower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "<white>+" + pct(d("passive.sneak-speed-per-piece", 0.15)) + "</white> sneak speed per piece. With <white>"
-                + sculkImmunityPieces() + "+</white> pieces, sculk sensors and shriekers can't hear you.";
+        return "<white>+" + pct(d("passive.sneak-speed", 0.6)) + "</white> sneak speed"
+                + (sculkImmunity() ? ", and sculk sensors and shriekers can't hear you." : ".");
     }
 
     @Override

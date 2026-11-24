@@ -33,8 +33,8 @@ public final class DunePower extends TrimPower {
     }
 
     @Override
-    public void collectAttributes(int pieces, AttributeSink sink) {
-        sink.add("knockback_resistance", d("passive.knockback-resistance-per-piece", 0.08) * pieces,
+    public void collectAttributes(AttributeSink sink) {
+        sink.add("knockback_resistance", d("passive.knockback-resistance", 0.32),
                 AttributeModifier.Operation.ADD_NUMBER);
     }
 
@@ -81,7 +81,7 @@ public final class DunePower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "<white>+" + pct(d("passive.knockback-resistance-per-piece", 0.08)) + "</white> knockback resistance per piece.";
+        return "<white>+" + pct(d("passive.knockback-resistance", 0.32)) + "</white> knockback resistance.";
     }
 
     @Override

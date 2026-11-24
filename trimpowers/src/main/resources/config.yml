@@ -1,13 +1,12 @@
 # ============================================================
 #  TrimPowers - Trims SMP
-#  Every armor trim pattern = passive perks (per piece worn)
-#  + a full-set ability (Sneak + F, or /trims ability).
+#  Wear a FULL SET (all 4 armor pieces with the same trim) to
+#  unlock that trim's passive, potions, signature passives and
+#  ability (Sneak + F, or /trims ability). Fewer pieces = nothing.
 #  Change any number below, then run /trims reload.
 # ============================================================
 
 settings:
-  # How many pieces of the SAME trim are needed to unlock its ability (1-4).
-  pieces-for-ability: 4
   # SNEAK_SWAP = Sneak + F (swap-hands key) fires the ability. COMMAND_ONLY = only /trims ability.
   trigger: SNEAK_SWAP
   # Worlds where trim powers (passives and abilities) are turned off.
@@ -68,9 +67,11 @@ effects:
 # ------------------------------------------------------------
 #  Trim powers  (cooldowns in seconds, damage in half-hearts)
 #
-#  potions: permanent potion effects while wearing the trim.
+#  Everything below only works while wearing the full set (all 4 pieces).
+#  passive: the trim's built-in passive bonus.
+#  potions: permanent potion effects.
 #     effect = any non-instant effect (speed, strength, haste, resistance, night_vision, ...)
-#     level  = 1 for Speed I, 2 for Speed II ...   pieces = how many pieces needed (1-4)
+#     level  = 1 for Speed I, 2 for Speed II ...
 #  perks: signature passives for the full set. Any perk works on any trim:
 #     weapon-damage, fall-damage, extra-jump, ocean-blessing, undertow, pathfinder, navigator,
 #     vein-miner, auto-smelt, prospector, wardens-calm, deep-dark-sight, shadow-crawl, wisdom,
@@ -84,10 +85,9 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: hero_of_the_village
         level: 1
-        pieces: 4
     perks: {}                   # full-set signature passives
     passive:
-      projectile-damage-per-piece: 0.06
+      projectile-damage: 0.24
     ability:                    # Volley
       arrows: 5
       spread-degrees: 10
@@ -102,10 +102,9 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: fire_resistance
         level: 1
-        pieces: 4
     perks: {}                   # full-set signature passives
     passive:
-      knockback-resistance-per-piece: 0.08
+      knockback-resistance: 0.32
     ability:                    # Sandstorm
       duration: 5
       radius: 5
@@ -118,17 +117,15 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: conduit_power
         level: 1
-        pieces: 4
       - effect: dolphins_grace
         level: 1
-        pieces: 4
     perks:                      # full-set signature passives
       undertow:
         damage-bonus: 0.3
         pull: 0.5
     passive:
-      swim-speed-per-piece: 0.1
-      oxygen-bonus-per-piece: 1.0
+      swim-speed: 0.4
+      oxygen-bonus: 4.0
     ability:                    # Riptide Surge
       power: 1.9
       damage: 4
@@ -141,10 +138,9 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: health_boost
         level: 1
-        pieces: 4
     perks: {}                   # full-set signature passives
     passive:
-      root-chance-per-piece: 0.04
+      root-chance: 0.16
       root-seconds: 1.5
     ability:                    # Entangle
       radius: 7
@@ -159,7 +155,7 @@ powers:
       weapon-damage:
         sword: 1.5
     passive:
-      damage-reduction-per-piece: 0.03
+      damage-reduction: 0.12
     ability:                    # Bulwark
       duration: 10
       shield: 10
@@ -170,10 +166,9 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: night_vision
         level: 1
-        pieces: 4
     perks: {}                   # full-set signature passives
     passive:
-      block-reach-per-piece: 0.5
+      block-reach: 2.0
     ability:                    # All-Seeing Eye
       radius: 24
       mark-seconds: 8
@@ -186,10 +181,9 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: speed
         level: 1
-        pieces: 4
     perks: {}                   # full-set signature passives
     passive:
-      speed-per-piece: 0.04
+      speed: 0.16
     ability:                    # Phase Blink
       range: 10
       damage: 2
@@ -206,7 +200,7 @@ powers:
         damage-bonus: 0.25
         heal-per-second: 0.4
     passive:
-      wet-damage-per-piece: 0.05
+      wet-damage: 0.2
     ability:                    # Tidal Wave
       length: 12
       travel-ticks: 14
@@ -222,11 +216,10 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: haste
         level: 1
-        pieces: 4
     perks: {}                   # full-set signature passives
     passive:
-      melee-damage-per-piece: 0.03
-      knockback-per-piece: 0.15
+      melee-damage: 0.12
+      knockback: 0.6
     ability:                    # Berserk
       duration: 8
       damage-bonus: 0.3
@@ -237,13 +230,12 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: resistance
         level: 1
-        pieces: 4
     perks:                      # full-set signature passives
       fall-damage:
         multiplier: 0.5
     passive:
-      fire-damage-reduction-per-piece: 0.25
-      burn-time-reduction-per-piece: 0.2
+      fire-damage-reduction: 1.0
+      burn-time-reduction: 0.8
     ability:                    # Hellfire Ring
       radius: 7
       expand-ticks: 12
@@ -257,12 +249,11 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: regeneration
         level: 1
-        pieces: 4
     perks:                      # full-set signature passives
       extra-jump:
         blocks: 2.0
     passive:
-      fall-damage-reduction-per-piece: 0.15
+      fall-damage-reduction: 0.6
     ability:                    # Skyward
       launch-power: 1.5
       cushion-seconds: 6
@@ -279,8 +270,8 @@ powers:
         speed-bonus: 0.3
       navigator: true
     passive:
-      hunger-save-chance-per-piece: 0.1
-      terrain-efficiency-per-piece: 0.1
+      hunger-save-chance: 0.4
+      terrain-efficiency: 0.4
     ability:                    # Recall
       anchor-seconds: 20
       heal: 4
@@ -298,7 +289,7 @@ powers:
       prospector:
         chance: 0.15
     passive:
-      mining-speed-per-piece: 0.05
+      mining-speed: 0.2
     ability:                    # Earthshatter
       length: 10
       ticks-per-block: 2
@@ -316,8 +307,8 @@ powers:
       shadow-crawl:
         sneak-speed: 1.0
     passive:
-      sneak-speed-per-piece: 0.15
-      sculk-immunity-pieces: 2
+      sneak-speed: 0.6
+      sculk-immunity: true
     ability:                    # Shadowstep
       duration: 6
 
@@ -336,7 +327,7 @@ powers:
         per-level: 0.01
         max: 0.3
     passive:
-      xp-bonus-per-piece: 0.1
+      xp-bonus: 0.4
     ability:                    # Upheaval
       radius: 6
       damage: 3
@@ -349,10 +340,9 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: regeneration
         level: 1
-        pieces: 4
     perks: {}                   # full-set signature passives
     passive:
-      max-health-per-piece: 1.0
+      max-health: 4.0
     ability:                    # Soul Siphon
       radius: 7
       max-targets: 5
@@ -367,15 +357,14 @@ powers:
     potions:                    # permanent potion effects (change in-game with /trims editor)
       - effect: speed
         level: 1
-        pieces: 4
     perks:                      # full-set signature passives
       double-jump:
         cooldown: 3.0
         power: 0.9
         forward: 0.4
     passive:
-      safe-fall-per-piece: 1.0
-      jump-strength-per-piece: 0.02
+      safe-fall: 4.0
+      jump-strength: 0.08
     ability:                    # Gale Dash
       dash-power: 2.0
       burst-radius: 4
@@ -398,7 +387,7 @@ powers:
         damage: 3.0
         radius: 5.0
     passive:
-      attack-speed-per-piece: 0.04
+      attack-speed: 0.16
     ability:                    # Overcharge
       duration: 8
       chain-damage: 3

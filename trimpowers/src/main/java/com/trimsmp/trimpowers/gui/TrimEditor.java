@@ -78,9 +78,10 @@ public final class TrimEditor implements Listener {
             setSlot(holder, TRIM_SLOTS[i], power.key());
         }
         inv.setItem(40, item(Material.BOOK, "<gold>How it works", List.of(
-                "<gray>Potions and passives apply while",
-                "<gray>wearing the trim. Changes save to",
-                "<gray>config.yml and apply instantly."), false));
+                "<gray>Everything applies only while",
+                "<gray>wearing the full set (all 4 pieces).",
+                "<gray>Changes save to config.yml and",
+                "<gray>apply instantly."), false));
         player.openInventory(inv);
     }
 
@@ -91,7 +92,7 @@ public final class TrimEditor implements Listener {
         inv.setItem(4, item(trimIcon(power), power.tag() + "<b>" + power.name() + " Trim", summary(power), false));
         inv.setItem(11, potionItem(null, power.tag() + "<b>Potion Effects", List.of(
                 "<gray>Permanent potion effects while",
-                "<gray>wearing this trim.", "", "<yellow>Click to choose"), plugin.potions().of(trim).size() > 0));
+                "<gray>wearing the full set.", "", "<yellow>Click to choose"), plugin.potions().of(trim).size() > 0));
         setSlot(holder, 11, "potions");
         inv.setItem(15, item(Material.NETHER_STAR, power.tag() + "<b>Signature Passives", List.of(
                 "<gray>Special always-on passives for",
@@ -111,16 +112,10 @@ public final class TrimEditor implements Listener {
             PotionEffectType type = types.get(i);
             PotionPassive current = plugin.potions().find(trim, type);
             List<String> lore = new ArrayList<>();
-            if (current == null) {
-                lore.add("<dark_gray>Not given");
-            } else {
-                lore.add("<green>Gives " + PotionPassiveManager.describe(current) + " <gray>with <white>" + current.pieces()
-                        + "</white> piece" + (current.pieces() == 1 ? "" : "s"));
-            }
+            lore.add(current == null ? "<dark_gray>Not given" : "<green>Gives " + PotionPassiveManager.describe(current));
             lore.add("");
             lore.add("<yellow>Left-click<gray>: add / level up");
             lore.add("<yellow>Right-click<gray>: level down / remove");
-            lore.add("<yellow>Shift-click<gray>: pieces needed (1-4)");
             String name = (current == null ? "<white>" : "<green><b>") + PotionPassiveManager.pretty(type)
                     + (current == null ? "" : " " + PotionPassiveManager.roman(current.level()));
             inv.setItem(i, potionItem(type, name, lore, current != null));
@@ -155,8 +150,8 @@ public final class TrimEditor implements Listener {
         inv.setItem(27, item(Material.ARROW, "<gray>« Back", List.of(), false));
         setSlot(holder, 27, "back");
         inv.setItem(31, item(Material.BOOK, "<gold>Signature passives", List.of(
-                "<gray>Active while wearing a full set",
-                "<gray>(" + plugin.settings().piecesForAbility() + " pieces) of this trim.",
+                "<gray>Active while wearing the full",
+                "<gray>set (all 4 pieces) of this trim.",
                 "<gray>Any passive works on any trim."), false));
         player.openInventory(inv);
     }
@@ -226,25 +221,18 @@ public final class TrimEditor implements Listener {
 
     private void editPotion(String trim, PotionEffectType type, ClickType click) {
         PotionPassive current = plugin.potions().find(trim, type);
-        int defaultPieces = plugin.settings().piecesForAbility();
-        if (click.isShiftClick()) {
-            if (current == null) {
-                plugin.potions().set(trim, type, 1, 1);
-            } else {
-                plugin.potions().set(trim, type, current.level(), current.pieces() % 4 + 1);
-            }
-        } else if (click.isRightClick()) {
+        if (click.isRightClick()) {
             if (current != null) {
                 if (current.level() <= 1) {
                     plugin.potions().remove(trim, type);
                 } else {
-                    plugin.potions().set(trim, type, current.level() - 1, current.pieces());
+                    plugin.potions().set(trim, type, current.level() - 1);
                 }
             }
         } else if (current == null) {
-            plugin.potions().set(trim, type, 1, defaultPieces);
+            plugin.potions().set(trim, type, 1);
         } else {
-            plugin.potions().set(trim, type, Math.min(10, current.level() + 1), current.pieces());
+            plugin.potions().set(trim, type, Math.min(10, current.level() + 1));
         }
     }
 
@@ -258,7 +246,7 @@ public final class TrimEditor implements Listener {
             lore.add(" <dark_gray>none");
         }
         for (PotionPassive potion : potions) {
-            lore.add(" <aqua>" + PotionPassiveManager.describe(potion) + " <dark_gray>(" + potion.pieces() + " pc)");
+            lore.add(" <aqua>" + PotionPassiveManager.describe(potion));
         }
         Map<Perk, PerkParams> perks = plugin.perks().of(power.key());
         lore.add("<gray>Signature passives:");

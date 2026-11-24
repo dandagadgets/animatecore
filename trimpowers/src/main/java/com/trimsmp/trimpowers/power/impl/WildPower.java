@@ -33,8 +33,8 @@ public final class WildPower extends TrimPower {
     }
 
     @Override
-    public void onMeleeHit(Player attacker, LivingEntity victim, int pieces) {
-        double chance = d("passive.root-chance-per-piece", 0.04) * pieces;
+    public void onMeleeHit(Player attacker, LivingEntity victim) {
+        double chance = d("passive.root-chance", 0.16);
         if (ThreadLocalRandom.current().nextDouble() < chance && canAffect(attacker, victim)) {
             effect(victim, EffectType.ROOTED, d("passive.root-seconds", 1.5), 0, attacker);
         }
@@ -76,8 +76,8 @@ public final class WildPower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "Melee hits have a <white>" + pct(d("passive.root-chance-per-piece", 0.04))
-                + "</white> chance per piece to <green>Root</green> the target.";
+        return "Melee hits have a <white>" + pct(d("passive.root-chance", 0.16))
+                + "</white> chance to <green>Root</green> the target.";
     }
 
     @Override

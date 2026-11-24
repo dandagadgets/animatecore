@@ -11,12 +11,15 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Which trim patterns a player is wearing and how many pieces of each.
+ * Which trim patterns a player is wearing. Only a FULL set (all 4 armor pieces with the same trim) does anything.
  *
- * @param counts pattern key ("sentry", "bolt", ...) to number of worn pieces, helmet-first order
- * @param setKey the pattern that has enough pieces to unlock its ability, or null
+ * @param counts pattern key ("sentry", "bolt", ...) to number of worn pieces, helmet-first order (for /trims info)
+ * @param setKey the trim of the full set being worn, or null if there's no full set
  */
 public record TrimProfile(Map<String, Integer> counts, String setKey) {
+
+    /** Pieces in a full set. */
+    public static final int FULL_SET = 4;
 
     public static final TrimProfile EMPTY = new TrimProfile(Collections.emptyMap(), null);
 
@@ -28,7 +31,7 @@ public record TrimProfile(Map<String, Integer> counts, String setKey) {
         return counts.isEmpty();
     }
 
-    public static TrimProfile scan(Player player, int piecesForAbility) {
+    public static TrimProfile scan(Player player) {
         ItemStack[] armor = player.getInventory().getArmorContents(); // boots, legs, chest, helmet
         Map<String, Integer> counts = new LinkedHashMap<>();
         for (int i = armor.length - 1; i >= 0; i--) {
@@ -41,10 +44,8 @@ public record TrimProfile(Map<String, Integer> counts, String setKey) {
             return EMPTY;
         }
         String setKey = null;
-        int best = 0;
         for (Map.Entry<String, Integer> entry : counts.entrySet()) {
-            if (entry.getValue() >= piecesForAbility && entry.getValue() > best) {
-                best = entry.getValue();
+            if (entry.getValue() >= FULL_SET) {
                 setKey = entry.getKey();
             }
         }

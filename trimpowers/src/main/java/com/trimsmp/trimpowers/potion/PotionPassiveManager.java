@@ -21,7 +21,7 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * Permanent potion effects granted by trims ({@code powers.<trim>.potions} in config.yml).
+ * Permanent potion effects granted while wearing a trim's full set ({@code powers.<trim>.potions} in config.yml).
  *
  * <p>Effects are applied with infinite duration while the player qualifies and removed as soon as they don't.
  * Which effects we granted is stored on the player (persistent data), so even after a crash we know exactly which
@@ -61,9 +61,10 @@ public final class PotionPassiveManager {
                             + "' in powers." + power.key() + ".potions - skipped.");
                     continue;
                 }
-                list.add(new PotionPassive(type, clampLevel(toInt(entry.get("level"), 1)), clampPieces(toInt(entry.get("pieces"), 4))));
+                list.removeIf(p -> p.type().equals(type));
+                list.add(new PotionPassive(type, clampLevel(toInt(entry.get("level"), 1))));
             }
-            list.sort(Comparator.comparingInt(PotionPassive::pieces).thenComparing(p -> name(p.type())));
+            list.sort(Comparator.comparing(p -> name(p.type())));
             byTrim.put(power.key(), list);
         }
     }
@@ -82,10 +83,10 @@ public final class PotionPassiveManager {
     }
 
     /** Adds or replaces the trim's entry for this effect, saves config.yml and re-applies to everyone. */
-    public void set(String trimKey, PotionEffectType type, int level, int pieces) {
+    public void set(String trimKey, PotionEffectType type, int level) {
         List<PotionPassive> list = new ArrayList<>(of(trimKey));
         list.removeIf(p -> p.type().equals(type));
-        list.add(new PotionPassive(type, clampLevel(level), clampPieces(pieces)));
+        list.add(new PotionPassive(type, clampLevel(level)));
         save(trimKey, list);
     }
 
@@ -108,7 +109,6 @@ public final class PotionPassiveManager {
             Map<String, Object> entry = new LinkedHashMap<>();
             entry.put("effect", name(passive.type()));
             entry.put("level", passive.level());
-            entry.put("pieces", passive.pieces());
             raw.add(entry);
         }
         plugin.getConfig().set("powers." + trimKey + ".potions", raw);
@@ -124,17 +124,10 @@ public final class PotionPassiveManager {
     /** Makes the player's trim potion effects match what their armor grants right now. */
     public void apply(Player player, TrimProfile profile) {
         Map<PotionEffectType, Integer> desired = new HashMap<>();
-        if (!player.isDead()) {
-            for (Map.Entry<String, Integer> entry : profile.counts().entrySet()) {
-                TrimPower power = plugin.powers().get(entry.getKey());
-                if (power == null || !power.enabled()) {
-                    continue;
-                }
-                for (PotionPassive passive : of(entry.getKey())) {
-                    if (entry.getValue() >= passive.pieces()) {
-                        desired.merge(passive.type(), passive.amplifier(), Math::max);
-                    }
-                }
+        TrimPower power = plugin.powers().get(profile.setKey());
+        if (!player.isDead() && power != null && power.enabled()) {
+            for (PotionPassive passive : of(power.key())) {
+                desired.merge(passive.type(), passive.amplifier(), Math::max);
             }
         }
 
@@ -267,10 +260,6 @@ public final class PotionPassiveManager {
 
     private static int clampLevel(int level) {
         return Math.max(1, Math.min(10, level));
-    }
-
-    private static int clampPieces(int pieces) {
-        return Math.max(1, Math.min(4, pieces));
     }
 
     private static int toInt(Object value, int def) {

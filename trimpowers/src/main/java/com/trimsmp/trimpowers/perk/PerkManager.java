@@ -91,21 +91,11 @@ public final class PerkManager {
     }
 
     public PerkParams active(TrimProfile profile, Perk perk) {
-        int needed = plugin.settings().piecesForAbility();
-        for (Map.Entry<String, Integer> entry : profile.counts().entrySet()) {
-            if (entry.getValue() < needed) {
-                continue;
-            }
-            TrimPower power = plugin.powers().get(entry.getKey());
-            if (power == null || !power.enabled()) {
-                continue;
-            }
-            PerkParams params = of(entry.getKey()).get(perk);
-            if (params != null) {
-                return params;
-            }
+        TrimPower power = plugin.powers().get(profile.setKey());
+        if (power == null || !power.enabled()) {
+            return null;
         }
-        return null;
+        return of(power.key()).get(perk);
     }
 
     public boolean has(Player player, Perk perk) {

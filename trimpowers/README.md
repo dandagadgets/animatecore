@@ -1,11 +1,14 @@
 # TrimPowers (Trims SMP)
 
-Armor trims give powers. Every trim has four layers:
+Armor trims give powers, but **only as a full set**: wear all 4 armor pieces with the same trim and you unlock
+everything that trim has. Fewer pieces give nothing.
 
-1. **Per-piece passive:** a small bonus for each piece you wear with that trim.
-2. **Permanent potion effects:** e.g. Speed or Haste while you wear the trim. You choose the effect, its level, and how many pieces it needs.
-3. **Signature passives:** special always-on perks for wearing the full set (e.g. Double Jump, Vein Miner).
-4. **Ability:** with a full set, press **Sneak + F** (swap hands) or type `/trims ability`.
+A full set gives:
+
+1. **Passive:** the trim's built-in bonus.
+2. **Permanent potion effects:** e.g. Speed or Haste. You choose them.
+3. **Signature passives:** special perks like Double Jump or Vein Miner. You choose them.
+4. **Ability:** press **Sneak + F** (swap hands) or type `/trims ability`.
 
 Abilities apply **custom effects** (Bleed, Stun, Frostbite, Shocked, ...) with their own particles, sounds and
 action-bar HUD.
@@ -15,28 +18,28 @@ action-bar HUD.
 - **Choosing potions and passives:** run `/trims editor` in-game (admins). Click a trim, then pick its potion
   effects and signature passives. Every click saves to `config.yml` and applies instantly.
 
-## The 18 trims (default setup)
+## The 18 trims (default setup, full set only)
 
-| Trim | Per-piece passive | Potions (full set) | Signature passives (full set) | Ability |
+| Trim | Passive | Potions | Signature passives | Ability |
 |---|---|---|---|---|
-| Sentry | +6% projectile damage | Hero of the Village | – | **Volley**: 5 bleeding arrows |
-| Dune | +8% knockback resistance | Fire Resistance | – | **Sandstorm**: damages and blinds |
-| Coast | Faster swim, more oxygen | Conduit Power, Dolphin's Grace | Undertow | **Riptide Surge** |
-| Wild | 4% chance on hit to Root | Health Boost | – | **Entangle**: root enemies |
-| Ward | -3% damage taken | – | Swords deal 1.5x | **Bulwark**: shield + sonic pulse |
-| Eye | +0.5 block reach | Night Vision | – | **All-Seeing Eye**: mark enemies |
-| Vex | +4% speed | Speed | – | **Phase Blink**: teleport + hex |
-| Tide | +5% damage when wet | – | Ocean's Blessing | **Tidal Wave**: frostbite wave |
-| Snout | +3% melee, knockback | Haste | – | **Berserk**: damage + lifesteal |
-| Rib | -25% fire damage | Resistance | Half fall damage | **Hellfire Ring**: soulburn |
-| Spire | -15% fall damage | Regeneration | Jump 2 blocks higher | **Skyward**: launch + levitate |
-| Wayfinder | Hunger saving | – | Pathfinder, Navigator | **Recall**: anchor teleport |
-| Shaper | +5% mining speed | – | Vein Miner, Auto-Smelt, Prospector | **Earthshatter**: rock line + stun |
-| Silence | Faster sneak, sculk-proof | – | Warden's Calm, Deep Dark Sight, Shadow Crawl | **Shadowstep**: vanish + invisibility |
-| Raiser | +10% XP | – | Wisdom, Bounce, XP Hunter, Level Power | **Upheaval**: knock-up + stun |
-| Host | +1 max health | Regeneration | – | **Soul Siphon**: drain + heal |
+| Sentry | +24% projectile damage | Hero of the Village | – | **Volley**: 5 bleeding arrows |
+| Dune | +32% knockback resistance | Fire Resistance | – | **Sandstorm**: damages and blinds |
+| Coast | +40% swim speed, more oxygen | Conduit Power, Dolphin's Grace | Undertow | **Riptide Surge** |
+| Wild | 16% chance on hit to Root | Health Boost | – | **Entangle**: root enemies |
+| Ward | -12% damage taken | – | Swords deal 1.5x | **Bulwark**: shield + sonic pulse |
+| Eye | +2 block reach | Night Vision | – | **All-Seeing Eye**: mark enemies |
+| Vex | +16% speed | Speed | – | **Phase Blink**: teleport + hex |
+| Tide | +20% damage when wet | – | Ocean's Blessing | **Tidal Wave**: frostbite wave |
+| Snout | +12% melee damage, knockback | Haste | – | **Berserk**: damage + lifesteal |
+| Rib | Immune to fire and lava | Resistance | Half fall damage | **Hellfire Ring**: soulburn |
+| Spire | -60% fall damage | Regeneration | Jump 2 blocks higher | **Skyward**: launch + levitate |
+| Wayfinder | 40% chance to not lose hunger | – | Pathfinder, Navigator | **Recall**: anchor teleport |
+| Shaper | +20% mining speed | – | Vein Miner, Auto-Smelt, Prospector | **Earthshatter**: rock line + stun |
+| Silence | +60% sneak speed, sculk-proof | – | Warden's Calm, Deep Dark Sight, Shadow Crawl | **Shadowstep**: vanish + invisibility |
+| Raiser | +40% XP | – | Wisdom, Bounce, XP Hunter, Level Power | **Upheaval**: knock-up + stun |
+| Host | +2 hearts max health | Regeneration | – | **Soul Siphon**: drain + heal |
 | Flow | Safer falls, higher jumps | Speed | Double Jump | **Gale Dash**: wind dash |
-| Bolt | +4% attack speed | – | Static Charge, Chain Reaction | **Overcharge**: chain lightning |
+| Bolt | +16% attack speed | – | Static Charge, Chain Reaction | **Overcharge**: chain lightning |
 
 Every number is in `config.yml`. Change it, then run `/trims reload`. You can also use `/trims editor` for potions and passives.
 
@@ -92,12 +95,12 @@ Milk clears custom debuffs (configurable). Bosses (Wither, Ender Dragon, Warden,
 
 | Command | Who | What |
 |---|---|---|
-| `/trims` or `/trims info` | everyone | Your worn trims, passives, potions and ability status |
+| `/trims` or `/trims info` | everyone | Your full set's passive, potions, signature passives and ability |
 | `/trims list` | everyone | All 18 trims (hover for details) |
 | `/trims ability` | everyone | Use your ability |
 | `/trims hud` | everyone | Toggle the action-bar HUD |
 | `/trims editor` | admin | Menu to choose each trim's potions and signature passives |
-| `/trims potion <trim> add <effect> [level] [pieces]` | admin | Give a trim a permanent potion (also `remove`, `clear`, `list`) |
+| `/trims potion <trim> add <effect> [level]` | admin | Give a trim a permanent potion (also `remove`, `clear`, `list`) |
 | `/trims perk <trim> add <passive>` | admin | Give a trim a signature passive (also `remove`, `list`) |
 | `/trims give <pattern> [material] [player]` | admin | Full trimmed netherite set for testing |
 | `/trims effect <player> <effect> <seconds> [potency]` | admin | Apply a custom effect |
@@ -112,7 +115,7 @@ Permissions: `trimpowers.use` (everyone by default) and `trimpowers.admin` (ops 
 - **PvP and protection:** abilities only hit players when world PvP is on, and never hit teammates with friendly
   fire off. With `respect-protection: true`, protection plugins (WorldGuard, GriefPrevention, ...) are asked before
   any ability touches someone. Pets, animals and villagers are safe by default (`targets.other-mobs: false`).
-- **Potions are safe to remove:** trim potions only last while you wear the trim. The plugin remembers which effects
+- **Potions are safe to remove:** trim potions only last while you wear the full set. The plugin remembers which effects
   it gave, so it never removes a potion you drank or a beacon effect, and leftovers are cleaned up even after a crash.
 - **Double Jump** works by briefly allowing flight, so it can trip some anti-cheat plugins. It never touches
   players who already have `/fly` or creative.

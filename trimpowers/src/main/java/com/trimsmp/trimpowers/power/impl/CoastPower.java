@@ -35,9 +35,9 @@ public final class CoastPower extends TrimPower {
     }
 
     @Override
-    public void collectAttributes(int pieces, AttributeSink sink) {
-        sink.add("water_movement_efficiency", d("passive.swim-speed-per-piece", 0.1) * pieces, AttributeModifier.Operation.ADD_NUMBER);
-        sink.add("oxygen_bonus", d("passive.oxygen-bonus-per-piece", 1.0) * pieces, AttributeModifier.Operation.ADD_NUMBER);
+    public void collectAttributes(AttributeSink sink) {
+        sink.add("water_movement_efficiency", d("passive.swim-speed", 0.4), AttributeModifier.Operation.ADD_NUMBER);
+        sink.add("oxygen_bonus", d("passive.oxygen-bonus", 4.0), AttributeModifier.Operation.ADD_NUMBER);
     }
 
     @Override
@@ -83,8 +83,8 @@ public final class CoastPower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "<white>+" + pct(d("passive.swim-speed-per-piece", 0.1)) + "</white> swim speed and <white>+"
-                + n(d("passive.oxygen-bonus-per-piece", 1.0)) + "</white> oxygen per piece.";
+        return "<white>+" + pct(d("passive.swim-speed", 0.4)) + "</white> swim speed and <white>+"
+                + n(d("passive.oxygen-bonus", 4.0)) + "</white> oxygen.";
     }
 
     @Override

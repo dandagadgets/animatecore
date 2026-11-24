@@ -23,8 +23,8 @@ public final class WardPower extends TrimPower {
     }
 
     @Override
-    public double incoming(Player victim, EntityDamageEvent event, double damage, int pieces) {
-        double reduction = Math.min(0.8, d("passive.damage-reduction-per-piece", 0.03) * pieces);
+    public double incoming(Player victim, EntityDamageEvent event, double damage) {
+        double reduction = Math.min(0.8, d("passive.damage-reduction", 0.12));
         return damage * (1 - reduction);
     }
 
@@ -40,7 +40,7 @@ public final class WardPower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "Take <white>" + pct(d("passive.damage-reduction-per-piece", 0.03)) + "</white> less damage per piece.";
+        return "Take <white>" + pct(d("passive.damage-reduction", 0.12)) + "</white> less damage.";
     }
 
     @Override

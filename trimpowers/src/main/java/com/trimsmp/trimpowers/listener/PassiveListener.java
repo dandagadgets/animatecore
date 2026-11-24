@@ -62,10 +62,9 @@ public final class PassiveListener implements Listener {
         if (!(event.getEntity() instanceof Player player) || event.getFoodLevel() >= player.getFoodLevel()) {
             return;
         }
-        int pieces = plugin.powers().pieces(player, "wayfinder");
         WayfinderPower wayfinder = plugin.powers().get("wayfinder", WayfinderPower.class);
-        if (pieces > 0 && wayfinder != null
-                && ThreadLocalRandom.current().nextDouble() < wayfinder.hungerSaveChance(pieces)) {
+        if (wayfinder != null && plugin.powers().hasSet(player, "wayfinder")
+                && ThreadLocalRandom.current().nextDouble() < wayfinder.hungerSaveChance()) {
             event.setCancelled(true);
         }
     }
@@ -76,12 +75,11 @@ public final class PassiveListener implements Listener {
         if (event.getAmount() <= 0) {
             return;
         }
-        int pieces = plugin.powers().pieces(event.getPlayer(), "raiser");
         RaiserPower raiser = plugin.powers().get("raiser", RaiserPower.class);
-        if (pieces <= 0 || raiser == null) {
+        if (raiser == null || !plugin.powers().hasSet(event.getPlayer(), "raiser")) {
             return;
         }
-        double boosted = event.getAmount() * (1 + raiser.xpBonus(pieces));
+        double boosted = event.getAmount() * (1 + raiser.xpBonus());
         int whole = (int) Math.floor(boosted);
         if (ThreadLocalRandom.current().nextDouble() < boosted - whole) {
             whole++;
@@ -96,8 +94,7 @@ public final class PassiveListener implements Listener {
             return;
         }
         SilencePower silence = plugin.powers().get("silence", SilencePower.class);
-        int pieces = plugin.powers().pieces(player, "silence");
-        if (silence != null && pieces > 0 && pieces >= silence.sculkImmunityPieces()) {
+        if (silence != null && silence.sculkImmunity() && plugin.powers().hasSet(player, "silence")) {
             event.setCancelled(true);
         }
     }

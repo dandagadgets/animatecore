@@ -33,14 +33,14 @@ public final class RibPower extends TrimPower {
     }
 
     @Override
-    public void collectAttributes(int pieces, AttributeSink sink) {
-        sink.add("burning_time", -d("passive.burn-time-reduction-per-piece", 0.2) * pieces, AttributeModifier.Operation.ADD_NUMBER);
+    public void collectAttributes(AttributeSink sink) {
+        sink.add("burning_time", -d("passive.burn-time-reduction", 0.8), AttributeModifier.Operation.ADD_NUMBER);
     }
 
     @Override
-    public double incoming(Player victim, EntityDamageEvent event, double damage, int pieces) {
+    public double incoming(Player victim, EntityDamageEvent event, double damage) {
         if (FIRE_CAUSES.contains(event.getCause().name())) {
-            return damage * Math.max(0, 1 - d("passive.fire-damage-reduction-per-piece", 0.25) * pieces);
+            return damage * Math.max(0, 1 - d("passive.fire-damage-reduction", 1.0));
         }
         return damage;
     }
@@ -82,8 +82,9 @@ public final class RibPower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "Take <white>" + pct(d("passive.fire-damage-reduction-per-piece", 0.25))
-                + "</white> less fire/lava damage per piece and burn for less time.";
+        double reduction = d("passive.fire-damage-reduction", 1.0);
+        return (reduction >= 1.0 ? "Immune to fire and lava damage"
+                : "Take <white>" + pct(reduction) + "</white> less fire/lava damage") + ", and burn for less time.";
     }
 
     @Override

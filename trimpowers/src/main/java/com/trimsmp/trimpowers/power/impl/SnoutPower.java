@@ -28,13 +28,13 @@ public final class SnoutPower extends TrimPower {
     }
 
     @Override
-    public void collectAttributes(int pieces, AttributeSink sink) {
-        sink.add("attack_knockback", d("passive.knockback-per-piece", 0.15) * pieces, AttributeModifier.Operation.ADD_NUMBER);
+    public void collectAttributes(AttributeSink sink) {
+        sink.add("attack_knockback", d("passive.knockback", 0.6), AttributeModifier.Operation.ADD_NUMBER);
     }
 
     @Override
-    public double outgoing(Player attacker, LivingEntity victim, double damage, int pieces, boolean melee, boolean projectile) {
-        return melee ? damage * (1 + d("passive.melee-damage-per-piece", 0.03) * pieces) : damage;
+    public double outgoing(Player attacker, LivingEntity victim, double damage, boolean melee, boolean projectile) {
+        return melee ? damage * (1 + d("passive.melee-damage", 0.12)) : damage;
     }
 
     @Override
@@ -50,7 +50,7 @@ public final class SnoutPower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "<white>+" + pct(d("passive.melee-damage-per-piece", 0.03)) + "</white> melee damage and extra knockback per piece.";
+        return "<white>+" + pct(d("passive.melee-damage", 0.12)) + "</white> melee damage and extra knockback.";
     }
 
     @Override

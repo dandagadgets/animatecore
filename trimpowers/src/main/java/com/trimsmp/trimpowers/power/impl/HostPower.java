@@ -31,8 +31,8 @@ public final class HostPower extends TrimPower {
     }
 
     @Override
-    public void collectAttributes(int pieces, AttributeSink sink) {
-        sink.add("max_health", d("passive.max-health-per-piece", 1.0) * pieces, AttributeModifier.Operation.ADD_NUMBER);
+    public void collectAttributes(AttributeSink sink) {
+        sink.add("max_health", d("passive.max-health", 4.0), AttributeModifier.Operation.ADD_NUMBER);
     }
 
     @Override
@@ -83,7 +83,7 @@ public final class HostPower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "<white>+" + n(d("passive.max-health-per-piece", 1.0)) + "</white> max health per piece.";
+        return "<white>+" + n(d("passive.max-health", 4.0)) + "</white> max health.";
     }
 
     @Override

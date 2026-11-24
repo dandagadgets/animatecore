@@ -32,9 +32,9 @@ public final class TidePower extends TrimPower {
     }
 
     @Override
-    public double outgoing(Player attacker, LivingEntity victim, double damage, int pieces, boolean melee, boolean projectile) {
+    public double outgoing(Player attacker, LivingEntity victim, double damage, boolean melee, boolean projectile) {
         if (attacker.isInWaterOrRainOrBubbleColumn()) {
-            return damage * (1 + d("passive.wet-damage-per-piece", 0.05) * pieces);
+            return damage * (1 + d("passive.wet-damage", 0.2));
         }
         return damage;
     }
@@ -91,7 +91,7 @@ public final class TidePower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "Deal <white>+" + pct(d("passive.wet-damage-per-piece", 0.05)) + "</white> damage per piece while in water or rain.";
+        return "Deal <white>+" + pct(d("passive.wet-damage", 0.2)) + "</white> damage while in water or rain.";
     }
 
     @Override

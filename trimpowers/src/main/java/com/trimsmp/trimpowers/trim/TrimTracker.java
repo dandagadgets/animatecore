@@ -16,8 +16,8 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Keeps each player's {@link TrimProfile} up to date and applies the passive attribute bonuses of the trims they
- * wear. Re-scans on armor change and once a second as a safety net.
+ * Keeps each player's {@link TrimProfile} up to date and applies the full-set passive bonuses of the trim they wear.
+ * Re-scans on armor change and once a second as a safety net.
  */
 public final class TrimTracker {
 
@@ -58,19 +58,15 @@ public final class TrimTracker {
     public TrimProfile refresh(Player player) {
         TrimProfile now = plugin.settings().isDisabled(player.getWorld())
                 ? TrimProfile.EMPTY
-                : TrimProfile.scan(player, plugin.settings().piecesForAbility());
+                : TrimProfile.scan(player);
         TrimProfile before = profiles.put(player.getUniqueId(), now);
         plugin.potions().apply(player, now);
         if (before == null || !before.counts().equals(now.counts())) {
             applyAttributes(player, now);
-            if (before != null) {
-                for (String key : before.counts().keySet()) {
-                    if (now.pieces(key) == 0) {
-                        TrimPower power = plugin.powers().get(key);
-                        if (power != null) {
-                            power.clearPassive(player);
-                        }
-                    }
+            if (before != null && before.setKey() != null && !before.setKey().equals(now.setKey())) {
+                TrimPower power = plugin.powers().get(before.setKey());
+                if (power != null) {
+                    power.clearPassive(player);
                 }
             }
         }
@@ -91,12 +87,10 @@ public final class TrimTracker {
         TrimProfile profile = profiles.remove(player.getUniqueId());
         removeAttributes(player);
         plugin.potions().clear(player);
-        if (profile != null) {
-            for (String key : profile.counts().keySet()) {
-                TrimPower power = plugin.powers().get(key);
-                if (power != null) {
-                    power.clearPassive(player);
-                }
+        if (profile != null && profile.setKey() != null) {
+            TrimPower power = plugin.powers().get(profile.setKey());
+            if (power != null) {
+                power.clearPassive(player);
             }
         }
     }
@@ -114,23 +108,18 @@ public final class TrimTracker {
         if (profile == null || player.isDead()) {
             return;
         }
-        for (Map.Entry<String, Integer> entry : profile.counts().entrySet()) {
-            TrimPower power = plugin.powers().get(entry.getKey());
-            if (power != null && power.enabled()) {
-                power.passiveTick(player, entry.getValue());
-            }
+        TrimPower power = plugin.powers().get(profile.setKey());
+        if (power != null && power.enabled()) {
+            power.passiveTick(player);
         }
     }
 
     private void applyAttributes(Player player, TrimProfile profile) {
         removeAttributes(player);
         Map<String, Double> sums = new HashMap<>();
-        for (Map.Entry<String, Integer> entry : profile.counts().entrySet()) {
-            TrimPower power = plugin.powers().get(entry.getKey());
-            if (power == null || !power.enabled()) {
-                continue;
-            }
-            power.collectAttributes(entry.getValue(), (attribute, amount, operation) ->
+        TrimPower power = plugin.powers().get(profile.setKey());
+        if (power != null && power.enabled()) {
+            power.collectAttributes((attribute, amount, operation) ->
                     sums.merge(attribute + "|" + operation.name(), amount, Double::sum));
         }
         plugin.perks().collectAttributes(profile, (attribute, amount, operation) ->

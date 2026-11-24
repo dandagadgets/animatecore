@@ -42,8 +42,8 @@ public final class ShaperPower extends TrimPower {
     }
 
     @Override
-    public void collectAttributes(int pieces, AttributeSink sink) {
-        sink.add("block_break_speed", d("passive.mining-speed-per-piece", 0.05) * pieces, AttributeModifier.Operation.ADD_SCALAR);
+    public void collectAttributes(AttributeSink sink) {
+        sink.add("block_break_speed", d("passive.mining-speed", 0.2), AttributeModifier.Operation.ADD_SCALAR);
     }
 
     @Override
@@ -141,7 +141,7 @@ public final class ShaperPower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "<white>+" + pct(d("passive.mining-speed-per-piece", 0.05)) + "</white> mining speed per piece.";
+        return "<white>+" + pct(d("passive.mining-speed", 0.2)) + "</white> mining speed.";
     }
 
     @Override

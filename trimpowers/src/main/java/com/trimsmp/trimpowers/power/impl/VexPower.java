@@ -43,8 +43,8 @@ public final class VexPower extends TrimPower {
     }
 
     @Override
-    public void collectAttributes(int pieces, AttributeSink sink) {
-        sink.add("movement_speed", d("passive.speed-per-piece", 0.04) * pieces, AttributeModifier.Operation.ADD_SCALAR);
+    public void collectAttributes(AttributeSink sink) {
+        sink.add("movement_speed", d("passive.speed", 0.16), AttributeModifier.Operation.ADD_SCALAR);
     }
 
     @Override
@@ -118,7 +118,7 @@ public final class VexPower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "<white>+" + pct(d("passive.speed-per-piece", 0.04)) + "</white> movement speed per piece.";
+        return "<white>+" + pct(d("passive.speed", 0.16)) + "</white> movement speed.";
     }
 
     @Override

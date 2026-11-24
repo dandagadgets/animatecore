@@ -31,13 +31,13 @@ public final class WayfinderPower extends TrimPower {
     }
 
     @Override
-    public void collectAttributes(int pieces, AttributeSink sink) {
-        sink.add("movement_efficiency", d("passive.terrain-efficiency-per-piece", 0.1) * pieces, AttributeModifier.Operation.ADD_NUMBER);
+    public void collectAttributes(AttributeSink sink) {
+        sink.add("movement_efficiency", d("passive.terrain-efficiency", 0.4), AttributeModifier.Operation.ADD_NUMBER);
     }
 
     /** Chance that a point of hunger loss is skipped. */
-    public double hungerSaveChance(int pieces) {
-        return Math.min(1.0, d("passive.hunger-save-chance-per-piece", 0.1) * pieces);
+    public double hungerSaveChance() {
+        return Math.min(1.0, d("passive.hunger-save-chance", 0.4));
     }
 
     @Override
@@ -91,8 +91,8 @@ public final class WayfinderPower extends TrimPower {
 
     @Override
     public String passiveText() {
-        return "<white>" + pct(d("passive.hunger-save-chance-per-piece", 0.1))
-                + "</white> chance per piece to not lose hunger; rough terrain slows you less.";
+        return "<white>" + pct(d("passive.hunger-save-chance", 0.4))
+                + "</white> chance to not lose hunger; rough terrain slows you less.";
     }
 
     @Override
